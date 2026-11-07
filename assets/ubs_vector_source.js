@@ -31,7 +31,7 @@ async load(){
  const bytes=Uint8Array.from(root.atob(PACK_B64),ch=>ch.charCodeAt(0));
  const bytesStream=new Blob([bytes]).stream().pipeThrough(new root.DecompressionStream('gzip'));
  const decoded=JSON.parse(await new Response(bytesStream).text());
- for(const no of PDF_PAGES){const svg=decoded[String(no)];if(typeof svg!=='string'||!svg.startsWith('<svg')||/<(?:text|image|script|foreignObject)\b/i.test(svg))throw Error('검증되지 않은 UBS SVG 자료');}
+ for(const no of PDF_PAGES){let svg=decoded[String(no)];if(typeof svg!=='string'||!/^<(?:ns0:)?svg\b/.test(svg)||/<(?:\w+:)?(?:text|image|script|foreignObject)\b/i.test(svg))throw Error('검증되지 않은 UBS SVG 자료');svg=svg.replace(/(<\/?)ns0:/g,'$1').replace('xmlns:ns0=','xmlns=');if(!/^<svg\b/.test(svg))throw Error('SVG 네임스페이스 복원 실패');decoded[String(no)]=svg;}
  this.pages=decoded;this.status='ready';
  root.dispatchEvent?.(new Event('docut-ubs-vector-ready'));return decoded;
 }};
