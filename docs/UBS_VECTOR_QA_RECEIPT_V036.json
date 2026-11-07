@@ -36,5 +36,77 @@
   "maskRule": "Individual glyph bounding boxes plus one explicit small logo area, mask below 35%",
   "method": "Independent PDF native render vs SVG native render; source ratio",
   "limits": "SVG vector extraction only; not DoCut browser 99% or 16:9 editability",
-  "version": "ubs-pdf-svg-geometry-v2"
+  "version": "ubs-pdf-svg-geometry-v2",
+  "sourcePDFSHA256": "16c57341fa24bd5b010d828ae9e845d4864fdbc183489306b79301822db5961e",
+  "browserChromium": {
+    "engine": "Playwright Chromium 158",
+    "method": "Actual Chromium SVG screenshots at 1263x893 independently compared with PDF native render under narrow glyph and removed-logo masks.",
+    "scoreThreshold": 99,
+    "pages": [
+      {
+        "page": 5,
+        "score": 99.7642,
+        "structure": 99.6048,
+        "edges": 100,
+        "color": 99.7622,
+        "light_shadow": 99.7467,
+        "mask": 0.289736,
+        "passed99": true
+      },
+      {
+        "page": 8,
+        "score": 99.6741,
+        "structure": 99.3587,
+        "edges": 100,
+        "color": 99.739,
+        "light_shadow": 99.7584,
+        "mask": 0.30604,
+        "passed99": true
+      },
+      {
+        "page": 11,
+        "score": 93.3279,
+        "structure": 98.7009,
+        "edges": 75.5995,
+        "color": 99.808,
+        "light_shadow": 99.5379,
+        "mask": 0.342333,
+        "passed99": false
+      },
+      {
+        "page": 13,
+        "score": 97.486,
+        "structure": 98.607,
+        "edges": 92.8276,
+        "color": 99.2532,
+        "light_shadow": 99.6891,
+        "mask": 0.163606,
+        "passed99": false
+      },
+      {
+        "page": 16,
+        "score": 98.5516,
+        "structure": 98.717,
+        "edges": 96.9371,
+        "color": 99.2999,
+        "light_shadow": 99.6089,
+        "mask": 0.21602,
+        "passed99": false
+      },
+      {
+        "page": 18,
+        "score": 92.7984,
+        "structure": 97.9763,
+        "edges": 74.7708,
+        "color": 99.6343,
+        "light_shadow": 99.3699,
+        "mask": 0.33858,
+        "passed99": false
+      }
+    ],
+    "passed99Pages": 2,
+    "failed99Pages": 4,
+    "status": "INCOMPLETE_BROWSER_FIDELITY_2_OF_6",
+    "comparisonURL": "https://docut-studio-mnrdsn4e4-neoflowcores-projects.vercel.app/"
+  }
 }

@@ -1,11 +1,11 @@
 {
   "schema": "docut-fidelity-acceptance/v1",
   "createdAt": "2026-11-08",
-  "status": "NO_ORIGINAL_IMAGE_METRICS_YET",
-  "scoreThreshold": 99.0,
+  "status": "UBS_SOURCE_2025_NATIVE6_PASS_BROWSER2_PASS4_FAIL",
+  "scoreThreshold": 99,
   "totalTargetPages": 120,
   "verified99Pages": 0,
-  "notes": "All fidelity scores null. UBS 2025 layout study is not proof of 2026 source parity.",
+  "notes": "2025 UBS official PDF retrieved and measured. 6/6 SVG-native graphic benchmarks pass; only 2/6 actual Chromium screenshots pass. Original content/font/photographs excluded; rights and editorial QA unfinished. The 2026 UBS edition remains unverified.",
   "packs": [
     {
       "id": "STR-01",
@@ -1542,102 +1542,146 @@
       "company": "UBS",
       "originalTitle": "Global Wealth Report 2026",
       "currentReferenceSource": "https://www.ubs.com/global/en/wealthmanagement/insights/global-wealth-report.html",
-      "sourceEvidence": "official_html_reviewed",
-      "verifiedSourcePageCount": 0,
-      "referenceVersion": null,
+      "sourceEvidence": "direct_original_pdf_geometry_plus_chromium_render",
+      "verifiedSourcePageCount": 6,
+      "referenceVersion": "UBS Global Wealth Report 2025 — not 2026",
       "visualSourceFileHash": null,
       "pages": [
         {
           "index": 1,
           "pageArchetype": "cover",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 5,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "provisional_chromium_99_pass",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 99.6048,
+            "edges": 100,
+            "color": 99.7622,
+            "light_shadow": 99.7467
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 99.7642,
+          "browser99GatePassed": true
         },
         {
           "index": 2,
           "pageArchetype": "map",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 8,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "provisional_chromium_99_pass",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 99.3587,
+            "edges": 100,
+            "color": 99.739,
+            "light_shadow": 99.7584
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 99.6741,
+          "browser99GatePassed": true
         },
         {
           "index": 3,
           "pageArchetype": "pyramid",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 11,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "chromium_below_99",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 98.7009,
+            "edges": 75.5995,
+            "color": 99.808,
+            "light_shadow": 99.5379
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 93.3279,
+          "browser99GatePassed": false
         },
         {
           "index": 4,
           "pageArchetype": "segment",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 13,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "chromium_below_99",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 98.607,
+            "edges": 92.8276,
+            "color": 99.2532,
+            "light_shadow": 99.6891
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 97.486,
+          "browser99GatePassed": false
         },
         {
           "index": 5,
           "pageArchetype": "driver",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 16,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "chromium_below_99",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 98.717,
+            "edges": 96.9371,
+            "color": 99.2999,
+            "light_shadow": 99.6089
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 98.5516,
+          "browser99GatePassed": false
         },
         {
           "index": 6,
           "pageArchetype": "method",
-          "officialSourcePage": null,
-          "sourceRatio": null,
-          "masterVectorStatus": "pilot-16x9-no-source-measure",
-          "originalImageAvailable": false,
+          "officialSourcePage": 18,
+          "sourceRatio": 1.4142851383223918,
+          "masterVectorStatus": "chromium_below_99",
+          "originalImageAvailable": true,
           "measured99": false,
           "score": null,
-          "componentScores": null,
+          "componentScores": {
+            "structure": 97.9763,
+            "edges": 74.7708,
+            "color": 99.6343,
+            "light_shadow": 99.3699
+          },
           "overlayPath": null,
           "heatmapPath": null,
           "rightsReviewed": false,
-          "qaApproved": false
+          "qaApproved": false,
+          "browserStrictScore": 92.7984,
+          "browser99GatePassed": false
         }
-      ]
+      ],
+      "sourceEdition": "2025",
+      "sourcePDFSHA256": "16c57341fa24bd5b010d828ae9e845d4864fdbc183489306b79301822db5961e"
     },
     {
       "id": "FIN-17",
@@ -2047,5 +2091,7 @@
         }
       ]
     }
-  ]
+  ],
+  "browser99PreliminaryPages": 2,
+  "nativeSVG99PreliminaryPages": 6
 }

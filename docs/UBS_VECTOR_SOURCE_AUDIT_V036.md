@@ -39,3 +39,18 @@ Chromium DOM/screenshot comparison with same geometry and mask, Safari/Brave par
 - 6 true PDF source graphic pages passed PDF-native vector scoring, distinct from browser performance.
 - PDF text bounds extracted geometrically, not paragraphs or numbers: 157 blank editable native DoCut text slots across six pages [13,24,28,26,26,40]. No UBS wordmarks, photographs or official body content bundled.
 - Chromium verified six-page gallery insertion, source SVG visible, and report HTML export containing real SVG paths. The editor retains a separate drawing and text layer. Individual PDF-origin paths are not yet independently draggable.
+
+## Official 6-page Chromium benchmark (actual, 2026-11-08)
+
+| PDF 원본 페이지 | Chromium 종합 | 구조 | 경계 | 색상 | 음영 | 99% 게이트 |
+|---|---:|---:|---:|---:|---:|---|
+| 5 | 99.7642% | 99.6048% | 100% | 99.7622% | 99.7467% | 예비 통과 |
+| 8 | 99.6741% | 99.3587% | 100% | 99.739% | 99.7584% | 예비 통과 |
+| 11 | 93.3279% | 98.7009% | 75.5995% | 99.808% | 99.5379% | 미달 |
+| 13 | 97.4860% | 98.607% | 92.8276% | 99.2532% | 99.6891% | 미달 |
+| 16 | 98.5516% | 98.717% | 96.9371% | 99.2999% | 99.6089% | 미달 |
+| 18 | 92.7984% | 97.9763% | 74.7708% | 99.6343% | 99.3699% | 미달 |
+
+Actual output from the source SVG rendered in Chromium 158, pixel-matched to the independently downloaded original 2025 UBS PDF page. Graphic-only, text glyph/logo masks below 35%. **2/6 browser preliminary PASS, 4/6 FAIL.** Each failing page remains unfinished, even though all six extracted PDF vector master files cleared the PDF-native 99% score. The zero final-approved page count is intentional: no UBS design has full visual, editing and rights signoff.
+
+Independent original-vs-Chromium screenshot page13: https://docut-studio-mnrdsn4e4-neoflowcores-projects.vercel.app/ ; editable development preview: https://docut-studio-lchbkcmic-neoflowcores-projects.vercel.app/ ; no production promotion performed. Tiny gray table strokes rendered with 1–7 RGB levels of discrepancy but caused large discontinuities in Canny edge F1; brute-force contrast and stroke saturation worsen results. Recalibration should be based on original source vector geometry, not synthetic overpainting or score-masking.

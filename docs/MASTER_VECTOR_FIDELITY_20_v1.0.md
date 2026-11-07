@@ -142,3 +142,16 @@ python tools/visual_fidelity_score.py \
 ### 수락 기준 한 줄
 
 > **99%는 마케팅 문구가 아니라, 원본 증거·비교 이미지·구조/색/음영 점수·사람의 최종 QA를 모두 만족한 한 페이지에만 붙일 수 있는 측정 결과다.**
+
+## 2026-11-08 — UBS independent original comparison checkpoint
+
+| PDF 원본 페이지 | Chromium 종합 | 구조 | 경계 | 색상 | 음영 | 99% 게이트 |
+|---|---:|---:|---:|---:|---:|---|
+| 5 | 99.7642% | 99.6048% | 100% | 99.7622% | 99.7467% | 예비 통과 |
+| 8 | 99.6741% | 99.3587% | 100% | 99.739% | 99.7584% | 예비 통과 |
+| 11 | 93.3279% | 98.7009% | 75.5995% | 99.808% | 99.5379% | 미달 |
+| 13 | 97.4860% | 98.607% | 92.8276% | 99.2532% | 99.6891% | 미달 |
+| 16 | 98.5516% | 98.717% | 96.9371% | 99.2999% | 99.6089% | 미달 |
+| 18 | 92.7984% | 97.9763% | 74.7708% | 99.6343% | 99.3699% | 미달 |
+
+The reusable PDF-native vector extraction demonstrated 6/6 >=99% for original-size graphics, but independent Chromium captured 2/6 at >=99%; **UBS is NOT COMPLETED** and cannot be the validated template for the other 19 until the four failures are resolved. 157 geometry-derived, empty native editable text regions are available across these six pages; no original prose, numbers, photos or logo is bundled. Pixel QA proof and comparison URL recorded in `docs/UBS_VECTOR_QA_RECEIPT_V036.json`. Design cannot be represented as 99% browser complete.
