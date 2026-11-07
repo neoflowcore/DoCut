@@ -597,3 +597,7 @@
 .ubs-source-loading{font-size:15px;color:#68727c}
 .slide>.ubs-source-layer~.element{z-index:1}
 .kit-choice-swatch>.ubs-source-layer,.kit-pack-mini>.ubs-source-layer,.kit-preview-canvas>.ubs-source-layer{background:#fff}
+
+/* Original-PDF geometry: transparent native text slots reveal their bounds on editor hover only. */
+.slide .element[data-id^="ubs-slot-"]{cursor:text}
+.slide .element[data-id^="ubs-slot-"]:hover{outline:1px dashed rgba(189,36,50,.62);background:rgba(189,36,50,.035)!important}

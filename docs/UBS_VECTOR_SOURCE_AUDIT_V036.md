@@ -33,3 +33,9 @@ An isolated two-image screenshot comparison was deployed to a **non-production V
 
 ### Next gates
 Chromium DOM/screenshot comparison with same geometry and mask, Safari/Brave parity, editable SVG path/group tooling, SVG in offline export and 16:9 adaptation tested separately.
+## Chromium independent render and practical editor QA
+- Official page 13 native PDF render vs DoCut bundled SVG rendered in headless Chromium 158, same 1263×893 pixels and text/logo masks: **97.4860% composite; 98.6070% structure; 92.8276% edges; 99.2532% color; 99.6891% lighting; FAIL 99% browser threshold**.
+- Optical subpixel y shift -0.2px obtained 97.9018% but did not meet 99%; contrast and stroke changes tested and rejected. The product does not assert browser-level 99%.
+- 6 true PDF source graphic pages passed PDF-native vector scoring, distinct from browser performance.
+- PDF text bounds extracted geometrically, not paragraphs or numbers: 157 blank editable native DoCut text slots across six pages [13,24,28,26,26,40]. No UBS wordmarks, photographs or official body content bundled.
+- Chromium verified six-page gallery insertion, source SVG visible, and report HTML export containing real SVG paths. The editor retains a separate drawing and text layer. Individual PDF-origin paths are not yet independently draggable.
