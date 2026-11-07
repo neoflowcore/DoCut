@@ -1,0 +1,287 @@
+{
+  "version": "0.30.0",
+  "basis": "44 explicit verification gates; not estimated effort or full-product completion",
+  "phases": [
+    {
+      "phase": "P0",
+      "name": "기준선·분류",
+      "gates": [
+        {
+          "criterion": "v0.29 tree/receipt restored",
+          "passed": true
+        },
+        {
+          "criterion": "89 unique IDs catalogued",
+          "passed": true
+        },
+        {
+          "criterion": "all reference runtimes individually classified",
+          "passed": false
+        },
+        {
+          "criterion": "original golden HTML/image evidence recovered",
+          "passed": false
+        }
+      ],
+      "passed": 2,
+      "total": 4,
+      "percent": 50
+    },
+    {
+      "phase": "P1",
+      "name": "모델·프레임",
+      "gates": [
+        {
+          "criterion": "schema/JSON/Undo migration",
+          "passed": true
+        },
+        {
+          "criterion": "six frame choices and atomic validation",
+          "passed": true
+        },
+        {
+          "criterion": "topic/page/hash reload",
+          "passed": true
+        },
+        {
+          "criterion": "print and device frame parity",
+          "passed": false
+        }
+      ],
+      "passed": 3,
+      "total": 4,
+      "percent": 75
+    },
+    {
+      "phase": "P2",
+      "name": "의미 레이아웃",
+      "gates": [
+        {
+          "criterion": "semantic placement and differentiated structures",
+          "passed": true
+        },
+        {
+          "criterion": "lock/group obstacle preservation",
+          "passed": true
+        },
+        {
+          "criterion": "overflow refusal/preview/Undo",
+          "passed": true
+        },
+        {
+          "criterion": "12+9+6 full patterns and split proposal UI",
+          "passed": false
+        }
+      ],
+      "passed": 3,
+      "total": 4,
+      "percent": 75
+    },
+    {
+      "phase": "P3",
+      "name": "효과 코어",
+      "gates": [
+        {
+          "criterion": "52 reference-specific effect parity",
+          "passed": false
+        },
+        {
+          "criterion": "11 reference-specific transition parity",
+          "passed": false
+        },
+        {
+          "criterion": "existing three-effect stack regression",
+          "passed": true
+        },
+        {
+          "criterion": "complete data/scene trigger coverage",
+          "passed": false
+        }
+      ],
+      "passed": 1,
+      "total": 4,
+      "percent": 25
+    },
+    {
+      "phase": "P4",
+      "name": "효과 UX",
+      "gates": [
+        {
+          "criterion": "existing gallery and live controls",
+          "passed": true
+        },
+        {
+          "criterion": "existing search/apply/Undo paths",
+          "passed": true
+        },
+        {
+          "criterion": "unique 89 icons and individual demos",
+          "passed": false
+        },
+        {
+          "criterion": "11 verified reference palettes",
+          "passed": false
+        }
+      ],
+      "passed": 2,
+      "total": 4,
+      "percent": 50
+    },
+    {
+      "phase": "P5",
+      "name": "Data Motion",
+      "gates": [
+        {
+          "criterion": "XLSX/CSV range mapping and original values",
+          "passed": true
+        },
+        {
+          "criterion": "source snapshot/HTML scope preservation",
+          "passed": true
+        },
+        {
+          "criterion": "XLS/full number format and refresh approval UI",
+          "passed": false
+        },
+        {
+          "criterion": "complete linked interactions/device parity",
+          "passed": false
+        }
+      ],
+      "passed": 2,
+      "total": 4,
+      "percent": 50
+    },
+    {
+      "phase": "P6",
+      "name": "Visual Scene",
+      "gates": [
+        {
+          "criterion": "existing independent layers/group lock editing",
+          "passed": true
+        },
+        {
+          "criterion": "six routes and ID-tracked connectors",
+          "passed": true
+        },
+        {
+          "criterion": "safe editable arbitrary SVG import",
+          "passed": false
+        },
+        {
+          "criterion": "2.5D physical touch/print parity",
+          "passed": false
+        }
+      ],
+      "passed": 2,
+      "total": 4,
+      "percent": 50
+    },
+    {
+      "phase": "P7",
+      "name": "템플릿20종",
+      "gates": [
+        {
+          "criterion": "20 packages each with three real pages",
+          "passed": false
+        },
+        {
+          "criterion": "six reference patterns fully integrated",
+          "passed": false
+        },
+        {
+          "criterion": "all template alternate ratios verified",
+          "passed": false
+        },
+        {
+          "criterion": "all template data/scene visual review",
+          "passed": false
+        }
+      ],
+      "passed": 0,
+      "total": 4,
+      "percent": 0
+    },
+    {
+      "phase": "P8",
+      "name": "빠른 제작·입력",
+      "gates": [
+        {
+          "criterion": "three-step quick creation UI",
+          "passed": true
+        },
+        {
+          "criterion": "Markdown/Marp source retention",
+          "passed": true
+        },
+        {
+          "criterion": "validated scene JSON input",
+          "passed": true
+        },
+        {
+          "criterion": "golden HTML three-mode import fidelity",
+          "passed": false
+        }
+      ],
+      "passed": 3,
+      "total": 4,
+      "percent": 75
+    },
+    {
+      "phase": "P9",
+      "name": "독립 HTML",
+      "gates": [
+        {
+          "criterion": "offline inline runtimes/script compilation",
+          "passed": true
+        },
+        {
+          "criterion": "input bounds and public source scoping",
+          "passed": true
+        },
+        {
+          "criterion": "complete browser/print visual parity",
+          "passed": false
+        },
+        {
+          "criterion": "physical keyboard/touch/accessibility matrix",
+          "passed": false
+        }
+      ],
+      "passed": 2,
+      "total": 4,
+      "percent": 50
+    },
+    {
+      "phase": "P10",
+      "name": "검증·릴리스",
+      "gates": [
+        {
+          "criterion": "final Node/syntax suite",
+          "passed": true
+        },
+        {
+          "criterion": "final production deployment verified",
+          "passed": false
+        },
+        {
+          "criterion": "physical Windows/Android pass",
+          "passed": false
+        },
+        {
+          "criterion": "offline OS launch/printer checks",
+          "passed": false
+        }
+      ],
+      "passed": 1,
+      "total": 4,
+      "percent": 25
+    }
+  ],
+  "passed": 21,
+  "total": 44,
+  "visualMatchPercent": null,
+  "visualMatchReason": "Original image-based comparison not measured",
+  "productionStatus": "pending",
+  "percent": 47.7
+}

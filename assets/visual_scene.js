@@ -1,0 +1,39 @@
+(function(root){
+'use strict';
+const C=root.DocutCore,X=root.DocutExporter;
+const ROUTES=['straight','elbow','curve','step','arc','s-curve'],HEADS=['arrow','triangle','diamond','circle','none'],ANCHORS=['auto','top','right','bottom','left','top-left','top-right','bottom-left','bottom-right'];
+const copy=o=>JSON.parse(JSON.stringify(o));
+function normalize(raw={}){const out={rotate:Number(raw.rotate||0),pitch:Number(raw.pitch||0),yaw:Number(raw.yaw||0),depth:Number(raw.depth||0)};for(const [key,max] of [['rotate',180],['pitch',60],['yaw',60],['depth',200]])if(!Number.isFinite(out[key])||Math.abs(out[key])>max)throw Error('장면 '+key+' 값은 ±'+max+' 범위여야 합니다.');return out;}
+function connector(raw){if(!raw||typeof raw.sourceId!=='string'||typeof raw.targetId!=='string'||!raw.sourceId||!raw.targetId||raw.sourceId===raw.targetId||raw.sourceId.length>99||raw.targetId.length>99)throw Error('서로 다른 두 요소를 연결해야 합니다.');if(!ROUTES.includes(raw.route)||!HEADS.includes(raw.head)||!ANCHORS.includes(raw.sourceAnchor)||!ANCHORS.includes(raw.targetAnchor))throw Error('화살표 경로·앵커 설정이 잘못되었습니다.');if(!/^#[0-9a-f]{6}$/i.test(raw.color||'')||!Number.isFinite(raw.width)||raw.width<1||raw.width>12)throw Error('화살표 색상·두께가 잘못되었습니다.');return {sourceId:raw.sourceId,targetId:raw.targetId,route:raw.route,head:raw.head,sourceAnchor:raw.sourceAnchor,targetAnchor:raw.targetAnchor,color:raw.color,width:raw.width,dashed:raw.dashed===true};}
+function anchor(a,side,other){let which=side;if(side==='auto'){const dx=other.x+other.w/2-a.x-a.w/2,dy=other.y+other.h/2-a.y-a.h/2;which=Math.abs(dx)>Math.abs(dy)?dx>=0?'right':'left':dy>=0?'bottom':'top';}const factors={top:[.5,0],right:[1,.5],bottom:[.5,1],left:[0,.5],'top-left':[0,0],'top-right':[1,0],'bottom-left':[0,1],'bottom-right':[1,1]}[which];return {x:a.x+a.w*factors[0],y:a.y+a.h*factors[1]};}
+function segmentHits(a,b,r){const pad=10,l=r.x-pad,t=r.y-pad,right=r.x+r.w+pad,bottom=r.y+r.h+pad;if(a.x===b.x)return a.x>l&&a.x<right&&Math.max(a.y,b.y)>t&&Math.min(a.y,b.y)<bottom;if(a.y===b.y)return a.y>t&&a.y<bottom&&Math.max(a.x,b.x)>l&&Math.min(a.x,b.x)<right;return false;}
+function routePoints(a,b,obstacles,vertical=false){const xs=[(a.x+b.x)/2,...obstacles.flatMap(r=>[r.x-24,r.x+r.w+24])],ys=[(a.y+b.y)/2,...obstacles.flatMap(r=>[r.y-24,r.y+r.h+24])];const candidates=[];
+ for(const x of xs)candidates.push([a,{x,y:a.y},{x,y:b.y},b]);for(const y of ys)candidates.push([a,{x:a.x,y},{x:b.x,y},b]);
+ for(const x of xs)for(const y of ys)candidates.push([a,{x,y:a.y},{x,y},{x:b.x,y},b]);
+ const clear=candidates.filter(p=>p.every((pt,i)=>!i||!obstacles.some(r=>segmentHits(p[i-1],pt,r))));clear.sort((p,q)=>length(p)-length(q)+(vertical?(p[1].x===a.x?-1:1)-(q[1].x===a.x?-1:1):0));return {points:clear[0]||[a,b],obstructed:!clear.length};
+}
+function length(points){return points.slice(1).reduce((n,p,i)=>n+Math.hypot(p.x-points[i].x,p.y-points[i].y),0);}
+function geometry(el,elements){const spec=connector(el.connector),source=elements.find(e=>e.id===spec.sourceId&&e.type!=='connector'),target=elements.find(e=>e.id===spec.targetId&&e.type!=='connector');if(!source||!target)return {missing:true,path:'',x:el.x||0,y:el.y||0,w:el.w||100,h:el.h||40};const a=anchor(source,spec.sourceAnchor,target),b=anchor(target,spec.targetAnchor,source),obstacles=elements.filter(e=>!e.hidden&&!['connector','shape','divider','source'].includes(e.type)&&e.id!==source.id&&e.id!==target.id);
+ let points=[a,b],obstructed=false,control=[];
+ if(['elbow','step'].includes(spec.route)){const result=routePoints(a,b,obstacles,spec.route==='step');points=result.points;obstructed=result.obstructed;}
+ else if(spec.route==='curve')control=[{x:a.x+(b.x-a.x)*.5,y:a.y},{x:a.x+(b.x-a.x)*.5,y:b.y}];
+ else if(spec.route==='arc')control=[{x:(a.x+b.x)/2,y:Math.min(a.y,b.y)-Math.min(120,Math.abs(b.x-a.x)*.3+40)}];
+ else if(spec.route==='s-curve')control=[{x:a.x,y:a.y+(b.y-a.y)*.7+60},{x:b.x,y:b.y-(b.y-a.y)*.7-60}];
+ const all=[...points,...control],padding=16,x=Math.max(0,Math.min(...all.map(p=>p.x))-padding),y=Math.max(0,Math.min(...all.map(p=>p.y))-padding),w=Math.max(40,Math.max(...all.map(p=>p.x))-x+padding),h=Math.max(32,Math.max(...all.map(p=>p.y))-y+padding),xy=p=>(p.x-x).toFixed(2)+' '+(p.y-y).toFixed(2);
+ const path=control.length===2?'M'+xy(a)+' C'+control.map(xy).join(' ')+','+xy(b):control.length===1?'M'+xy(a)+' Q'+xy(control[0])+','+xy(b):points.map((p,i)=>(i?'L':'M')+xy(p)).join(' ');return {x,y,w,h,path,missing:false,obstructed};
+}
+function refresh(page){const issues=[];for(const el of page.elements)if(el.type==='connector'){const g=geometry(el,page.elements);el.x=g.x;el.y=g.y;el.w=g.w;el.h=g.h;if(g.missing)issues.push({id:el.id,message:'연결 대상이 없습니다. 화살표를 다시 연결하세요.'});else if(g.obstructed)issues.push({id:el.id,message:'장애물을 완전히 피할 경로가 없습니다. 앵커·배치를 조정하세요.'});}return issues;}
+function create(sourceId,targetId,options={}){const b=C.makeBlock('shape',0,0,{text:'연결 화살표',effects:[C.makeEffect('connector-draw',700,0)]});b.type='connector';b.style.background='transparent';b.style.shadow=0;b.connector=connector({sourceId,targetId,sourceAnchor:'auto',targetAnchor:'auto',route:'elbow',head:'arrow',color:'#477da0',width:3,...options});return b;}
+function svg(el,elements){const g=geometry(el,elements),s=el.connector,esc=C.escapeHTML,id='arrow-'+[...el.id].reduce((a,c)=>(Math.imul(a,31)+c.charCodeAt(0))>>>0,0).toString(36),shape={arrow:'<path d="M1 1L9 5L1 9" fill="none"/>',triangle:'<path d="M0 0L10 5L0 10Z"/>',diamond:'<path d="M0 5L5 0L10 5L5 10Z"/>',circle:'<circle cx="5" cy="5" r="4"/>',none:''}[s.head];if(g.missing)return '<div class="connector-warning">연결 대상 없음</div>';
+ return '<svg class="connector-svg chart-svg" viewBox="0 0 '+g.w+' '+g.h+'" width="100%" height="100%" role="img" aria-label="'+esc(el.text||'연결 화살표')+'"><defs><marker id="'+id+'" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse" fill="'+s.color+'" stroke="'+s.color+'" stroke-width="1.4">'+shape+'</marker></defs><path d="'+g.path+'" fill="none" stroke="'+s.color+'" stroke-width="'+s.width+'" stroke-linejoin="round" '+(s.head==='none'?'':'marker-end="url(#'+id+')"')+(s.dashed?' stroke-dasharray="8 6"':'')+'/></svg>';
+}
+const make=C.makeBlock,nb=C.normalizeBlock,np=C.normalizeProject;
+C.makeBlock=(type,...args)=>type==='connector'?create(...args):make(type,...args);
+C.normalizeBlock=raw=>{const b=nb(raw?.type==='connector'?{...raw,type:'shape'}:raw);if(!b)return b;if(raw?.type==='connector'){b.type='connector';b.connector=connector(raw.connector);b.style.background='transparent';b.style.shadow=0;}if(raw?.scene)b.scene=normalize(raw.scene);return b;};
+C.normalizeProject=raw=>{const p=np(raw);for(const pg of p.pages)refresh(pg);return p;};
+if(!C.EFFECTS.some(e=>e[0]==='connector-draw'))C.EFFECTS.push(['connector-draw','화살표 경로 그리기']);
+const baseRender=X.renderBlock;
+X.renderBlock=(block,editable=false)=>{let html;if(block.type==='connector'){const context=root.DocutScene?.currentPage||[];html=baseRender({...block,type:'shape',style:{...block.style,background:'transparent'}},editable);html=html.replace('<div class="element-inner shape-content"></div>','<div class="element-inner">'+svg(block,context)+'</div>');html=html.replace('data-type="shape"','data-type="connector"');}else html=baseRender(block,editable);
+ if(block.scene){const s=normalize(block.scene);html=html.replace('<div class="element-inner','<div class="scene-pose" style="transform:perspective(900px) translateZ('+s.depth+'px) rotateZ('+s.rotate+'deg) rotateX('+s.pitch+'deg) rotateY('+s.yaw+'deg)"><div class="element-inner');const index=html.lastIndexOf('</div>');html=html.slice(0,index)+'</div>'+html.slice(index);}return html;};
+const api={ROUTES,HEADS,ANCHORS,normalize,connector,anchor,routePoints,geometry,refresh,create,svg,currentPage:[]};root.DocutScene=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+})(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,0 +1,1714 @@
+{
+  "schema": "docut-midterm-audit-v029",
+  "baselineTree": "576c02a185a8a9672c7df1d40624ac28aef37dbe",
+  "referenceCount": 89,
+  "uniqueReferenceIndices": 89,
+  "counts": {
+    "preset": 52,
+    "palette": 11,
+    "guide": 6,
+    "transition": 11,
+    "layout": 9
+  },
+  "registered": {
+    "motionKinds": 32,
+    "presets": 33,
+    "transitions": 11,
+    "palettes": 9,
+    "layouts": 12
+  },
+  "caveat": "52 preset references do not equal 52 verified implementations. Shared target mappings remain unverified; original images are unavailable. No completion percentage inferred.",
+  "items": [
+    {
+      "index": 0,
+      "filename": "Screenshot_20261104_041114_Gallery.jpg",
+      "kind": "preset",
+      "target": "statistic",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        0,
+        1
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 1,
+      "filename": "Screenshot_20261104_041119_Gallery.jpg",
+      "kind": "preset",
+      "target": "statistic",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        0,
+        1
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 2,
+      "filename": "Screenshot_20261104_041225_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 3,
+      "filename": "Screenshot_20261104_041230_Gallery.jpg",
+      "kind": "preset",
+      "target": "bars",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        3,
+        4,
+        79
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 4,
+      "filename": "Screenshot_20261104_041232_Gallery.jpg",
+      "kind": "preset",
+      "target": "bars",
+      "legacyStatus": "duplicate-example",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        3,
+        4,
+        79
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 5,
+      "filename": "Screenshot_20261104_041235_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 6,
+      "filename": "Screenshot_20261104_041237_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 7,
+      "filename": "Screenshot_20261104_041240_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 8,
+      "filename": "Screenshot_20261104_041242_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 9,
+      "filename": "Screenshot_20261104_041245_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 10,
+      "filename": "Screenshot_20261104_041247_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 11,
+      "filename": "Screenshot_20261104_041249_Gallery.jpg",
+      "kind": "preset",
+      "target": "numbers",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        11,
+        36,
+        50,
+        51,
+        52
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 12,
+      "filename": "Screenshot_20261104_041252_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 13,
+      "filename": "Screenshot_20261104_041254_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 14,
+      "filename": "Screenshot_20261104_041257_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 15,
+      "filename": "Screenshot_20261104_041259_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 16,
+      "filename": "Screenshot_20261104_041303_Gallery.jpg",
+      "kind": "preset",
+      "target": "share",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        16,
+        78
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 17,
+      "filename": "Screenshot_20261104_041305_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 18,
+      "filename": "Screenshot_20261104_041307_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 19,
+      "filename": "Screenshot_20261104_041309_Gallery.jpg",
+      "kind": "preset",
+      "target": "executive",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        2,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 20,
+      "filename": "Screenshot_20261104_041314_Gallery.jpg",
+      "kind": "palette",
+      "target": "slate",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        20,
+        67
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 21,
+      "filename": "Screenshot_20261104_041320_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    },
+    {
+      "index": 22,
+      "filename": "Screenshot_20261104_041326_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    },
+    {
+      "index": 23,
+      "filename": "Screenshot_20261104_041330_Gallery.jpg",
+      "kind": "preset",
+      "target": "floating-card",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        23,
+        25
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 24,
+      "filename": "Screenshot_20261104_041332_Gallery.jpg",
+      "kind": "transition",
+      "target": "wipe",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        24
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 25,
+      "filename": "Screenshot_20261104_041334_Gallery.jpg",
+      "kind": "preset",
+      "target": "floating-card",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        23,
+        25
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 26,
+      "filename": "Screenshot_20261104_041337_Gallery.jpg",
+      "kind": "preset",
+      "target": "typing",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        26
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 27,
+      "filename": "Screenshot_20261104_041341_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 28,
+      "filename": "Screenshot_20261104_041344_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 29,
+      "filename": "Screenshot_20261104_041346_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 30,
+      "filename": "Screenshot_20261104_041348_Gallery.jpg",
+      "kind": "preset",
+      "target": "tilt-depth",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        30
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 31,
+      "filename": "Screenshot_20261104_041350_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 32,
+      "filename": "Screenshot_20261104_041352_Gallery.jpg",
+      "kind": "preset",
+      "target": "trend",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        32,
+        55,
+        56
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 33,
+      "filename": "Screenshot_20261104_041355_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 34,
+      "filename": "Screenshot_20261104_041357_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 35,
+      "filename": "Screenshot_20261104_041359_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 36,
+      "filename": "Screenshot_20261104_041401_Gallery.jpg",
+      "kind": "preset",
+      "target": "numbers",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        11,
+        36,
+        50,
+        51,
+        52
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 37,
+      "filename": "Screenshot_20261104_041403_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 38,
+      "filename": "Screenshot_20261104_041406_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 39,
+      "filename": "Screenshot_20261104_041409_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 40,
+      "filename": "Screenshot_20261104_041411_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 41,
+      "filename": "Screenshot_20261104_041415_Gallery.jpg",
+      "kind": "preset",
+      "target": "word-cascade",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        41,
+        76,
+        77,
+        80,
+        81
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 42,
+      "filename": "Screenshot_20261104_041419_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 43,
+      "filename": "Screenshot_20261104_041421_Gallery.jpg",
+      "kind": "preset",
+      "target": "camera-push",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        27,
+        28,
+        29,
+        31,
+        33,
+        34,
+        35,
+        37,
+        38,
+        39,
+        40,
+        42,
+        43
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 44,
+      "filename": "Screenshot_20261104_041426_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 45,
+      "filename": "Screenshot_20261104_041428_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 46,
+      "filename": "Screenshot_20261104_041431_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 47,
+      "filename": "Screenshot_20261104_041433_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 48,
+      "filename": "Screenshot_20261104_041435_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 49,
+      "filename": "Screenshot_20261104_041438_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 50,
+      "filename": "Screenshot_20261104_041440_Gallery.jpg",
+      "kind": "preset",
+      "target": "numbers",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        11,
+        36,
+        50,
+        51,
+        52
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 51,
+      "filename": "Screenshot_20261104_041443_Gallery.jpg",
+      "kind": "preset",
+      "target": "numbers",
+      "legacyStatus": "duplicate-example",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        11,
+        36,
+        50,
+        51,
+        52
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 52,
+      "filename": "Screenshot_20261104_041445_Gallery.jpg",
+      "kind": "preset",
+      "target": "numbers",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        11,
+        36,
+        50,
+        51,
+        52
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 53,
+      "filename": "Screenshot_20261104_041447_Gallery.jpg",
+      "kind": "layout",
+      "target": "quadrant",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        53
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 54,
+      "filename": "Screenshot_20261104_041450_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 55,
+      "filename": "Screenshot_20261104_041452_Gallery.jpg",
+      "kind": "preset",
+      "target": "trend",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        32,
+        55,
+        56
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 56,
+      "filename": "Screenshot_20261104_041455_Gallery.jpg",
+      "kind": "preset",
+      "target": "trend",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        32,
+        55,
+        56
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 57,
+      "filename": "Screenshot_20261104_041457_Gallery.jpg",
+      "kind": "layout",
+      "target": "comparison",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        57,
+        59
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 58,
+      "filename": "Screenshot_20261104_041459_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 59,
+      "filename": "Screenshot_20261104_041502_Gallery.jpg",
+      "kind": "layout",
+      "target": "comparison",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        57,
+        59
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 60,
+      "filename": "Screenshot_20261104_041504_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 61,
+      "filename": "Screenshot_20261104_041507_Gallery.jpg",
+      "kind": "transition",
+      "target": "reveal-center",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        54,
+        58,
+        60,
+        61
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 62,
+      "filename": "Screenshot_20261104_041510_Gallery.jpg",
+      "kind": "palette",
+      "target": "wood",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        62
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 63,
+      "filename": "Screenshot_20261104_041512_Gallery.jpg",
+      "kind": "palette",
+      "target": "consulting",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        63
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 64,
+      "filename": "Screenshot_20261104_041514_Gallery.jpg",
+      "kind": "palette",
+      "target": "quarterly",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        64
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 65,
+      "filename": "Screenshot_20261104_041516_Gallery.jpg",
+      "kind": "palette",
+      "target": "ambient",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        65,
+        83
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 66,
+      "filename": "Screenshot_20261104_041518_Gallery.jpg",
+      "kind": "palette",
+      "target": "editorial",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        66
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 67,
+      "filename": "Screenshot_20261104_041520_Gallery.jpg",
+      "kind": "palette",
+      "target": "slate",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        20,
+        67
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 68,
+      "filename": "Screenshot_20261104_041522_Gallery.jpg",
+      "kind": "palette",
+      "target": "mint",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        68
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 69,
+      "filename": "Screenshot_20261104_041524_Gallery.jpg",
+      "kind": "palette",
+      "target": "bronze",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        69
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 70,
+      "filename": "Screenshot_20261104_041526_Gallery.jpg",
+      "kind": "palette",
+      "target": "cobalt",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        70
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 71,
+      "filename": "Screenshot_20261104_041529_Gallery.jpg",
+      "kind": "layout",
+      "target": "metrics",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        71,
+        72,
+        73,
+        74
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 72,
+      "filename": "Screenshot_20261104_041531_Gallery.jpg",
+      "kind": "layout",
+      "target": "metrics",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        71,
+        72,
+        73,
+        74
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 73,
+      "filename": "Screenshot_20261104_041533_Gallery.jpg",
+      "kind": "layout",
+      "target": "metrics",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        71,
+        72,
+        73,
+        74
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 74,
+      "filename": "Screenshot_20261104_041536_Gallery.jpg",
+      "kind": "layout",
+      "target": "metrics",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        71,
+        72,
+        73,
+        74
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 75,
+      "filename": "Screenshot_20261104_041540_Gallery.jpg",
+      "kind": "layout",
+      "target": "split",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        75
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 76,
+      "filename": "Screenshot_20261104_041544_Gallery.jpg",
+      "kind": "preset",
+      "target": "word-cascade",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        41,
+        76,
+        77,
+        80,
+        81
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 77,
+      "filename": "Screenshot_20261104_041546_Gallery.jpg",
+      "kind": "preset",
+      "target": "word-cascade",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        41,
+        76,
+        77,
+        80,
+        81
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 78,
+      "filename": "Screenshot_20261104_041548_Gallery.jpg",
+      "kind": "preset",
+      "target": "share",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        16,
+        78
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 79,
+      "filename": "Screenshot_20261104_041551_Gallery.jpg",
+      "kind": "preset",
+      "target": "bars",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        3,
+        4,
+        79
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 80,
+      "filename": "Screenshot_20261104_041553_Gallery.jpg",
+      "kind": "preset",
+      "target": "word-cascade",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        41,
+        76,
+        77,
+        80,
+        81
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 81,
+      "filename": "Screenshot_20261104_041556_Gallery.jpg",
+      "kind": "preset",
+      "target": "word-cascade",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        41,
+        76,
+        77,
+        80,
+        81
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 82,
+      "filename": "Screenshot_20261104_041559_Gallery.jpg",
+      "kind": "layout",
+      "target": "portrait",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        82
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 83,
+      "filename": "Screenshot_20261104_041603_Gallery.jpg",
+      "kind": "palette",
+      "target": "ambient",
+      "legacyStatus": "approximate-implemented-family",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        65,
+        83
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 84,
+      "filename": "Screenshot_20261104_041606_Gallery.jpg",
+      "kind": "preset",
+      "target": "soft-shine",
+      "legacyStatus": "inspiration-not-frame-matched",
+      "status": "reference-parity-unverified",
+      "sharedTargetIndices": [
+        84
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": true
+    },
+    {
+      "index": 85,
+      "filename": "Screenshot_20261104_041609_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    },
+    {
+      "index": 86,
+      "filename": "Screenshot_20261104_041615_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    },
+    {
+      "index": 87,
+      "filename": "Screenshot_20261104_041617_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    },
+    {
+      "index": 88,
+      "filename": "Screenshot_20261104_041619_Gallery.jpg",
+      "kind": "guide",
+      "target": "",
+      "legacyStatus": "reference-only",
+      "status": "guide-metadata-only",
+      "sharedTargetIndices": [
+        21,
+        22,
+        85,
+        86,
+        87,
+        88
+      ],
+      "originalImageAvailable": false,
+      "targetRegistered": null
+    }
+  ]
+}

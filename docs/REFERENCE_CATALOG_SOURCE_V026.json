@@ -1,0 +1,1060 @@
+{
+  "schemaVersion": "docut-effect-reference-v1",
+  "status": "reference-analysis-only-not-runtime-implemented",
+  "source": {
+    "uploadedArchive": "효과 이펙트 색상배치.zip",
+    "fileCount": 89,
+    "format": "JPEG screenshot",
+    "containsRunnableCode": false,
+    "containsActualVideoOrAudio": false,
+    "containsFontFiles": false,
+    "containsAnimationTimingData": false
+  },
+  "referenceGroups": [
+    {
+      "id": "charts",
+      "sourceStartIndex": 0,
+      "sourceEndIndex": 1,
+      "title": "통계 차트 비교",
+      "images": 2
+    },
+    {
+      "id": "motion_pack_1",
+      "sourceStartIndex": 2,
+      "sourceEndIndex": 19,
+      "title": "인터랙션 사례 모음 A",
+      "images": 18
+    },
+    {
+      "id": "ux_visual_styles",
+      "sourceStartIndex": 20,
+      "sourceEndIndex": 20,
+      "title": "UI 시각 스타일",
+      "images": 1
+    },
+    {
+      "id": "ux_principles",
+      "sourceStartIndex": 21,
+      "sourceEndIndex": 21,
+      "title": "UX 선택/인지 원리",
+      "images": 1
+    },
+    {
+      "id": "menu_icons",
+      "sourceStartIndex": 22,
+      "sourceEndIndex": 22,
+      "title": "UI 메뉴 아이콘 분류",
+      "images": 1
+    },
+    {
+      "id": "motion_basics",
+      "sourceStartIndex": 23,
+      "sourceEndIndex": 26,
+      "title": "14가지 모션 그래픽 기초",
+      "images": 4
+    },
+    {
+      "id": "motion_pack_2",
+      "sourceStartIndex": 27,
+      "sourceEndIndex": 43,
+      "title": "모션 그래픽 사례 모음 B",
+      "images": 17
+    },
+    {
+      "id": "landing_motions",
+      "sourceStartIndex": 44,
+      "sourceEndIndex": 61,
+      "title": "랜딩페이지 모션 프리셋",
+      "images": 18
+    },
+    {
+      "id": "color_palettes",
+      "sourceStartIndex": 62,
+      "sourceEndIndex": 70,
+      "title": "9종 컬러 팔레트",
+      "images": 9
+    },
+    {
+      "id": "dashboard_reference",
+      "sourceStartIndex": 71,
+      "sourceEndIndex": 74,
+      "title": "대시보드 레이아웃",
+      "images": 4
+    },
+    {
+      "id": "web_layouts",
+      "sourceStartIndex": 75,
+      "sourceEndIndex": 75,
+      "title": "12개 웹 레이아웃 패턴",
+      "images": 1
+    },
+    {
+      "id": "narrative_design",
+      "sourceStartIndex": 76,
+      "sourceEndIndex": 82,
+      "title": "한국어 정보디자인·타이포그래피",
+      "images": 7
+    },
+    {
+      "id": "glass_dashboard",
+      "sourceStartIndex": 83,
+      "sourceEndIndex": 83,
+      "title": "글래스 대시보드",
+      "images": 1
+    },
+    {
+      "id": "feedback_patterns",
+      "sourceStartIndex": 84,
+      "sourceEndIndex": 84,
+      "title": "9종 사용자 피드백 패턴",
+      "images": 1
+    },
+    {
+      "id": "research_patterns",
+      "sourceStartIndex": 85,
+      "sourceEndIndex": 85,
+      "title": "9종 UX 리서치 방법",
+      "images": 1
+    },
+    {
+      "id": "video_tool_catalog",
+      "sourceStartIndex": 86,
+      "sourceEndIndex": 88,
+      "title": "영상 도구 목록",
+      "images": 3
+    }
+  ],
+  "demonstrations": {
+    "motionPackA": [
+      "Bars to trend",
+      "Monthly to yearly",
+      "Dots to logo",
+      "Island to live",
+      "Visits to sales",
+      "Click to done",
+      "Card to paid",
+      "Count-up number",
+      "Weight to bold",
+      "Sketch to app",
+      "Drag to booked",
+      "Alerts to stack",
+      "Rings to closed",
+      "Dock to open",
+      "Card to 360",
+      "Map to route"
+    ],
+    "motionPackB": [
+      "Particles to logo",
+      "Gradient flow",
+      "Glass tilt",
+      "Globe arcs",
+      "Line draw",
+      "Shape morph",
+      "Grid wave",
+      "Cards shuffle",
+      "Number roll",
+      "Ribbon twist",
+      "Liquid merge",
+      "Phone explode",
+      "Rings orbit",
+      "Words kinetic",
+      "Button to pay",
+      "Confetti burst"
+    ],
+    "landingPageMotionPack": [
+      "Hero reveal",
+      "Word rotator",
+      "Sale pings",
+      "Review shuffle",
+      "Count-up stats",
+      "Bento build",
+      "Cursor tour",
+      "Process draw",
+      "Before and after",
+      "Price roll",
+      "Us versus them",
+      "Click to success"
+    ],
+    "fundamentalMotion": [
+      "Squash and stretch",
+      "Bounce",
+      "Text scramble",
+      "Morphing",
+      "Scale",
+      "Slide",
+      "In/Out",
+      "Wipe",
+      "Linear",
+      "Ease in-out",
+      "Typewriter",
+      "Glitch",
+      "Particles",
+      "Dissolve"
+    ],
+    "statisticalCharts": [
+      "Cohort retention",
+      "Small multiples",
+      "Control chart",
+      "Forest plot",
+      "Fan chart",
+      "Survival curve",
+      "Contribution breakdown",
+      "Lift chart",
+      "ROC curve"
+    ],
+    "layoutPatterns": [
+      "Single column",
+      "Two column",
+      "Grid",
+      "F-pattern",
+      "Z-pattern",
+      "Split screen",
+      "Magazine",
+      "Asymmetrical",
+      "Holy Grail",
+      "Masonry",
+      "Hero landing",
+      "Full-screen"
+    ]
+  },
+  "colorPalettes": [
+    {
+      "id": "palette-01",
+      "name": "Amethyst Fog",
+      "sourceIndex": 62,
+      "visuallyReadHex4": [
+        "#0E0B1D",
+        "#2A1E4D",
+        "#5A3B8C",
+        "#8B7CC7"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-02",
+      "name": "Brown Heritage",
+      "sourceIndex": 63,
+      "visuallyReadHex4": [
+        "#1A120E",
+        "#3A2418",
+        "#6B4A2E",
+        "#A88462"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-03",
+      "name": "Olive Forest",
+      "sourceIndex": 64,
+      "visuallyReadHex4": [
+        "#0F1F17",
+        "#1E3A2E",
+        "#3E5A3F",
+        "#6B7F67"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-04",
+      "name": "Midnight Blue",
+      "sourceIndex": 65,
+      "visuallyReadHex4": [
+        "#0B132B",
+        "#1C2541",
+        "#3A506B",
+        "#5BC0DE"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-05",
+      "name": "Amber Sage",
+      "sourceIndex": 66,
+      "visuallyReadHex4": [
+        "#0B0F0D",
+        "#1F2A1F",
+        "#3E5A3F",
+        "#8CA98C"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-06",
+      "name": "Deep Teal",
+      "sourceIndex": 67,
+      "visuallyReadHex4": [
+        "#0A0F14",
+        "#0F3D3E",
+        "#2E6F73",
+        "#7FB3B8"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-07",
+      "name": "Berry Contrast",
+      "sourceIndex": 68,
+      "visuallyReadHex4": [
+        "#1A0F2E",
+        "#3B1B4F",
+        "#7A2E6F",
+        "#D6598F"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-08",
+      "name": "Indigo Lavender",
+      "sourceIndex": 69,
+      "visuallyReadHex4": [
+        "#1A1A1F",
+        "#2D2B55",
+        "#6A5ACD",
+        "#A678B9"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    },
+    {
+      "id": "palette-09",
+      "name": "Slate Rose",
+      "sourceIndex": 70,
+      "visuallyReadHex4": [
+        "#121212",
+        "#1F2937",
+        "#334155",
+        "#64748B"
+      ],
+      "note": "Four visibly legible sample colors from screenshot; not a license to reproduce complete artwork."
+    }
+  ],
+  "screenshots": [
+    {
+      "index": 0,
+      "filename": "Screenshot_20261104_041114_Gallery.jpg",
+      "group": "charts",
+      "description": "9 statistical charts infographic",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 1,
+      "filename": "Screenshot_20261104_041119_Gallery.jpg",
+      "group": "charts",
+      "description": "9 statistical charts infographic (alternate screenshot)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 2,
+      "filename": "Screenshot_20261104_041225_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "motion pack A cover",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 3,
+      "filename": "Screenshot_20261104_041230_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Bars to trend",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 4,
+      "filename": "Screenshot_20261104_041232_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Bars to trend (duplicate)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 5,
+      "filename": "Screenshot_20261104_041235_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Monthly to yearly",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 6,
+      "filename": "Screenshot_20261104_041237_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Dots to logo",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 7,
+      "filename": "Screenshot_20261104_041240_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Island to live",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 8,
+      "filename": "Screenshot_20261104_041242_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Visits to sales",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 9,
+      "filename": "Screenshot_20261104_041245_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Click to done",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 10,
+      "filename": "Screenshot_20261104_041247_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Card to paid",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 11,
+      "filename": "Screenshot_20261104_041249_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Number count 0 to 12,480",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 12,
+      "filename": "Screenshot_20261104_041252_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Weight to bold",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 13,
+      "filename": "Screenshot_20261104_041254_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Sketch to app",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 14,
+      "filename": "Screenshot_20261104_041257_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Drag to booked",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 15,
+      "filename": "Screenshot_20261104_041259_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Alerts to stack",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 16,
+      "filename": "Screenshot_20261104_041303_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Rings to closed",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 17,
+      "filename": "Screenshot_20261104_041305_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Dock to open",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 18,
+      "filename": "Screenshot_20261104_041307_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Card to 360 degrees",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 19,
+      "filename": "Screenshot_20261104_041309_Gallery.jpg",
+      "group": "motion_pack_1",
+      "description": "Map to route",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 20,
+      "filename": "Screenshot_20261104_041314_Gallery.jpg",
+      "group": "ux_visual_styles",
+      "description": "9 UI styles",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 21,
+      "filename": "Screenshot_20261104_041320_Gallery.jpg",
+      "group": "ux_principles",
+      "description": "9 decision principles",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 22,
+      "filename": "Screenshot_20261104_041326_Gallery.jpg",
+      "group": "menu_icons",
+      "description": "9 menu icon patterns",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 23,
+      "filename": "Screenshot_20261104_041330_Gallery.jpg",
+      "group": "motion_basics",
+      "description": "Squash and stretch; Bounce; Text scramble; Morphing",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 24,
+      "filename": "Screenshot_20261104_041332_Gallery.jpg",
+      "group": "motion_basics",
+      "description": "Scale; Slide; In/Out; Wipe",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 25,
+      "filename": "Screenshot_20261104_041334_Gallery.jpg",
+      "group": "motion_basics",
+      "description": "Linear; Ease in-out",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 26,
+      "filename": "Screenshot_20261104_041337_Gallery.jpg",
+      "group": "motion_basics",
+      "description": "Typewriter; Glitch; Particles; Dissolve",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 27,
+      "filename": "Screenshot_20261104_041341_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "motion pack B cover",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 28,
+      "filename": "Screenshot_20261104_041344_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Particles to logo",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 29,
+      "filename": "Screenshot_20261104_041346_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Gradient to flow",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 30,
+      "filename": "Screenshot_20261104_041348_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Glass to tilt",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 31,
+      "filename": "Screenshot_20261104_041350_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Globe to arcs",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 32,
+      "filename": "Screenshot_20261104_041352_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Line to draw",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 33,
+      "filename": "Screenshot_20261104_041355_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Shape to morph",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 34,
+      "filename": "Screenshot_20261104_041357_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Grid to wave",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 35,
+      "filename": "Screenshot_20261104_041359_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Cards to shuffle",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 36,
+      "filename": "Screenshot_20261104_041401_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Number to roll",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 37,
+      "filename": "Screenshot_20261104_041403_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Ribbon to twist",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 38,
+      "filename": "Screenshot_20261104_041406_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Liquid to merge",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 39,
+      "filename": "Screenshot_20261104_041409_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Phone to explode",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 40,
+      "filename": "Screenshot_20261104_041411_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Rings to orbit",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 41,
+      "filename": "Screenshot_20261104_041415_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Words to kinetic",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 42,
+      "filename": "Screenshot_20261104_041419_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Button to pay",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 43,
+      "filename": "Screenshot_20261104_041421_Gallery.jpg",
+      "group": "motion_pack_2",
+      "description": "Confetti to burst",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 44,
+      "filename": "Screenshot_20261104_041426_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Landing Page Motion Pack cover",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 45,
+      "filename": "Screenshot_20261104_041428_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Hero reveal (before)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 46,
+      "filename": "Screenshot_20261104_041431_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Hero reveal (after)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 47,
+      "filename": "Screenshot_20261104_041433_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Word rotator",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 48,
+      "filename": "Screenshot_20261104_041435_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Sale pings",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 49,
+      "filename": "Screenshot_20261104_041438_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Review shuffle",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 50,
+      "filename": "Screenshot_20261104_041440_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Count-up stats (start)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 51,
+      "filename": "Screenshot_20261104_041443_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Count-up stats (start duplicate)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 52,
+      "filename": "Screenshot_20261104_041445_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Count-up stats (finish)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 53,
+      "filename": "Screenshot_20261104_041447_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Bento build",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 54,
+      "filename": "Screenshot_20261104_041450_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Cursor tour",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 55,
+      "filename": "Screenshot_20261104_041452_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Process draw (before)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 56,
+      "filename": "Screenshot_20261104_041455_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Process draw (after)",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 57,
+      "filename": "Screenshot_20261104_041457_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Before/after compare",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 58,
+      "filename": "Screenshot_20261104_041459_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Price roll",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 59,
+      "filename": "Screenshot_20261104_041502_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Us vs them comparison",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 60,
+      "filename": "Screenshot_20261104_041504_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Click to success",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 61,
+      "filename": "Screenshot_20261104_041507_Gallery.jpg",
+      "group": "landing_motions",
+      "description": "Motion pack outro / call to action",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 62,
+      "filename": "Screenshot_20261104_041510_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 1 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 63,
+      "filename": "Screenshot_20261104_041512_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 2 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 64,
+      "filename": "Screenshot_20261104_041514_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 3 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 65,
+      "filename": "Screenshot_20261104_041516_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 4 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 66,
+      "filename": "Screenshot_20261104_041518_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 5 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 67,
+      "filename": "Screenshot_20261104_041520_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 6 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 68,
+      "filename": "Screenshot_20261104_041522_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 7 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 69,
+      "filename": "Screenshot_20261104_041524_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 8 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 70,
+      "filename": "Screenshot_20261104_041526_Gallery.jpg",
+      "group": "color_palettes",
+      "description": "Color palette 9 of 9",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 71,
+      "filename": "Screenshot_20261104_041529_Gallery.jpg",
+      "group": "dashboard_reference",
+      "description": "Wallet dashboard reference",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 72,
+      "filename": "Screenshot_20261104_041531_Gallery.jpg",
+      "group": "dashboard_reference",
+      "description": "Wallet dashboard detail",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 73,
+      "filename": "Screenshot_20261104_041533_Gallery.jpg",
+      "group": "dashboard_reference",
+      "description": "Wallet dashboard alternate",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 74,
+      "filename": "Screenshot_20261104_041536_Gallery.jpg",
+      "group": "dashboard_reference",
+      "description": "Wallet dashboard perspective",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 75,
+      "filename": "Screenshot_20261104_041540_Gallery.jpg",
+      "group": "web_layouts",
+      "description": "12 layout patterns",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 76,
+      "filename": "Screenshot_20261104_041544_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Builder note case study",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 77,
+      "filename": "Screenshot_20261104_041546_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Preference sorting case study",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 78,
+      "filename": "Screenshot_20261104_041548_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Progress ring case study",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 79,
+      "filename": "Screenshot_20261104_041551_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Rank changing chart case study",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 80,
+      "filename": "Screenshot_20261104_041553_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Bold slogan typography",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 81,
+      "filename": "Screenshot_20261104_041556_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Kinetic headline typography",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 82,
+      "filename": "Screenshot_20261104_041559_Gallery.jpg",
+      "group": "narrative_design",
+      "description": "Annotated editorial case study",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 83,
+      "filename": "Screenshot_20261104_041603_Gallery.jpg",
+      "group": "glass_dashboard",
+      "description": "Glassy Dashboard",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 84,
+      "filename": "Screenshot_20261104_041606_Gallery.jpg",
+      "group": "feedback_patterns",
+      "description": "9 feedback patterns",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 85,
+      "filename": "Screenshot_20261104_041609_Gallery.jpg",
+      "group": "research_patterns",
+      "description": "9 research methods",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 86,
+      "filename": "Screenshot_20261104_041615_Gallery.jpg",
+      "group": "video_tool_catalog",
+      "description": "video editing types",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 87,
+      "filename": "Screenshot_20261104_041617_Gallery.jpg",
+      "group": "video_tool_catalog",
+      "description": "animation & motion graphics types",
+      "format": "jpg",
+      "reference_only": true
+    },
+    {
+      "index": 88,
+      "filename": "Screenshot_20261104_041619_Gallery.jpg",
+      "group": "video_tool_catalog",
+      "description": "visual effects and asset types",
+      "format": "jpg",
+      "reference_only": true
+    }
+  ],
+  "implementationPhases": {
+    "FX-0": "카탈로그·중복 제거·참조 색상·정책 명세",
+    "FX-1": "텍스트/숫자 8개(타이프라이터, 스크램블, 글리치, 단어 교체, 볼드 전환, 숫자 카운트/롤, 키네틱)",
+    "FX-2": "페이지 전환/요소 8개(리빌, 와이프, 스플릿, 디졸브, 슬라이드, 스태거, 드로우, 비교 슬라이더)",
+    "FX-3": "데이터 시각화 9종 + 진입 애니메이션/검증 상태",
+    "FX-4": "색상 9종, 레이아웃 12종, 타이포그래피·에디터 UX",
+    "FX-5": "고비용 시각효과(파티클, 카드 3D, 글래스 틸트, 그라디언트 플로우, 궤도, 컨페티 등) 및 성능 제한",
+    "FX-6": "HTML·PPTX·TXT 출력 호환성, 접근성/모바일 검증, AI 효과 ID 지원"
+  },
+  "limitations": [
+    "Static screenshots only; do not infer exact video motion timings",
+    "Reference images may contain third-party brand art and overlays; never embed screenshots as runtime assets",
+    "Implement original CSS/SVG/Canvas equivalents instead of copying branded compositions",
+    "Do not use screenshot text as executable code",
+    "V0.15 currently includes a limited effect list; this catalog does not automatically add runtime effects"
+  ]
+}
