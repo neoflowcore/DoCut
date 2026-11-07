@@ -7,7 +7,7 @@ const project=()=>C.createProject(3,'policy');
 const first=(p)=>p.pages[0].elements[0];
 const add=(p,body='검토가 필요합니다',opts={})=>R.insert(p,{pageId:p.pages[0].id,elementId:first(p).id,body,...opts});
 test('V0.23 review schema is opt-in, private, and versioned',()=>{
- const p=project();assert.equal(C.VERSION,'0.33.0-development');assert.deepEqual(p.reviews,[]);assert.deepEqual(C.normalizeProject(p).reviews,[]);
+ const p=project();assert.equal(C.VERSION,'0.34.0-development');assert.deepEqual(p.reviews,[]);assert.deepEqual(C.normalizeProject(p).reviews,[]);
  assert.equal(R.summary(p).total,0);assert.equal(R.summary(p).orphans,0);
 });
 test('new review linked to chosen element and accepted in native JSON',()=>{

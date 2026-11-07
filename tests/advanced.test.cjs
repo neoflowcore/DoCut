@@ -8,7 +8,7 @@ const D=require('../assets/data_io.js');
 const X=require('../assets/export.js');
 const P=require('../assets/pptx.js');
 
-test('restored recovery version is explicit',()=>assert.equal(C.VERSION,'0.33.0-development'));
+test('restored recovery version is explicit',()=>assert.equal(C.VERSION,'0.34.0-development'));
 test('16:9 constants preserved',()=>assert.equal(C.WIDTH/C.HEIGHT,16/9));
 test('storyboard supports 1 and 2 pages',()=>{for(const n of [1,2])assert.equal(C.createProject(n).pages.length,n)});
 test('storyboard supports 3, 4, 5, 6 and 8 pages',()=>{for(const n of [3,4,5,6,8])assert.equal(C.createProject(n).pages.length,n)});

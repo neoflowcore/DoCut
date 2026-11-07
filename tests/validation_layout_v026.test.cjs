@@ -10,7 +10,7 @@ const p=()=>C.createProject(3,'strategy');
 const text=(project,value)=>{const el=project.pages[0].elements.find(x=>x.type==='text');el.text=value;el.locked=false;el.hidden=false;el.richText=[];return el;};
 const find=(project,el,options={})=>V.findIssues(project,{scope:'selected',pageIndex:0,selectedId:el.id,...options});
 const change=(project,el,after)=>V.planChange(project,{pageId:project.pages[0].id,elementId:el.id},el.text,after);
-test('v026 versions and modules are available, no build required',()=>{assert.equal(C.VERSION,'0.33.0-development');assert.ok(V.RULES.length>=10);assert.equal(T.plan('flip').id,'flip');});
+test('v026 versions and modules are available, no build required',()=>{assert.equal(C.VERSION,'0.34.0-development');assert.ok(V.RULES.length>=10);assert.equal(T.plan('flip').id,'flip');});
 test('V0.26 Korean obvious typo candidate and unmodified source',()=>{const x=p(),e=text(x,'됬어요');const old=JSON.stringify(x);const issues=find(x,e);assert.ok(issues.some(i=>i.rule==='ko-dwed'&&i.after==='됐'));assert.equal(JSON.stringify(x),old);});
 test('Korean conjugation and spacing are separate candidates',()=>{const x=p(),e=text(x,'이거 되요. 할수 있습니다.');const a=find(x,e);assert.ok(a.some(i=>i.rule==='ko-dweyo'&&i.after==='돼요'));assert.ok(a.some(i=>i.rule==='ko-halsu'&&i.after==='할 수'));});
 test('Korean verb composition proposals are conservative',()=>{const x=p(),e=text(x,'검토 하였습니다. 확인 하였습니다.');const a=find(x,e);assert.ok(a.some(i=>i.rule==='ko-check'&&i.after==='검토하였'));});

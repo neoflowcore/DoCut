@@ -557,3 +557,30 @@
 .kit-pro-title{opacity:.88!important;height:8%!important}.kit-pro-text{opacity:.4!important;height:4%!important}.kit-pro-chart{opacity:.5!important}
 #kitPackAdd{min-width:158px}#kitPreviewDescription{overflow-wrap:anywhere}
 @media(max-width:640px){.kit-pack-pages{display:flex;overflow:auto;gap:7px}.kit-pack-page{flex:0 0 102px}.kit-ref-note{flex-wrap:wrap}.kit-dialog .kit-preview-stage{padding:9px}}
+
+
+/* V0.34 central padlock: selecting a locked element never requires the inspector. */
+.element.selected{outline:2px solid #79b4ff;outline-offset:1px}
+.element.selected[data-locked="1"]{outline:2px dashed #ffcf87;outline-offset:1px;cursor:default}
+.element .canvas-lock-toggle{position:absolute;z-index:85;left:50%;top:0;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 10px;color:#eaf3ff;background:#202b38f2;border:1px solid #80a3c6;border-radius:0 0 10px 10px;box-shadow:0 6px 14px #0004;font-size:13px;font-weight:760;white-space:nowrap;cursor:pointer;pointer-events:auto;max-width:96%}
+.element .canvas-lock-toggle:hover,.element .canvas-lock-toggle:focus-visible{background:#30577d;border-color:#c7e2ff;outline:2px solid #e1f4ff;outline-offset:1px}
+.element .canvas-lock-toggle.is-locked{top:50%;transform:translate(-50%,-50%);padding:9px 15px;border-radius:24px;color:#302111;background:#ffe0ac;border:2px solid #ffcb70;box-shadow:0 7px 22px #07111a6b}
+.element .canvas-lock-toggle.is-locked:hover{background:#fff1d9}
+.element .canvas-lock-toggle.compact{padding:2px 4px;min-width:25px;min-height:24px;border-radius:7px}
+.element .canvas-lock-toggle.compact span{display:none}
+.mini-layer-padlock{display:grid;place-items:center;color:#d5b892}
+.mini-layer-padlock svg{width:17px;height:17px}
+@media(prefers-reduced-motion:reduce){.canvas-lock-toggle{transition:none!important}}
+
+/* Small thumbnails now contain the exact editable page blueprint, including
+   type, geometry and accent objects, rather than generic grey placeholders. */
+.kit-choice-swatch.kit-choice-preview .kit-map{height:100%;width:100%;border-radius:0;box-shadow:none}
+.kit-choice-swatch.kit-choice-preview .kit-map-block{padding:1px;font-size:5px;line-height:1.15;box-shadow:none;word-break:keep-all}
+.kit-choice-swatch.kit-choice-preview .kit-map-block[data-kind=title]{font-size:8px;font-weight:800;letter-spacing:-.1px}
+.kit-choice-swatch.kit-choice-preview .kit-map-block[data-kind=kpi]{font-size:7px;font-weight:800}
+.kit-choice-swatch.kit-choice-preview .kit-map-block[data-kind=shape] span{display:none}
+.kit-choice-swatch.kit-choice-preview .kit-map-block[data-kind=card]{font-size:5px}
+.kit-pack-mini .kit-map{height:100%;width:100%}
+.kit-pack-mini .kit-map-block{font-size:4px;padding:1px;box-shadow:none}
+.kit-pack-mini .kit-map-block[data-kind=title]{font-size:6px}
+.kit-pack-mini .kit-map-block[data-kind=shape] span{display:none}

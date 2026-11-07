@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const C=require('../assets/core.js');require('../assets/core_enhanced.js');
 const E=require('../assets/easing.js');const P=require('../assets/pptx.js');const X=require('../assets/export.js');const H=require('../assets/css_import.js');
 
-test('current development version is identified, not confused with original V0.12',()=>assert.equal(C.VERSION,'0.33.0-development'));
+test('current development version is identified, not confused with original V0.12',()=>assert.equal(C.VERSION,'0.34.0-development'));
 test('custom start pose keeps preset end pose',()=>{
  const fx=C.normalizeEffect({...C.makeEffect('rise'),start:{x:88,y:0,scale:1,rotate:0,opacity:.2}});
  assert.equal(E.effectPose(fx,0).x,88);assert.equal(E.effectPose(fx,0).opacity,.2);

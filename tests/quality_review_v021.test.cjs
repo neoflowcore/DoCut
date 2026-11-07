@@ -8,7 +8,7 @@ const by=(r,rule)=>r.issues.filter(i=>i.rule===rule);
 
 test('V0.21 analyzer and schema are explicit without editing the document',()=>{
  const p=project(),before=JSON.stringify(p),r=Q.analyze(p);
- assert.equal(C.VERSION,'0.33.0-development');assert.equal(r.version,'quality-v021');
+ assert.equal(C.VERSION,'0.34.0-development');assert.equal(r.version,'quality-v021');
  assert.equal(JSON.stringify(p),before);assert.equal(r.pages.length,3);assert.ok(r.total>0);
 });
 test('high severity data source and basis-date review has stable location keys',()=>{

@@ -23,98 +23,204 @@ function paletteFor(p,choice){
  if(custom){colors.bg=custom.bg;colors.fg=custom.foreground;colors.accent=custom.accent;colors.card=/^#(?:[0-6][0-9a-f]){3}$/i.test(colors.bg)?'#293744':'#FFFFFF';colors.muted=colors.card==='#FFFFFF'?'#EDF0F4':'#3A4651';}
  return colors;
 }
+// Every pack owns its visual grammar and six composition choices. This deliberately
+// does not route every organization through a common colored card layout.
+const ART_DIRECTIONS=[
+ {name:'Editorial thesis',font:'Georgia',headline:'왼쪽 결론 · 오른쪽 근거',scheme:'editorial',recipes:['argument','lattice','slope','compare','decision','steps']},
+ {name:'Emerald geography',font:'Arial',headline:'지역·자산 흐름',scheme:'green-split',recipes:['region','rings','steps','heat','bars','columns']},
+ {name:'Red-line private equity',font:'Arial',headline:'투자 논점과 회수 구조',scheme:'red-line',recipes:['deals','cascade','bars','table','decision','threshold']},
+ {name:'Human dynamics',font:'Pretendard',headline:'조직·사람·변화',scheme:'lime-grid',recipes:['people','pulse','lattice','columns','heat','steps']},
+ {name:'Technology vision',font:'Gmarket Sans',headline:'기술·시나리오·실행',scheme:'purple-stage',recipes:['vision','orbits','hex','scenario','clusters','steps']},
+ {name:'Product performance',font:'Arial',headline:'제품·실적·투자',scheme:'blue-product',recipes:['metrics','spark','segments','waterfall','clusters','forecast']},
+ {name:'Business ecosystem',font:'Arial',headline:'서비스별 매출·비용',scheme:'four-dots',recipes:['tiles','metrics','columns','waterfall','forecast','table']},
+ {name:'Four-division enterprise',font:'system-ui',headline:'제품·서비스별 경영',scheme:'windows',recipes:['windows','letter','segments','metrics','clusters','table']},
+ {name:'Human-centered progress',font:'Arial',headline:'환경·진척·책임',scheme:'minimal',recipes:['impact','orbits','steps','slope','pulse','notes']},
+ {name:'Accelerated computing',font:'Arial',headline:'매출·기술 성장',scheme:'compute',recipes:['compute','bars','segments','pulse','waterfall','forecast']},
+ {name:'Operations first',font:'Arial',headline:'생산·운영·실적',scheme:'industrial',recipes:['industrial','table','metrics','bars','clusters','forecast']},
+ {name:'Shareholder letter',font:'Georgia',headline:'분기별 비교와 경영 설명',scheme:'letter-red',recipes:['shareholder','table','forecast','cascade','decision','notes']},
+ {name:'Operating flywheel',font:'Georgia',headline:'고객·서비스·투자',scheme:'flywheel',recipes:['flywheel','orbits','metrics','segments','clusters','table']},
+ {name:'Capital allocation',font:'Georgia',headline:'자본·수익·리스크',scheme:'midnight-gold',recipes:['capital','metrics','slope','segments','heat','notes']},
+ {name:'Long-term value',font:'Arial',headline:'성과·주주가치·근거',scheme:'bank-blue',recipes:['longterm','metrics','slope','compare','heat','table']},
+ {name:'Wealth distribution',font:'Georgia',headline:'지역·자산 분포',scheme:'cream-pyramid',recipes:['wealth','region','pyramid','segments','cascade','notes']},
+ {name:'Investor day targets',font:'Arial',headline:'현재·목표·차이',scheme:'target-blue',recipes:['targets','metrics','waterfall','threshold','clusters','table']},
+ {name:'Global risks network',font:'Arial',headline:'위험의 우선순위·연관',scheme:'teal-risk',recipes:['risks','heat','network','clusters','scenario','decision']},
+ {name:'Economic forecast',font:'Georgia',headline:'성장전망·시나리오',scheme:'policy-blue',recipes:['macro','region','slope','scenario','decision','notes']},
+ {name:'Development outlook',font:'Georgia',headline:'국가·지역별 분석',scheme:'development',recipes:['development','region','table','lattice','compare','notes']}
+];
 function buildPage(packId,pageIndex=0,choice='original'){
  const p=find(packId),i=Number(pageIndex);
  if(!p||!Number.isInteger(i)||i<0||i>5)throw Error('존재하지 않는 전문 레퍼런스 페이지');
- const theme=paletteFor(p,choice),dark=p.graphic==='dark'&&choice==='original';
- const fg=theme.fg,muted=dark?'#B9C7D5':'#687987',accent=theme.accent,bg=theme.bg,soft=theme.muted,card=theme.card;
- const role=p.patterns[i],head=NAME_KO[role]||'전문 보고';
- const elements=[],base={font:'Pretendard',align:'left',opacity:1,shadow:0,radius:0,weight:400,color:fg,background:'transparent'};
- function add(kind,x,y,w,h,label='',style={},data){
-  const st={...base,...style};
-  const raw=C.makeBlock(kind,x,y,{w,h,text:label,style:st,effects:[],locked:false,verified:false,source:'',asOfDate:'',unit:'',evidence:''});
-  if(['line','bar','donut'].includes(kind))raw.data={labels:['항목 A','항목 B','항목 C','항목 D'],values:[0,0,0,0],unit:''};
-  if(kind==='table')raw.data={rows:(data?.rows)||[['지표 / 항목','기준 기간','비교 기간','비고'],['항목 A','—','—','미입력'],['항목 B','—','—','미입력'],['항목 C','—','—','미입력']]};
-  if(data&&kind!=='table')raw.data=data;
-  elements.push(C.normalizeBlock(raw));
+ const d=ART_DIRECTIONS[p.seed],colors=paletteFor(p,choice),{bg,fg,accent}=colors;
+ const dark=['purple-stage','compute','midnight-gold'].includes(d.scheme)&&choice==='original';
+ const aux=dark?'#B7C5D0':'#5C6B75',pale=colors.muted,card=colors.card;
+ const role=p.patterns[i],head=NAME_KO[role]||'전문 보고',elements=[];
+ const BASE={font:d.font,align:'left',size:20,weight:400,color:fg,background:'transparent',radius:0,shadow:0,opacity:1};
+ function B(type,x,y,w,h,text='',style={},data){
+  x=Math.max(0,Math.min(1240,Math.round(x)));y=Math.max(0,Math.min(688,Math.round(y)));
+  w=Math.max(40,Math.min(1280-x,Math.round(w)));h=Math.max(8,Math.min(720-y,Math.round(h)));
+  const block=C.makeBlock(type,x,y,{w,h,text,style:{...BASE,...style},effects:[],locked:false,verified:false,source:'',asOfDate:'',unit:'',evidence:''});
+  if(['bar','line','donut'].includes(type))block.data={labels:['기간 A','기간 B','기간 C','기간 D'],values:[0,0,0,0],palette:'default',unit:''};
+  if(type==='table')block.data={rows:data?.rows||[['구분','기준','비교','설명'],['항목 A','—','—','미입력'],['항목 B','—','—','미입력'],['항목 C','—','—','미입력']],cells:[]};
+  elements.push(C.normalizeBlock(block));return elements.at(-1);
  }
- const labelStyle={size:14,weight:750,color:accent};
- const titleStyle={size:p.graphic==='large'?61:52,weight:800,color:fg};
- const cardStyle={size:22,weight:550,color:fg,background:card,radius:dark?9:6,shadow:dark?0:3};
- const softStyle={...cardStyle,background:soft,shadow:0};
- const numberStyle={...cardStyle,size:41,weight:800};
- function cardBox(x,y,w,h,t,variant='plain'){
-  add('card',x,y,w,h,t,variant==='soft'?softStyle:cardStyle);
+ function shape(x,y,w,h,c=accent,r=0,mask='none'){return B('shape',x,y,w,h,'',{background:c,radius:r,mask});}
+ function type(x,y,w,h,text,size=24,c=fg,weight=650,opts={}){return B('text',x,y,w,h,text,{size,color:c,weight,...opts});}
+ function box(x,y,w,h,label='',kind='card',tone=card){return B(kind,x,y,w,h,label,{size:Math.max(14,Math.min(23,h/7)),color:fg,background:tone,weight:560,radius:['minimal','red-line','industrial','letter-red','bank-blue','policy-blue','development'].includes(d.scheme)?0:14,shadow:dark?0:2});}
+ function metric(x,y,w,h,label){return B('kpi',x,y,w,h,'—\n'+label,{size:Math.min(56,h*.23),weight:800,color:fg,background:card,radius:d.scheme==='minimal'?24:8,shadow:0});}
+ function chart(type,x,y,w,h,label='실제 데이터 연결'){return B(type,x,y,w,h,label,{size:19,color:fg,background:card,radius:9});}
+ function tbl(x,y,w,h,rows){return B('table',x,y,w,h,'자료를 입력하세요',{size:17,color:fg,background:card,radius:6}, {rows});}
+ const ink=dark?'#F7F9FD':fg;
+ const top=(n)=>String(n+1).padStart(2,'0');
+ let Z={x:76,y:238,w:1130,h:365};
+ // Bespoke page masters: different spatial information architectures, not recolored panels.
+ switch(d.scheme){
+  case 'editorial':
+   shape(0,0,15,720,accent);shape(73,104,1133,3,accent);type(76,43,680,33,'PERSPECTIVE     /     '+top(i),14,accent,800);
+   B('title',76,123,750,98,head,{size:55,font:'Georgia',weight:750,color:fg});
+   shape(887,113,2,92,accent);type(918,123,269,86,'KEY MESSAGE\n근거로 뒷받침하는 결론',16,aux,620);Z={x:76,y:246,w:1130,h:367};break;
+  case 'green-split':
+   shape(0,0,365,720,accent);shape(365,0,9,720,'#A6C5AA');
+   type(43,55,275,30,'MARKET INTELLIGENCE',16,'#FFFFFF',700);B('title',43,150,295,190,head,{size:65,weight:800,color:'#FFFFFF'});
+   type(44,590,268,40,'INSIGHT   '+top(i)+' / 06',15,'#EDF9F0',700);
+   Z={x:420,y:112,w:780,h:500};break;
+  case 'red-line':
+   shape(0,0,22,720,accent);shape(66,67,1144,5,accent);type(65,31,650,27,'INVESTMENT / THESIS   '+top(i),13,accent,750);
+   B('title',66,112,1080,106,head,{size:61,font:'Arial',weight:780,color:fg});Z={x:67,y:267,w:1142,h:335};break;
+  case 'lime-grid':
+   shape(0,0,680,720,'#24322C');shape(636,0,22,720,accent);
+   type(70,55,490,26,'HUMAN CAPITAL / '+top(i),14,'#CFDEA6',700);B('title',69,138,540,155,head,{size:66,weight:820,color:'#FFFFFF'});
+   shape(80,360,230,9,accent);type(75,394,500,98,'일하는 방식과\n조직의 선택',27,'#D5E3D0',650);
+   Z={x:716,y:100,w:493,h:502};break;
+  case 'purple-stage':
+   shape(0,0,1280,720,bg);shape(852,-20,470,540,pale,70,'ellipse');shape(1050,98,260,360,accent,75,'diamond');
+   type(70,65,800,28,'TECH VISION    /    '+top(i),17,accent,750);B('title',70,122,825,116,head,{size:68,weight:860,color:ink});
+   Z={x:71,y:270,w:1138,h:341};break;
+  case 'blue-product':
+   shape(0,0,1280,18,accent);type(68,61,920,28,'PRODUCT PERFORMANCE     '+top(i),16,accent,750);
+   B('title',68,112,1040,92,head,{size:58,weight:770,color:fg});shape(69,215,1132,2,'#BDDBE9');
+   Z={x:69,y:244,w:1131,h:375};break;
+  case 'four-dots':
+   ['#4285F4','#EA4335','#FBBC05','#34A853'].forEach((c,j)=>shape(66+j*45,48,23,23,c,12,'circle'));
+   type(285,49,720,27,'BUSINESS & PLATFORM     /    '+top(i),14,aux,700);
+   B('title',67,108,1120,104,head,{size:59,weight:780,color:fg});
+   Z={x:70,y:239,w:1130,h:385};break;
+  case 'windows':
+   [['#287FB6',67,65],['#E1B25B',95,65],['#91B575',67,93],['#B16864',95,93]].forEach(([c,x,y])=>shape(x,y,24,24,c,0));
+   type(142,77,440,29,'BUSINESS OVERVIEW',15,accent,700);B('title',72,144,1130,81,head,{size:52,weight:710,color:fg});
+   Z={x:74,y:259,w:1123,h:350};break;
+  case 'minimal':
+   type(90,59,900,26,'PROGRESS     '+top(i),13,aux,630);B('title',85,128,1090,116,head,{size:70,weight:780,color:fg});
+   shape(75,640,1130,2,'#CED2CF');Z={x:86,y:294,w:1090,h:305};break;
+  case 'compute':
+   shape(0,0,1280,720,bg);shape(0,0,16,720,accent);shape(68,61,230,7,accent);
+   type(68,93,1070,28,'COMPUTE / GROWTH   '+top(i),15,accent,800);
+   B('title',67,158,1135,96,head,{size:68,weight:820,color:ink});Z={x:69,y:291,w:1134,h:340};break;
+  case 'industrial':
+   shape(64,42,1153,3,fg);type(65,57,1040,25,'OPERATIONAL UPDATE   /   '+top(i),13,fg,750);
+   B('title',65,130,1100,93,head,{size:62,weight:750,color:fg});shape(64,229,1153,2,fg);
+   Z={x:65,y:265,w:1145,h:351};break;
+  case 'letter-red':
+   shape(0,0,10,720,accent);type(76,61,800,28,'SHAREHOLDER LETTER   /   '+top(i),15,accent,800);
+   B('title',76,123,1050,104,head,{size:62,font:'Georgia',weight:730,color:fg});shape(75,234,1131,3,accent);
+   Z={x:76,y:272,w:1130,h:344};break;
+  case 'flywheel':
+   shape(0,0,1280,18,'#314752');shape(0,18,1280,8,accent);
+   type(75,62,990,33,'CUSTOMER / BUSINESS SYSTEM   '+top(i),15,accent,800);
+   B('title',75,113,1090,95,head,{size:59,font:'Georgia',weight:750,color:fg});
+   Z={x:78,y:249,w:1130,h:362};break;
+  case 'midnight-gold':
+   shape(0,0,1280,720,bg);shape(0,0,1280,11,accent);type(73,52,970,25,'CAPITAL MARKETS / '+top(i),15,accent,740);
+   B('title',73,125,1070,109,head,{size:60,font:'Georgia',weight:760,color:ink});shape(73,254,1137,2,accent);
+   Z={x:73,y:290,w:1136,h:329};break;
+  case 'bank-blue':
+   shape(0,0,28,720,accent);type(69,51,900,28,'LONG-TERM VALUE   /   '+top(i),14,accent,800);
+   B('title',68,110,1110,100,head,{size:58,weight:760,color:fg});shape(68,231,1144,2,accent);
+   Z={x:68,y:260,w:1140,h:356};break;
+  case 'cream-pyramid':
+   shape(0,0,1280,24,'#A4A495');type(76,64,700,28,'WEALTH RESEARCH / '+top(i),14,accent,680);
+   B('title',76,118,1090,113,head,{size:60,font:'Georgia',weight:690,color:fg});
+   Z={x:76,y:263,w:1126,h:339};break;
+  case 'target-blue':
+   shape(0,0,1280,85,accent);shape(69,238,1130,3,accent);type(67,34,1100,29,'INVESTOR STRATEGY       '+top(i)+' / 06',16,'#FFFFFF',800);
+   B('title',69,122,1070,108,head,{size:61,weight:825,color:fg});
+   Z={x:69,y:257,w:1131,h:359};break;
+  case 'teal-risk':
+   shape(0,0,285,720,'#213F45');type(38,54,220,26,'GLOBAL RISKS',15,'#C5E6DF',770);
+   B('title',36,134,211,205,head,{size:49,weight:800,color:'#F8FFFF'});
+   shape(44,590,200,4,'#8FCFC3');Z={x:322,y:98,w:888,h:512};break;
+  case 'policy-blue':
+   shape(0,0,1280,91,'#283E60');type(71,39,1110,29,'GLOBAL ECONOMY / FORECAST / '+top(i),15,'#EDF4FC',720);
+   B('title',74,141,1100,102,head,{size:57,font:'Georgia',weight:680,color:fg});shape(74,250,1122,2,accent);
+   Z={x:75,y:279,w:1120,h:339};break;
+  case 'development':
+   shape(0,0,88,720,accent);type(112,45,1020,28,'DEVELOPMENT RESEARCH   /   '+top(i),14,accent,800);
+   B('title',115,119,1045,112,head,{size:58,font:'Georgia',weight:720,color:fg});shape(115,244,1054,3,'#A0BAC5');
+   Z={x:115,y:269,w:1051,h:349};break;
  }
- function metric(x,y,w,h,title){add('kpi',x,y,w,h,'—\n'+title,numberStyle);}
- function chart(kind,x,y,w,h){add(kind,x,y,w,h,'원자료 연결 후 표시',cardStyle);}
- function table(x,y,w,h,labels){add('table',x,y,w,h,'자료 입력 필요',cardStyle,{rows:labels||[['항목','현재','비교','변화'],['항목 A','—','—','—'],['항목 B','—','—','—'],['항목 C','—','—','—']]});}
- function evidence(){add('text',67,238,1110,40,'선택한 판단을 검증하는 자료를 배치하세요.',{size:20,color:muted});}
- // Original report pages use a stable 16:9 typographic scale; no copied brand mark.
- add('text',68,50,1110,36,`${FAMILY_KO[p.family]||'전문 보고'}  /  ${String(i+1).padStart(2,'0')} — 06`,labelStyle);
- add('title',66,p.graphic==='editorial'?112:115,1150,100,head,titleStyle);
- if(p.graphic==='compact'||p.graphic==='tables')add('text',70,218,1030,35,'의사결정에 필요한 핵심 근거만 배치',{size:17,color:muted});
- switch(role){
-  case 'cover':
-   add('text',68,256,1000,80,'핵심 메시지를 간결하게 입력하세요.',{size:32,weight:600,color:accent});
-   cardBox(69,397,756,196,'SUMMARY\n결론·대상·기간을 명확히 정리','soft');
-   cardBox(862,397,348,196,'FOCUS\n핵심 분석 범위');
-   break;
-  case 'thesis':case 'question':case 'letter':
-   add('text',69,258,1130,92,role==='question'?'우리가 답해야 할 질문':'한 문장의 명확한 결론을 여기에 입력',{size:31,weight:650,color:accent});
-   cardBox(69,410,548,183,'FACT 01\n확인된 핵심 사실');
-   cardBox(648,410,562,183,'IMPLICATION 02\n의사결정에 주는 의미','soft');
-   break;
-  case 'kpi':
-   [69,455,841].forEach((x,j)=>metric(x,266,351,244,['매출·성과 지표','비용·효율 지표','성장·변화 지표'][j]));
-   add('text',71,543,1100,52,'각 지표의 단위·비교 기간·출처를 반드시 확인하세요.',{size:20,color:muted});
-   break;
-  case 'growth':case 'chart':case 'forecast':
-   chart(role==='growth'?'bar':'line',69,258,759,338);
-   cardBox(864,258,346,338,(role==='forecast'?'FORECAST':'INSIGHT')+'\n근거와 해석을 입력','soft');
-   break;
-  case 'map':case 'segment':case 'evidence':
-   cardBox(69,257,735,337,(role==='map'?'REGION / MARKET':role==='evidence'?'DATA / EVIDENCE':'BUSINESS / SEGMENT')+'\n구분별 데이터 또는 지도·그래픽 삽입','soft');
-   cardBox(838,257,372,159,'01\n비교 근거');
-   cardBox(838,434,372,160,'02\n시사점');
-   break;
-  case 'driver':case 'investment':
-   [69,461,853].forEach((x,j)=>cardBox(x,274,347,294,`${String(j+1).padStart(2,'0')}  ${role==='driver'?'성장 동인':'투자 주제'}\n자료·검증 항목 입력`,j===1?'soft':'plain'));
-   break;
-  case 'matrix':case 'risk':case 'scenario':case 'heatmap':
-   [0,1,2,3].forEach(j=>cardBox(69+(j%2)*576,269+Math.floor(j/2)*171,541,147,
-    `${['A','B','C','D'][j]}  ${role==='risk'?'위험 요인':role==='scenario'?'가정·시나리오':role==='heatmap'?'영향·가능성':'검토 대안'}\n정량/정성 근거`,j===1||j===2?'soft':'plain'));
-   break;
-  case 'table':case 'method':
-   table(69,261,1139,344,role==='method'?[['검토 항목','자료 출처','기준 시점','검증 상태'],['자료 A','미입력','미입력','확인 필요'],['자료 B','미입력','미입력','확인 필요']]:undefined);
-   break;
-  case 'roadmap':case 'progress':case 'decision':
-   [69,454,839].forEach((x,j)=>cardBox(x,283,353,285,`${String(j+1).padStart(2,'0')}  ${role==='decision'?'의사결정':role==='progress'?'진행 단계':'실행 단계'}\n책임자 · 기한 · 확인 기준`,j===1?'soft':'plain'));
-   break;
-  case 'targets':
-   metric(69,261,350,235,'현재 수준');metric(455,261,350,235,'목표 수준');metric(841,261,350,235,'변화폭');
-   cardBox(69,526,1122,86,'GOAL   /   전제 조건과 판단 근거');
-   break;
-  case 'pyramid':
-   cardBox(69,260,372,333,'HIGH\n상위 계층','soft');
-   cardBox(466,300,348,293,'MID\n중간 계층');
-   cardBox(839,349,370,244,'BASE\n기초 계층','soft');
-   break;
-  case 'network':
-   cardBox(69,282,327,271,'INPUT\n현황·과제');
-   add('text',416,358,74,75,'→',{size:53,weight:700,color:accent,align:'center'});
-   cardBox(503,282,327,271,'PROCESS\n연계 구조','soft');
-   add('text',848,358,73,75,'→',{size:53,weight:700,color:accent,align:'center'});
-   cardBox(934,282,274,271,'OUTCOME\n기대 효과');
-   break;
+ const R=(x,y,w,h)=>[Z.x+x*Z.w,Z.y+y*Z.h,w*Z.w,h*Z.h];
+ const P=(x,y,w,h,t,tone=card)=>box(...R(x,y,w,h),t,'card',tone);
+ const M=(x,y,w,h,t)=>metric(...R(x,y,w,h),t);
+ const T=(x,y,w,h,t,size=21,color=fg,weight=630)=>type(...R(x,y,w,h),t,size,color,weight);
+ const S=(x,y,w,h,c=accent,r=0,mask='none')=>shape(...R(x,y,w,h),c,r,mask);
+ const G=(kind,x,y,w,h,t)=>chart(kind,...R(x,y,w,h),t);
+ const D=(x,y,w,h,rows)=>tbl(...R(x,y,w,h),rows);
+ const list=(words)=>words.map(x=>x+' · 자료 입력');
+ const metricLabels=['핵심 성과','전년 동기 대비','비용·투자','중장기 목표'];
+ // Distinct content page bodies. Each pack deliberately selects six separate
+ // recipes, and the distinctive page master is also applied on every page.
+ switch(d.recipes[i]){
+  case 'argument': T(.02,.06,.60,.24,'결론을 먼저 제시하고\n근거로 판단을 뒷받침',34,fg,800);S(.63,.05,.006,.91,accent);P(.67,.06,.29,.37,'01 핵심 근거');P(.67,.51,.29,.35,'02 경영 시사점',pale);break;
+  case 'lattice': G('bar',.01,.03,.57,.85,'판단을 뒷받침하는 데이터');P(.62,.03,.36,.36,'관찰된 변화');P(.62,.43,.36,.45,'해석 및 한계',pale);break;
+  case 'slope': G('line',.01,.08,.68,.81,'기간별 추이');P(.72,.08,.26,.81,'해석과 다음 결정',pale);break;
+  case 'compare': P(.01,.03,.46,.86,'대안 A\n장점·제약');P(.53,.03,.46,.86,'대안 B\n장점·제약',pale);break;
+  case 'decision': S(.02,.08,.075,.75,accent);P(.13,.05,.83,.27,'검토 기준');P(.13,.37,.83,.24,'우선 실행');P(.13,.66,.83,.26,'담당자 · 일정',pale);break;
+  case 'steps': [0,1,2,3].forEach((n)=>{S(.04+n*.235,.11,.17,.035,accent);P(.04+n*.235,.18,.19,.68,top(n)+'\n'+['진단','설계','실행','점검'][n],n%2?pale:card);});break;
+  case 'region': S(.02,.03,.54,.86,pale,150,'ellipse');T(.08,.23,.43,.22,'지역별\n분포 비교',27,fg,760);P(.59,.04,.39,.25,'GLOBAL / 시장');P(.59,.34,.39,.25,'REGION / 권역',pale);P(.59,.64,.39,.25,'OUTLOOK / 향후');break;
+  case 'rings': G('donut',.02,.01,.54,.9,'구성 비중');M(.61,.02,.36,.38,'점유·비율');P(.61,.49,.36,.4,'주요 동인',pale);break;
+  case 'bars': G('bar',.01,.04,.78,.85,'시장·기간별 비교');S(.84,.02,.008,.89,accent);P(.88,.07,.11,.77,'변화\n요인',pale);break;
+  case 'columns': [0,1,2].forEach(n=>P(.02+n*.33,.08,.30,.76,['현황\n직접 데이터','원인\n변화 요인','대응\n판단 기준'][n],n===1?pale:card));break;
+  case 'deals': T(.01,.04,.74,.21,'시장 동향을\n핵심 판단으로',32,fg,780);S(.01,.42,.98,.018,accent);M(.01,.49,.30,.42,'집행 규모');M(.35,.49,.30,.42,'회수 흐름');M(.69,.49,.30,.42,'수익성');break;
+  case 'cascade': P(.01,.04,.54,.83,'시장 흐름\n상향·하향 요인');P(.59,.04,.4,.37,'동인 01',pale);P(.59,.49,.4,.38,'동인 02');break;
+  case 'table': D(.01,.02,.97,.86,[['항목','이번 기간','이전 기간','변화'],['항목 A','—','—','—'],['항목 B','—','—','—'],['항목 C','—','—','—']]);break;
+  case 'threshold': M(.02,.01,.45,.35,'목표 대비 차이');G('bar',.52,.01,.45,.82,'구간별 차이');P(.02,.44,.45,.36,'의사결정 기준',pale);break;
+  case 'people': S(.05,.13,.30,.54,accent,120,'circle');T(.37,.13,.6,.28,'구성원 경험과\n업무 전환',34,fg,820);P(.40,.51,.54,.34,'핵심 응답과 개선 과제');break;
+  case 'pulse': M(.01,.01,.44,.4,'경영·성과 지표');G('line',.49,.01,.50,.85,'조직 및 성과 변화');P(.01,.5,.44,.36,'변화를 만든 요인',pale);break;
+  case 'heat': [0,1,2,3].forEach(n=>P(.02+n%2*.49,.03+Math.floor(n/2)*.46,.46,.41,['사람','기술','조직','환경'][n]+' / 영향',n===1||n===2?pale:card));break;
+  case 'vision': S(.02,.08,.28,.79,accent,95,'diamond');T(.38,.08,.56,.3,'새로운 상호작용\n기술의 전환',35,ink,800);P(.38,.51,.6,.32,'미래 시나리오',pale);break;
+  case 'orbits': S(.04,.05,.56,.83,pale,160,'ellipse');S(.12,.18,.30,.51,accent,160,'circle');P(.66,.06,.32,.37,'중심 지표');P(.66,.48,.32,.4,'확장 영역',pale);break;
+  case 'hex': [0,1,2].forEach(n=>{S(.03+n*.31,.13,.26,.66,n===1?accent:pale,0,'diamond');T(.06+n*.31,.38,.20,.16,['기술','운영','확장'][n],19,fg,800);});break;
+  case 'scenario': P(.01,.03,.63,.84,'기준 시나리오\n가정과 기대 효과',pale);P(.68,.03,.31,.39,'상향 전망');P(.68,.48,.31,.39,'하향 위험');break;
+  case 'clusters': [0,1,2,3,4].forEach(n=>{S(.035+n*.19,.12,.13,.30,n%2?accent:pale,38,'circle');T(.026+n*.19,.54,.16,.30,top(n)+'\n세부 항목',14,fg,660);});break;
+  case 'metrics': [0,1,2,3].forEach(n=>M(.01+n*.247,.04,.234,.74,metricLabels[n]));break;
+  case 'spark': G('line',.01,.02,.97,.59,'기간별 주요 지표');[0,1,2].forEach(n=>M(.01+n*.326,.69,.31,.26,['성장','효율','투자'][n]));break;
+  case 'segments': G('donut',.01,.03,.55,.83,'사업부별 비중');P(.60,.03,.38,.23,'사업 A');P(.60,.31,.38,.23,'사업 B',pale);P(.60,.59,.38,.23,'사업 C');break;
+  case 'waterfall': G('bar',.02,.01,.65,.87,'증감 기여 구조');P(.71,.03,.27,.36,'증가 요인');P(.71,.48,.27,.36,'감소 요인',pale);break;
+  case 'forecast': P(.01,.02,.44,.38,'현재 기간');P(.51,.02,.47,.38,'다음 기간',pale);G('line',.01,.49,.97,.39,'전망 추이');break;
+  case 'tiles': [0,1,2,3].forEach(n=>P(.01+n%2*.51,.01+Math.floor(n/2)*.45,.48,.41,['사업 A','사업 B','사업 C','사업 D'][n],n%2?pale:card));break;
+  case 'windows': [0,1,2,3].forEach(n=>{S(.01+n%2*.50,.02+Math.floor(n/2)*.45,.045,.065,['#287FB6','#E1B25B','#91B575','#B16864'][n]);P(.074+n%2*.50,.01+Math.floor(n/2)*.45,.415,.41,['Cloud','Productivity','Devices','Services'][n]);});break;
+  case 'letter': T(.01,.01,.86,.27,'경영진의 핵심 메시지와\n그에 따른 판단 기준',30,fg,730);S(.02,.35,.95,.005,accent);P(.01,.44,.46,.40,'가장 중요한 변화');P(.52,.44,.46,.40,'향후 과제',pale);break;
+  case 'impact': S(.70,-.08,.29,.89,pale,150,'circle');T(.01,.05,.69,.3,'작은 변화가\n만드는 큰 영향',34,fg,720);M(.02,.47,.29,.39,'감축·개선');M(.36,.47,.28,.39,'목표 도달');break;
+  case 'notes': T(.01,.01,.96,.15,'자료 출처 · 기준일 · 측정 방법',24,fg,700);D(.01,.21,.96,.66,[['검증 항목','자료','기준일','검토 상태'],['자료 A','—','—','미확인'],['자료 B','—','—','미확인'],['자료 C','—','—','미확인']]);break;
+  case 'compute': M(.01,.03,.48,.79,'핵심 기술 지표');G('bar',.54,.03,.44,.79,'분기 성장 비교');break;
+  case 'industrial': M(.01,.01,.28,.40,'실적');M(.36,.01,.28,.40,'생산');M(.71,.01,.28,.40,'효율');D(.01,.51,.98,.36,[['지표','이번 분기','이전 분기','증감'],['지표 A','—','—','—'],['지표 B','—','—','—']]);break;
+  case 'shareholder': T(.03,.02,.89,.2,'실적에 대한 경영진의 설명',31,fg,730);D(.02,.29,.95,.58,[['기간','매출','영업 성과','전년 비교'],['최근 분기','—','—','—'],['이전 분기','—','—','—'],['전년 분기','—','—','—']]);break;
+  case 'flywheel': S(.33,.03,.34,.84,pale,160,'ellipse');S(.41,.21,.18,.47,accent,80,'circle');P(.03,.14,.24,.28,'고객');P(.73,.14,.24,.28,'경험',pale);P(.03,.56,.24,.28,'투자',pale);P(.73,.56,.24,.28,'효율');break;
+  case 'capital': T(.02,.03,.57,.20,'장기 수익과 자본 배분',31,ink,710);M(.01,.35,.29,.52,'ROE');M(.35,.35,.29,.52,'EPS');M(.69,.35,.29,.52,'자본 효율');break;
+  case 'longterm': G('line',.01,.01,.97,.65,'장기 성과 비교');T(.02,.71,.95,.13,'주석 / 기간 · 측정 기준 · 자료 출처',17,aux);break;
+  case 'wealth': S(.33,.03,.34,.28,accent,0,'diamond');S(.21,.29,.58,.28,pale,0,'diamond');S(.07,.56,.86,.28,'#B4B7A5',0,'diamond');T(.04,.12,.21,.26,'자산 상위',17,fg,700);T(.70,.47,.28,.29,'자산 분포',18,fg,700);break;
+  case 'pyramid': [0,1,2].forEach(n=>{S(.26-n*.09,.08+n*.26,.47+n*.18,.20,n===1?accent:pale,0,'diamond');T(.38,.11+n*.26,.29,.15,['상위','중위','기초'][n],17,fg,800);});break;
+  case 'targets': M(.01,.01,.28,.46,'현재 수준');S(.34,.20,.08,.12,accent);M(.47,.01,.28,.46,'목표 수준');M(.78,.01,.21,.46,'차이');P(.01,.55,.97,.30,'목표 가정과 실행 책임',pale);break;
+  case 'risks': [0,1,2,3,4,5,6,7,8,9,10,11].forEach(n=>{S(.01+n%4*.242,.015+Math.floor(n/4)*.29,.225,.27,(n%4===0||n===6)?accent:(n%3===0?pale:card));T(.02+n%4*.242,.03+Math.floor(n/4)*.29,.19,.19,['환경','경제','기술','사회'][n%4],14,n%4===0?'#FFFFFF':fg,660);});break;
+  case 'network': S(.40,.30,.22,.36,accent,80,'circle');[0,1,2,3].forEach(n=>{const q=[[.01,.06],[.71,.06],[.01,.61],[.71,.61]][n];P(...q,.25,.29,['위험 A','위험 B','위험 C','위험 D'][n]);});break;
+  case 'macro': G('line',.02,.06,.64,.80,'성장률 전망 · 실측 데이터 필요');P(.70,.06,.29,.37,'기준 전망');P(.70,.50,.29,.36,'리스크 요인',pale);break;
+  case 'development': D(.01,.03,.64,.80,[['지역','기준 전망','다음 기간'],['지역 A','—','—'],['지역 B','—','—'],['지역 C','—','—']]);P(.68,.03,.31,.37,'구조적 요인');P(.68,.47,.31,.36,'정책적 시사점',pale);break;
  }
- add('text',70,645,1133,40,'SOURCE  /  발행처 · 기준일 · 자료 URL 입력   |   수치 미입력', {size:14,color:muted});
- // Preserve an unanimated professional reading experience by default.
- const page={id:C.uid('page'),tab:head,customTab:true,headline:head,subtitle:'자료·숫자·출처는 사용자가 검증하고 입력해야 합니다.',background:bg,layout:'blank',transition:'none',elements};
- return page;
+ // One consistent editorial provenance treatment, differing from page content.
+ type(d.scheme==='green-split'?423:76,663,d.scheme==='green-split'?754:1110,23,'SOURCE  ·  발행처 / 기준일 / 실제 수치 미입력     '+(i+1)+' / 6',13,dark?'#9EADBC':aux,480);
+ return {id:C.uid('page'),tab:head,customTab:true,headline:head,subtitle:'레이아웃 시안 · 실제 자료와 출처 입력 전',background:bg,layout:'blank',transition:'none',elements};
 }
 function buildPack(packId,choice='original'){const p=find(packId);if(!p)throw Error('Unknown professional report reference');return p.patterns.map((_,i)=>buildPage(packId,i,choice));}
-const PACKS=Object.freeze(catalog.map(({id,company,originalTitle,family,source,evidence,patterns,colors,graphic})=>Object.freeze({id,company,originalTitle,family,source,evidence,patterns:patterns.slice(),colors:{...colors},graphic})));
+const PACKS=Object.freeze(catalog.map(({id,company,originalTitle,family,source,evidence,patterns,colors,graphic,seed})=>Object.freeze({id,company,originalTitle,family,source,evidence,patterns:patterns.slice(),colors:{...colors},graphic,design:ART_DIRECTIONS[seed].name,designSystem:ART_DIRECTIONS[seed].scheme})));
 const api={PACKS,find,buildPage,buildPack,PAGE_KINDS,FAMILY_KO,NAME_KO};
 root.DocutProReports=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;

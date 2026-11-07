@@ -59,7 +59,7 @@ test('outgoing page cue persists across project JSON and standalone HTML without
  assert.ok(!doc.includes('canvasContextTools'));
 });
 
-test('offline editor bundler has one CSS entry, 44 local scripts and the icon module',()=>{
+test('offline editor bundler has one CSS entry, 45 local scripts and the icon module',()=>{
  const html=fs.readFileSync('index.html','utf8');const scripts=[...html.matchAll(/<script src="\.\/(assets\/[^"]+\.js)" defer><\/script>/g)];
  assert.equal(scripts.length,45);
  assert.ok(scripts.some(m=>m[1]==='assets/effect_icons.js'));

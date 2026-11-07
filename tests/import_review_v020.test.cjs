@@ -4,7 +4,7 @@ const C=require('../assets/core.js');require('../assets/core_enhanced.js');
 const I=require('../assets/import_review.js'),T=require('../assets/text_rewrite.js');
 const create=()=>C.createProject(3);
 
-test('V0.20 import inspector available and version explicit',()=>{assert.equal(C.VERSION,'0.33.0-development');assert.equal(typeof I.analyze,'function')});
+test('V0.20 import inspector available and version explicit',()=>{assert.equal(C.VERSION,'0.34.0-development');assert.equal(typeof I.analyze,'function')});
 test('import counts preserve evidence, verification, media and formatted data',()=>{
  const p=create(),b=p.pages[0].elements[0];b.source='document';b.verified=true;b.richText=[{text:'hi',bold:true}];const c=I.counts(p);
  assert.equal(c.pages,3);assert.equal(c.evidence,1);assert.equal(c.verified,1);assert.equal(c.rich,1);assert.ok(c.blocks>0);
