@@ -139,7 +139,35 @@ C.normalizeProject=raw=>{
   const ST=root.DocutStoryPlayer;if(!ST)throw Error('Story playback module missing');
   const playbackMs=ST.duration(pg.playbackMs),captions=ST.validateCaptions(pg.captions,playbackMs);
   if(pg.captionStyle!==undefined&&pg.captionStyle!==null&&!ST.STYLES.includes(pg.captionStyle))throw Error('Unsupported caption presentation style; importing would alter original appearance');
-  const f=pg.referenceFidelity;const allowedUBSPages=[5,8,11,13,16,18];const verifiedGraphics={5:99.7851,8:99.8434,11:99.5997,13:99.5295,16:99.3850,18:99.4055};const referenceFidelity=f&&f.mode==='source-ratio'&&f.sourceEdition==='2025'&&allowedUBSPages.includes(f.sourcePage)?{mode:'source-ratio',sourceEdition:'2025',sourcePage:f.sourcePage,sourceUrl:'https://www.ubs.com/content/dam/assets/wm/static/noindex/gwr-2025-digital.pdf',measuredScore:null,graphicsAuditScore:verifiedGraphics[f.sourcePage],status:'editor_browser_unverified',vectorOnly:true,designVersion:'ubs-source-svg-2025-pilot-2'}:undefined;
+  const f=pg.referenceFidelity,allowedUBSPages=[5,8,11,13,16,18];
+  const verifiedGraphics={5:99.7851,8:99.8434,11:99.5997,13:99.5295,16:99.3850,18:99.4055};
+  const isUBS=f&&f.mode==='source-ratio'&&f.sourceEdition==='2025'&&allowedUBSPages.includes(f.sourcePage);
+  const vectorEdits={};
+  if(isUBS&&f.vectorEdits!==undefined){
+    if(!f.vectorEdits||typeof f.vectorEdits!=='object'||Array.isArray(f.vectorEdits))throw Error('UBS vector edits must be an object');
+    const keys=Object.keys(f.vectorEdits);
+    if(keys.length>600)throw Error('UBS vector edits exceed the supported 600 shapes per page');
+    for(const index of keys){
+      if(!/^(0|[1-9]\d{0,4})$/.test(index))throw Error('UBS vector shape index is invalid');
+      const raw=f.vectorEdits[index],out={};
+      if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('UBS vector shape edit is invalid');
+      for(const [key,value] of Object.entries(raw)){
+        if(key==='fill'||key==='stroke'){
+          if(!/^#[0-9a-f]{6}$/i.test(value))throw Error('UBS vector color must be six-digit hex');
+          out[key]=value;
+        }else if(key==='hidden'){
+          if(typeof value!=='boolean')throw Error('UBS vector visibility must be boolean');
+          out[key]=value;
+        }else if(Object.prototype.hasOwnProperty.call({opacity:1,strokeWidth:1,dx:1,dy:1},key)){
+          const bounds=key==='opacity'?[0,1]:key==='strokeWidth'?[0,10]:[-200,200];
+          if(typeof value!=='number'||!Number.isFinite(value)||value<bounds[0]||value>bounds[1])throw Error('UBS vector edit is outside valid range');
+          out[key]=value;
+        }else throw Error('Unsupported UBS vector edit property: '+key);
+      }
+      if(Object.keys(out).length)vectorEdits[index]=out;
+    }
+  }
+  const referenceFidelity=isUBS?{mode:'source-ratio',sourceEdition:'2025',sourcePage:f.sourcePage,sourceUrl:'https://www.ubs.com/content/dam/assets/wm/static/noindex/gwr-2025-digital.pdf',measuredScore:null,graphicsAuditScore:verifiedGraphics[f.sourcePage],status:'editor_browser_unverified',vectorOnly:true,designVersion:'ubs-source-svg-2025-pilot-3',...(Object.keys(vectorEdits).length?{vectorEdits}:{})}:undefined;
   return {id,tab:text(pg.tab||'Page '+(i+1),80),customTab:!!pg.customTab,headline:text(pg.headline||pg.tab,150),subtitle:text(pg.subtitle,500),background:cleanColor(pg.background)||'',layout:C.LAYOUTS[pg.layout]?pg.layout:'hero',transition:C.EFFECT_CATALOG?.normalizeTransition(pg.transition)||'fade',playbackMs,captions,captionStyle:ST.STYLES.includes(pg.captionStyle)?pg.captionStyle:'cinema',elements:els,...(referenceFidelity?{referenceFidelity}:{})};
  });
  if(raw.reviews!=null&&!root.DocutReviewBoard&&(!Array.isArray(raw.reviews)||raw.reviews.length))throw Error('Review board module missing; refusing to drop review comments');
