@@ -39,5 +39,5 @@ test('legacy other 17 company packs remain accessible and user data is never fab
    assert.match(page.subtitle,/실제 자료와 출처 입력 전/);
   }
  }
- assert.match(src,/focusBuilt=focusPage/);
+ assert.match(src,/DocutUBSVectorSource/);
 });
