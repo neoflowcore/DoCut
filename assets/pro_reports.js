@@ -50,7 +50,7 @@ const ART_DIRECTIONS=[
 function buildPage(packId,pageIndex=0,choice='original'){
  const p=find(packId),i=Number(pageIndex);
  if(!p||!Number.isInteger(i)||i<0||i>5)throw Error('존재하지 않는 전문 레퍼런스 페이지');
- if(p.id==='FIN-16'&&choice==='original'&&root.DocutUBSFidelity?.make)return root.DocutUBSFidelity.make(i);
+ if(p.id==='FIN-16'&&choice==='original'&&root.DocutUBSVectorSource?.make)return root.DocutUBSVectorSource.make(i);
  const d=ART_DIRECTIONS[p.seed],colors=paletteFor(p,choice),{bg,fg,accent}=colors;
  const dark=['purple-stage','compute','midnight-gold'].includes(d.scheme)&&choice==='original';
  const aux=dark?'#B7C5D0':'#5C6B75',pale=colors.muted,card=colors.card;

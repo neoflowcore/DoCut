@@ -1,0 +1,40 @@
+{
+  "edition": "2025",
+  "source": "https://www.ubs.com/content/dam/assets/wm/static/noindex/gwr-2025-digital.pdf",
+  "pages": [
+    {
+      "page": 5,
+      "score": 99.7851,
+      "pass": true
+    },
+    {
+      "page": 8,
+      "score": 99.8434,
+      "pass": true
+    },
+    {
+      "page": 11,
+      "score": 99.5997,
+      "pass": true
+    },
+    {
+      "page": 13,
+      "score": 99.5295,
+      "pass": true
+    },
+    {
+      "page": 16,
+      "score": 99.385,
+      "pass": true
+    },
+    {
+      "page": 18,
+      "score": 99.4055,
+      "pass": true
+    }
+  ],
+  "maskRule": "Individual glyph bounding boxes plus one explicit small logo area, mask below 35%",
+  "method": "Independent PDF native render vs SVG native render; source ratio",
+  "limits": "SVG vector extraction only; not DoCut browser 99% or 16:9 editability",
+  "version": "ubs-pdf-svg-geometry-v2"
+}
