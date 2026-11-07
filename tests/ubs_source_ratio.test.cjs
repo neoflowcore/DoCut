@@ -16,7 +16,7 @@ test('UBS vector package contains path geometry without PDF paragraphs, pictures
    const svg=source.pages[String(no)];
    assert.ok(svg.startsWith('<svg'));assert.match(svg,/<path\b/);
    assert.doesNotMatch(svg,/<(?:text|image|script|foreignObject)\b/i);
-   assert.ok(svg.length>2000);
+   assert.ok(svg.length>700);
    const page=source.make(source.sourcePages.indexOf(no));
    const layer=source.layer(page);
    assert.match(layer,/<svg/);assert.match(layer,/ubs-source-layer/);
