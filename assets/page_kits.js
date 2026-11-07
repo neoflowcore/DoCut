@@ -176,8 +176,8 @@ function previewMarkup(page){
   const text=String(el.type==='image'?'이미지 배치':el.text||el.data?.alt||'').replace(/\s+/g,' ').slice(0,120);
   const style=el.style||{};const foreground=color(style.color,'#293241'),background=color(style.background,'transparent');const radius=Math.max(0,Math.min(80,Number(style.radius)||0));
   const align=['center','right'].includes(style.align)?style.align:'left';const weight=[300,400,500,600,700,800,900].includes(+style.weight)?+style.weight:500;
-  const typ=String(el.type||'text');
-  return `<div class="kit-map-block" data-kind="${safe(typ)}" style="left:${left}%;top:${top}%;width:${w}%;height:${h}%;border-radius:${radius/10}px;background:${background};color:${foreground};font-weight:${weight};text-align:${align}" title="${safe(text)}"><span>${safe(text)}</span></div>`;
+  const typ=String(el.type||'text');const clip=({circle:'circle(49% at 50% 50%)',ellipse:'ellipse(49% 40% at 50% 50%)',diamond:'polygon(50% 0%,100% 50%,50% 100%,0% 50%)'})[style.mask]||'none';
+  return `<div class="kit-map-block" data-kind="${safe(typ)}" style="left:${left}%;top:${top}%;width:${w}%;height:${h}%;border-radius:${radius/10}px;clip-path:${clip};background:${background};color:${foreground};font-weight:${weight};text-align:${align}" title="${safe(text)}"><span>${safe(text)}</span></div>`;
  }).join('');
  return `<div class="kit-map" role="img" aria-label="레이아웃과 컬러를 표시한 템플릿 구조 개략도">${els}</div>`;
 }

@@ -59,9 +59,10 @@ test('outgoing page cue persists across project JSON and standalone HTML without
  assert.ok(!doc.includes('canvasContextTools'));
 });
 
-test('offline editor bundler has one CSS entry, 45 local scripts and the icon module',()=>{
+test('offline editor bundler has CSS and at least 45 ordered local scripts including the icon and UBS modules',()=>{
  const html=fs.readFileSync('index.html','utf8');const scripts=[...html.matchAll(/<script src="\.\/(assets\/[^"]+\.js)" defer><\/script>/g)];
- assert.equal(scripts.length,45);
+ assert.ok(scripts.length>=46);
+ assert.ok(scripts.some(m=>m[1]==='assets/ubs_fidelity.js'));
  assert.ok(scripts.some(m=>m[1]==='assets/effect_icons.js'));
  assert.ok(fs.existsSync('tools/bundle_studio_v032.py'));
 });

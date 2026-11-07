@@ -697,7 +697,7 @@ function batchSet(action){
   if(!visible.some(k=>k.id===state.kitSelection)){state.kitSelection=visible[0]?.id||'';state.kitPreviewIndex=0;}
   $('kitGallery').innerHTML=visible.length?visible.map(k=>{
    const pro=proMode,pg=pro?PRO.buildPage(k.id,0,colorChoice):k.isLocal?k:KITS.builtPage(k.id,colorChoice);
-   const title=pro?k.company:k.ko,subtitle=pro?`${PRO.FAMILY_KO[k.family]} · ${k.design} · 6페이지`:k.name+' · '+k.category;
+   const title=pro?k.company:k.ko,subtitle=pro?(k.id==='FIN-16'&&colorChoice==='original'?'2025 원본 구조 참고 · 벡터 6장 · 실측 미검증':`${PRO.FAMILY_KO[k.family]} · ${k.design} · 6페이지`):k.name+' · '+k.category;
    return `<button type="button" class="kit-choice ${pro?'pro-pack-choice':''} ${k.id===state.kitSelection?'selected':''}" data-kit-choice="${safe(k.id)}" aria-pressed="${k.id===state.kitSelection?'true':'false'}"><span class="kit-choice-swatch kit-choice-preview" style="background:${safe(pg.background||'#F7F7F4')}">${pro?KITS.previewMarkup(pg):kitMiniPreview(pg)}</span><span><b>${safe(title)}</b><small>${safe(subtitle)}</small></span></button>`;
   }).join(''):'<p class="caption-small">검색에 맞는 레퍼런스가 없습니다.</p>';
   $('kitStorageStatus').textContent=snap.status==='ok'?`개인 템플릿 ${book.templates.length}/${KITS.MAX_KITS}개 · 이 기기에만 저장됩니다.`:'개인 템플릿 저장소 오류: '+snap.error;
@@ -710,11 +710,11 @@ function batchSet(action){
   if(isPro){
    pg=PRO.buildPage(chosen.id,state.kitPreviewIndex,colorChoice);
    $('kitPackPageStrip').innerHTML=chosen.patterns.map((name,i)=>{const item=PRO.buildPage(chosen.id,i,colorChoice);return `<button type="button" class="kit-pack-page ${i===state.kitPreviewIndex?'active':''}" data-kit-page="${i}" aria-label="${i+1}페이지 ${safe(item.tab)}" aria-pressed="${i===state.kitPreviewIndex}"><span class="kit-pack-mini" style="background:${safe(item.background)}">${KITS.previewMarkup(item)}</span><b>${String(i+1).padStart(2,'0')}</b><span>${safe(item.tab)}</span></button>`;}).join('');
-   $('kitReferenceEvidence').textContent=chosen.evidence==='official_index_only'?'공식 IR 자료 색인 확인 · 상세 페이지 검증 필요':'공개 원문을 참고한 독립 구성';
-   const link=$('kitReferenceSource');link.href=/^https:\/\/[^\s"'<>]+$/i.test(chosen.source)?chosen.source:'#';link.textContent='공식 원본 보기 ↗';
+   $('kitReferenceEvidence').textContent=pg.referenceFidelity?'UBS 2025 원본 편집 문법 기반 / 16:9 벡터 시안 / 99% 측정 전':chosen.evidence==='official_index_only'?'공식 IR 자료 색인 확인 · 상세 페이지 검증 필요':'공개 원문을 참고한 독립 구성';
+   const link=$('kitReferenceSource'),src=pg.referenceFidelity?.sourceUrl||chosen.source;link.href=/^https:\/\/[^\s"'<>]+$/i.test(src)?src:'#';link.textContent=pg.referenceFidelity?'UBS 2025 원본 PDF ↗':'공식 원본 보기 ↗';
    $('kitPreviewTitle').textContent=chosen.company+' · '+pg.tab;
-   $('kitPreviewDescription').textContent=chosen.design+' · 독립 구성 / 원문 이미지는 미포함';
-   $('kitPreviewDetails').textContent=`전문 레이아웃 ${state.kitPreviewIndex+1}/6 · 편집 요소 ${pg.elements.length}개 · 수치/출처 미입력 · 기존 페이지 유지`;
+   $('kitPreviewDescription').textContent=pg.referenceFidelity?'UBS 2025 레이아웃 분석 기반 · 편집형 벡터 16:9 · 원본 유사도 미검증':chosen.design+' · 독립 구성 / 원문 이미지는 미포함';
+   $('kitPreviewDetails').textContent=pg.referenceFidelity?`벡터 파일럿 ${state.kitPreviewIndex+1}/6 · 편집 요소 ${pg.elements.length}개 · 99% 점수 N/A · 원본 페이지 계측 필요`:`전문 레이아웃 ${state.kitPreviewIndex+1}/6 · 편집 요소 ${pg.elements.length}개 · 수치/출처 미입력 · 기존 페이지 유지`;
   }else{
    pg=KITS.pageFromKit(chosen.isLocal?chosen:chosen.id,chosen.isLocal?'original':colorChoice);
    $('kitPreviewTitle').textContent=chosen.ko+' · '+chosen.name;

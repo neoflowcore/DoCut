@@ -99,7 +99,7 @@ C.normalizeBlock=raw=>{
  };
  if(extras[type]&&!raw.style)seed.style={...seed.style,...extras[type].style};
  seed.x=finite(raw.x,0,C.WIDTH-40,0);seed.y=finite(raw.y,0,C.HEIGHT-30,0);
- seed.w=finite(raw.w,40,C.WIDTH-seed.x,Math.min(C.WIDTH-seed.x,extras[type]?.w||640));seed.h=finite(raw.h,4,C.HEIGHT-seed.y,Math.min(C.HEIGHT-seed.y,extras[type]?.h||180));
+ seed.w=finite(raw.w,type==='shape'?1:40,C.WIDTH-seed.x,Math.min(C.WIDTH-seed.x,extras[type]?.w||640));seed.h=finite(raw.h,type==='shape'?1:4,C.HEIGHT-seed.y,Math.min(C.HEIGHT-seed.y,extras[type]?.h||180));
  if(String(raw.groupLabel??'').length>80)throw Error('Layer group label exceeds 80 characters; no label was silently clipped');
  seed.locked=!!raw.locked;seed.hidden=!!raw.hidden;seed.groupId=typeof raw.groupId==='string'?text(raw.groupId,80):null;seed.groupLabel=seed.groupId?text(raw.groupLabel,80):'';
  seed.source=text(raw.source,2000);seed.asOfDate=validDate(raw.asOfDate)?raw.asOfDate:'';seed.unit=text(raw.unit,40);seed.evidence=text(raw.evidence,1500);seed.verified=raw.verified===true;seed.notes=text(raw.notes,1500);

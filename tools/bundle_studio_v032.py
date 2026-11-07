@@ -40,7 +40,7 @@ def bundle(destination):
         raise ValueError('Remaining external source dependencies in editor')
     destination = Path(destination).resolve()
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text('<!-- Self-contained DoCut Studio v0.34.0. Project data remains local. -->\n' + html, encoding='utf-8')
+    destination.write_text('<!-- Self-contained DoCut Studio v0.35.0. Project data remains local. -->\n' + html, encoding='utf-8')
     print(f'Wrote {destination} ({destination.stat().st_size:,} bytes; {len(scripts)} embedded JS files)')
 
 
