@@ -39,7 +39,8 @@ make(index){
  if(!Number.isInteger(index)||index<0||index>=6)throw Error('UBS 원본 비율 페이지 인덱스 범위 오류');
  const C=root.DocutCore;if(!C)throw Error('DoCut Core required');
  const no=PDF_PAGES[index];
- const slots=(this.regions[String(no)]||[]).map(([x,y,w,h,size,weight],i)=>{const el=C.makeBlock('text',x,y,{w,h,text:'',style:{size,weight,color:'#303030',background:'transparent',radius:0,opacity:1,shadow:0,font:'Arial'},effects:[],locked:false});el.id=C.uid('ubs-slot');el.effects=[];el.text='';return C.normalizeBlock(el);});
+ const ratio=Math.min(C.WIDTH/841.89,C.HEIGHT/595.276),offsetX=(C.WIDTH-841.89*ratio)/2,offsetY=(C.HEIGHT-595.276*ratio)/2;
+ const slots=(this.regions[String(no)]||[]).map(([x,y,w,h,size,weight],i)=>{const el=C.makeBlock('text',offsetX+x*ratio,offsetY+y*ratio,{w:w*ratio,h:h*ratio,text:'',style:{size:size*ratio,weight,color:'#303030',background:'transparent',radius:0,opacity:1,shadow:0,font:'Arial'},effects:[],locked:false});el.id=C.uid('ubs-slot');el.effects=[];el.text='';return C.normalizeBlock(el);});
  return {id:C.uid('page'),tab:LABELS[index],customTab:true,headline:LABELS[index],
  subtitle:'UBS 2025 PDF 원본 비율 기반 벡터 뼈대 · 문자/사진/로고 제외 · 입력용 요소는 별도 추가',background:'#FFFFFF',layout:'blank',transition:'none',
  elements:slots,referenceFidelity:{sourceUrl:URL,sourceEdition:'2025',sourcePage:no,mode:'source-ratio',measuredScore:null,graphicsAuditScore:VERIFIED_GRAPHICS[no],status:'editor_browser_unverified',vectorOnly:true,designVersion:'ubs-source-svg-2025-pilot-2'}};

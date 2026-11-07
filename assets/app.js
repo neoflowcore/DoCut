@@ -691,7 +691,7 @@ function batchSet(action){
  }
  function renderKits(){if(!KITS)return;
   const snap=state.kitSnapshot||readKits(),book=snap.status==='ok'?snap.book:KITS.empty(),builtin=KITS.BUILTINS.map(v=>({...v,isLocal:false})),personal=book.templates.map(v=>({...v,ko:v.name,hint:'이 페이지의 구조·스타일만 보관됨',tone:'paper',isLocal:true}));
-  const previewFor=pg=>pg.referenceFidelity?.mode==='source-ratio'?(root.DocutUBSVectorSource?.preview(pg)||''):KITS.previewMarkup(pg);
+  const previewFor=pg=>pg.referenceFidelity?.mode==='source-ratio'?(root.DocutUBSVectorSource?.preview(pg)||'<div class="ubs-source-loading">UBS 벡터 준비 중</div>'):KITS.previewMarkup(pg);
   const category=$('kitCategory').value,proMode=category.startsWith('pro'),personalOnly=category==='내 템플릿',q=String($('kitSearch').value||'').trim().toLocaleLowerCase(),colorChoice=$('kitPalette').value,safe=C.escapeHTML;
   const list=proMode?(PRO?.PACKS||[]).filter(p=>(category==='pro'||p.family===category.slice(4))):personalOnly?personal:builtin.filter(k=>category==='legacy'||k.category===category);
   const visible=list.filter(k=>!q||[k.name||'',k.ko||'',k.company||'',k.originalTitle||'',k.family||'',k.category||'',k.hint||''].join(' ').toLocaleLowerCase().includes(q));
@@ -731,7 +731,8 @@ function batchSet(action){
   const template=pro||KITS.BUILTINS.find(k=>k.id===key)||((snap.status==='ok'&&snap.book.templates.find(k=>k.id===key))||null);
   if(!template)return toast('선택한 레퍼런스를 확인하세요.');
   let next;try{next=pro?PRO.buildPage(key,state.kitPreviewIndex,$('kitPalette').value):KITS.pageFromKit(template.id.startsWith('user-')?template:template.id,template.id.startsWith('user-')?'original':$('kitPalette').value);if(project.pages.some(p=>p.id===next.id))throw Error('Page identity collision');}catch(e){return toast('페이지 생성 취소: '+e.message);}
-  if(!preMutationBackup('before inserting report reference page'))return;
+  if(next.referenceFidelity?.mode==='source-ratio'&&root.DocutUBSVectorSource?.status!=='ready')return toast('UBS 원본 벡터 로딩이 완료되지 않았습니다. 잠시 후 다시 추가하세요.');
+   if(!preMutationBackup('before inserting report reference page'))return;
   mutate(()=>{next.groupId=page().groupId;project.pages.splice(state.pageIndex+1,0,next);state.pageIndex++;state.selectedId=null;state.selectedIds.clear();});writePageHash();
   closeDialog('kitDialog');toast('기존 페이지를 유지하고 '+next.tab+' 레이아웃을 추가했습니다. 실제 수치·근거를 입력하세요.');
  }
@@ -739,7 +740,8 @@ function batchSet(action){
   if(!p||!$('kitCategory').value.startsWith('pro'))return toast('전문 보고서 팩을 먼저 선택하세요.');
   if(project.pages.length+6>50)return toast('6페이지 추가 시 최대 50페이지를 초과합니다. 기존 페이지를 정리하거나 낱장으로 추가하세요.');
   let pages;try{pages=PRO.buildPack(id,$('kitPalette').value);if(pages.length!==6||new Set(pages.map(x=>x.id)).size!==6)throw Error('페이지 구성 검증 실패');}catch(e){return toast('보고서 생성 취소: '+e.message);}
-  if(!preMutationBackup('before inserting six-page professional report'))return;
+  if(pages.some(pg=>pg.referenceFidelity?.mode==='source-ratio')&&root.DocutUBSVectorSource?.status!=='ready')return toast('UBS 원본 벡터 로딩이 완료되지 않았습니다. 빈 페이지 삽입을 차단했습니다.');
+   if(!preMutationBackup('before inserting six-page professional report'))return;
   mutate(()=>{const groupId=page().groupId;pages.forEach(p=>p.groupId=groupId);project.pages.splice(state.pageIndex+1,0,...pages);state.pageIndex+=1;state.selectedId=null;state.selectedIds.clear();});writePageHash();
   closeDialog('kitDialog');toast(p.company+' 레퍼런스 기반 6페이지를 추가했습니다. 모든 차트·표 수치 및 근거를 입력하세요.');
  }
