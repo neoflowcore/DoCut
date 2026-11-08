@@ -77,13 +77,13 @@ function transform(rows,spec={}){
   series=counts.map((n,i)=>({label:range===0?fmt(lo):fmt(lo+i*width)+'–'+fmt(lo+(i+1)*width),value:n}));
  }
  if(!series.length)throw Error('차트 데이터가 비어 있습니다.');
- if(series.length>MAX_POINTS)throw Error('차트가 '+series.length+'개 항목입니다. '+MAX_POINTS+'개 이내로 범위를 좁히거나 범주 집계·분포를 선택하세요.');
+ if(series.length>MAX_POINTS)throw Error('차트가 '+series.length+'개 항목입니다. 최대 '+MAX_POINTS+'개 이내로 범위를 좁히거나 범주 집계·분포를 선택하세요.');
  for(const p of series)if(!Number.isFinite(p.value)||Math.abs(p.value)>1e9||p.label.length>50)throw Error('차트 값 또는 범주가 표시 한도를 초과합니다.');
  return {series,summary,mode,aggregate,inputRows:raw.length,outputPoints:series.length};
 }
 function suggest(source,sheetId,cellRange){
  const W=root.DocutWorkbook;if(!W)throw Error('Excel 셀 선택 모듈이 없습니다.');
- const selected=W.select(source,sheetId,cellRange),rows=selected.rows;
+ const selected=W.select(source,sheetId,cellRange,{maxRows:256}),rows=selected.rows;
  if(!rows.length||!rows[0].length)throw Error('선택된 시트 범위가 비었습니다.');
  const width=rows[0].length,hasHeader=rows.length>1&&rows[0].some(c=>typeof c.value==='string')&&rows.slice(1,Math.min(rows.length,8)).some(row=>row.some(c=>typeof c.value==='number'));
  const samples=hasHeader?rows.slice(1):rows;
@@ -96,9 +96,9 @@ function suggest(source,sheetId,cellRange){
  const valueColumn=values.find(c=>c.index>0)?.index??values[0]?.index??Math.min(1,width-1);
  const labelColumn=columns.find(c=>!c.numeric&&c.index!==valueColumn)?.index??(valueColumn===0?Math.min(1,width-1):0);
  const categories=samples.map(r=>String(r[labelColumn]?.value??''));
- const unique=new Set(categories).size,analysisMode=samples.length>MAX_POINTS?(unique<=MAX_POINTS?'group':'histogram'):'raw';
+ const unique=new Set(categories).size,fullRows=selected.requestedRows-(hasHeader?1:0),analysisMode=fullRows>MAX_POINTS?(unique<=MAX_POINTS?'group':'histogram'):'raw';
  return {columns,labelColumn,valueColumn,header:hasHeader,analysisMode,aggregate:'sum',sampleRows:samples.length,distinctLabels:unique,
-  recommendedChart:values.length?'bar':'table',warning:values.length?'':'숫자형 열을 찾지 못했습니다. 열을 직접 지정하세요.'};
+  recommendedChart:values.length?'bar':'table',warning:!values.length?'숫자형 열을 찾지 못했습니다. 열을 직접 지정하세요.':fullRows>samples.length?'열·범주 추천은 최초 '+samples.length+'행 표본을 사용했습니다. 전체 통계는 실제 모든 선택 행으로 산출합니다.':''};
 }
 function summaryText(s){
  const fmt=n=>n===null?'해당 없음':Number(n).toLocaleString('ko-KR',{maximumFractionDigits:3});

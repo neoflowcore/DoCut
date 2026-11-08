@@ -1,3 +1,11 @@
+# DoCut Studio — v0.41 Large Excel source analysis
+
+**XLSX 50 MiB, up to 3,000,000 populated workbook cells, 30,000 rows × 256 columns per sheet, and 10,000 formula cells.** The v0.41 streaming sheet XML parser removes full-worksheet DOM allocation; sparse indexed selection and bounded previews support large-table analysis. When a workbook has over 5,000 cells, only the selected derived chart/table result (plus original filename/sheet/range attribution) is saved in the editable project; the source workbook must be re-uploaded for unrelated raw ranges. Chart outputs are still limited to 360 points and XLSX uncompressed ZIP to 256 MiB.
+
+[Large Excel design, security constraints and **manual** browser acceptance commands](docs/EXCEL_CAPACITY_V041.md). The feature code is committed; full 3-million-cell real-browser/device memory acceptance and production rollout are independent gates, not implied by the source-only commit. GitHub Actions auto-build remains disabled.
+
+---
+
 # DoCut Studio — v0.33 professional report gallery
 
 **20 global public-report research references × 6 editable, self-contained 16:9 page layouts = 120 page structures.** Select `페이지 키트` to find McKinsey, BCG, Meta, BlackRock, IMF, and other reference families. Click a pack's six-page strip to inspect each page; insert one page or an entire six-page storyline. The official original is linked only as research provenance. Older 20 single-page layouts remain under `기존 일반 레이아웃`.

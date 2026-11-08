@@ -2,20 +2,38 @@
 'use strict';
 function evaluateFormulas(sheets, opts={}) {
   const maxFormulas=opts.maxFormulas??10000,maxReferences=opts.maxReferences??5000000,maxDepth=opts.maxDepth??300;
+
   const all=[],lookups=new Map(),names=new Map(),warnings=[];
   for(const sheet of sheets){
-    const map=new Map();
-    for(const cell of sheet.cells){map.set(cell.row+':'+cell.col,cell);if(cell.formula!==null&&cell.formula!==undefined)all.push([sheet,cell]);}
-    lookups.set(sheet,map);names.set(String(sheet.name).toLowerCase(),sheet);
+    names.set(String(sheet.name).toLowerCase(),sheet);
+    for(const cell of sheet.cells)if(cell.formula!==null&&cell.formula!==undefined)all.push([sheet,cell]);
   }
   if(all.length>maxFormulas)throw Error('엑셀 수식 '+all.length+'개: 최대 '+maxFormulas+'개까지 처리합니다. 원본은 변경하지 않았습니다.');
+  const uncached=all.filter(([,cell])=>!cell.cached);
+  // In ordinary Excel exports almost every formula has a saved cache. Avoid
+  // rebuilding a duplicate lookup of millions of cells for that common case.
+  if(!uncached.length)return {total:all.length,cached:all.length,recalculated:0,unresolved:0,referenced:0,warnings:[]};
+  for(const sheet of sheets){
+   let sorted=true,last=-1;
+   for(const c of sheet.cells){const index=c.row*256+c.col;if(index<=last){sorted=false;break;}last=index;}
+   lookups.set(sheet,sorted?sheet.cells:sheet.cells.slice().sort((a,b)=>a.row-b.row||a.col-b.col));
+  }
+  function lookupCell(sheet,row,col){
+    const arr=lookups.get(sheet);if(!arr)return null;
+    const target=row*256+col;let lo=0,hi=arr.length-1;
+    while(lo<=hi){const mid=(lo+hi)>>1,c=arr[mid],key=c.row*256+c.col;
+     if(key===target)return c;
+     if(key<target)lo=mid+1;else hi=mid-1;
+    }
+    return null;
+  }
   let referenced=0,recalculated=0,cached=0,unresolved=0;
   const state=new WeakMap();
   const addr=s=>{
     const m=/^\$?([A-Z]{1,3})\$?([1-9]\d{0,6})$/i.exec(s||'');
     if(!m)throw Error('지원하지 않는 수식 참조 '+String(s).slice(0,40));
     const col=[...m[1].toUpperCase()].reduce((v,c)=>v*26+c.charCodeAt(0)-64,0)-1,row=Number(m[2])-1;
-    if(row>=10000||col>=120)throw Error('수식 참조 범위 초과: '+s);
+    if(row>=30000||col>=256)throw Error('수식 참조 범위 초과: '+s);
     return {row,col};
   };
   const scalar=x=>{if(Array.isArray(x))throw Error('배열을 단일 값으로 사용할 수 없습니다.');return x===null||x===undefined?'':x;};
@@ -83,7 +101,7 @@ function evaluateFormulas(sheets, opts={}) {
   }
   function cellValue(sheet,ref,depth){
     if(++referenced>maxReferences)throw Error('수식 셀 참조 연산량 한도를 초과했습니다.');
-    const {row,col}=addr(ref),cell=lookups.get(sheet)?.get(row+':'+col);
+    const {row,col}=addr(ref),cell=lookupCell(sheet,row,col);
     return cell?calculate(sheet,cell,depth+1):null;
   }
   function evaluate(node,currentSheet,depth){
@@ -103,7 +121,7 @@ function evaluateFormulas(sheets, opts={}) {
       if((b.row-a.row+1)*(b.col-a.col+1)>100000)throw Error('단일 수식의 참조 범위가 너무 큽니다.');
       const vals=[];for(let r=a.row;r<=b.row;r++)for(let c=a.col;c<=b.col;c++){
         if(++referenced>maxReferences)throw Error('수식 참조 연산량 한도를 초과했습니다.');
-        const cell=lookups.get(sheet)?.get(r+':'+c);vals.push(cell?calculate(sheet,cell,depth+1):null);
+        const cell=lookupCell(sheet,r,c);vals.push(cell?calculate(sheet,cell,depth+1):null);
       }return vals;
     }
     if(node.kind==='binary'){
