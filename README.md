@@ -1,3 +1,13 @@
+# DoCut v0.44 — reliable Excel-linked templates and complete report previews
+
+This source-only update corrects the project normalization workflow so a connected chart is **recalculated and actually replaced** when the underlying Excel dataset changes. Prior code calculated the replacement but discarded it. It also upgrades professional template detail previews from 60 to **120 native blocks**, with cheaper 22-block gallery thumbnails and responsive relative text sizing. The 20 identity families / 120 pages remain available; 19 are authored as independent native templates, and the UBS source-ratio vector pilot remains separate.
+
+The v0.41 large XLSX constraints remain **50 MiB / 3,000,000 cells / 10,000 formula cells**. See [v0.44 change log and manual QA prerequisites](docs/TEMPLATE_DATA_RELIABILITY_V044.md), [v0.43 20-pack catalog](docs/REFERENCE_REBUILD_TRACKER_V043.json) and [manual testing plan](docs/MANUAL_QA_V043.md).
+
+**QA caveat:** in-memory module checks passed for updated chart values, exported HTML, and detailed/compact preview lengths; **browser/device user testing, 120-page screenshot comparison, live 50 MiB memory performance and measured reference-design 99% fidelity have not been performed**. Do not treat the latest GitHub source as an already deployed operating site. Vercel Git auto-deploy and Actions/artifact generation stay disabled.
+
+---
+
 # DoCut Studio v0.43 — 20 independent professional report families
 
 This **source-only** release extends company-specific 16:9 native-editable report structures from 2 to **19** report identities (114 independently authored pages); the 20th family, UBS, retains its separate six-page source-ratio SVG vector pilot. In this release, 17 newly authored company modules (102 pages) replace previously generic color-swapped gallery layouts. All 20 catalog IDs and six-page insertion behavior remain intact.

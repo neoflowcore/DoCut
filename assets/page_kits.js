@@ -168,16 +168,18 @@ function inspectPacket(book,raw){if(typeof raw!=='string'||raw.length>MAX_BOOK_B
  for(const kit of incoming.templates){if(known.has(kit.id)){if(JSON.stringify(known.get(kit.id))!==JSON.stringify(kit))throw Error('Conflicting template ID '+kit.id);duplicates++;}else {added.push(kit);known.set(kit.id,kit);}}
  if(target.templates.length+added.length>MAX_KITS)throw Error('Import exceeds 20 template limit');return {added,duplicates,incoming:incoming.templates.length};}
 function mergePacket(book,raw){const plan=inspectPacket(book,raw);return {...normalizeBook(book),templates:[...normalizeBook(book).templates,...plan.added]};}
-function previewMarkup(page){
+function previewMarkup(page,options={}){
  if(!page||!Array.isArray(page.elements))throw Error('No template preview');
  const safe=C.escapeHTML,color=(v,other)=>/^#[a-f0-9]{6}$/i.test(String(v||''))?v:other;
- const els=page.elements.slice(0,MAX_BLOCKS).map(el=>{
+ const max=options.compact===true?22:page.designIdentity?120:MAX_BLOCKS;
+ const els=page.elements.slice(0,max).map(el=>{
   const left=(Math.max(0,Math.min(1250,Number(el.x)||0))/12.8).toFixed(3),top=(Math.max(0,Math.min(700,Number(el.y)||0))/7.2).toFixed(3),w=(Math.max(30,Math.min(1280,Number(el.w)||30))/12.8).toFixed(3),h=(Math.max(18,Math.min(720,Number(el.h)||20))/7.2).toFixed(3);
   const text=String(el.type==='image'?'이미지 배치':el.text||el.data?.alt||'').replace(/\s+/g,' ').slice(0,120);
   const style=el.style||{};const foreground=color(style.color,'#293241'),background=color(style.background,'transparent');const radius=Math.max(0,Math.min(80,Number(style.radius)||0));
   const align=['center','right'].includes(style.align)?style.align:'left';const weight=[300,400,500,600,700,800,900].includes(+style.weight)?+style.weight:500;
+  const fontSize=Math.max(8,Math.min(105,Number(style.size)||20)),lineHeight=Math.max(.8,Math.min(2.3,Number(style.lineHeight)||1.2));
   const typ=String(el.type||'text');const clip=({circle:'circle(49% at 50% 50%)',ellipse:'ellipse(49% 40% at 50% 50%)',diamond:'polygon(50% 0%,100% 50%,50% 100%,0% 50%)'})[style.mask]||'none';
-  return `<div class="kit-map-block" data-kind="${safe(typ)}" style="left:${left}%;top:${top}%;width:${w}%;height:${h}%;border-radius:${radius/10}px;clip-path:${clip};background:${background};color:${foreground};font-weight:${weight};text-align:${align}" title="${safe(text)}"><span>${safe(text)}</span></div>`;
+  return `<div class="kit-map-block" data-kind="${safe(typ)}" style="left:${left}%;top:${top}%;width:${w}%;height:${h}%;border-radius:${radius/10}px;clip-path:${clip};background:${background};color:${foreground};font-size:clamp(4px,${(fontSize/12.8).toFixed(3)}cqw,60px);line-height:${lineHeight};font-weight:${weight};text-align:${align}" title="${safe(text)}"><span>${safe(text)}</span></div>`;
  }).join('');
  return `<div class="kit-map" role="img" aria-label="레이아웃과 컬러를 표시한 템플릿 구조 개략도">${els}</div>`;
 }

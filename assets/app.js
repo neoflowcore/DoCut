@@ -691,7 +691,7 @@ function batchSet(action){
  }
  function renderKits(){if(!KITS)return;
   const snap=state.kitSnapshot||readKits(),book=snap.status==='ok'?snap.book:KITS.empty(),builtin=KITS.BUILTINS.map(v=>({...v,isLocal:false})),personal=book.templates.map(v=>({...v,ko:v.name,hint:'이 페이지의 구조·스타일만 보관됨',tone:'paper',isLocal:true}));
-  const previewFor=pg=>pg.referenceFidelity?.mode==='source-ratio'?(root.DocutUBSVectorSource?.preview(pg)||'<div class="ubs-source-loading">UBS 벡터 준비 중</div>'):KITS.previewMarkup(pg);
+  const previewFor=(pg,compact=false)=>pg.referenceFidelity?.mode==='source-ratio'?(root.DocutUBSVectorSource?.preview(pg)||'<div class="ubs-source-loading">UBS 벡터 준비 중</div>'):KITS.previewMarkup(pg,{compact});
   const category=$('kitCategory').value,proMode=category.startsWith('pro'),personalOnly=category==='내 템플릿',q=String($('kitSearch').value||'').trim().toLocaleLowerCase(),colorChoice=$('kitPalette').value,safe=C.escapeHTML;
   const list=proMode?(PRO?.PACKS||[]).filter(p=>(category==='pro'||p.family===category.slice(4))):personalOnly?personal:builtin.filter(k=>category==='legacy'||k.category===category);
   const visible=list.filter(k=>!q||[k.name||'',k.ko||'',k.company||'',k.originalTitle||'',k.family||'',k.category||'',k.hint||''].join(' ').toLocaleLowerCase().includes(q));
@@ -699,7 +699,7 @@ function batchSet(action){
   $('kitGallery').innerHTML=visible.length?visible.map(k=>{
    const pro=proMode,pg=pro?PRO.buildPage(k.id,0,colorChoice):k.isLocal?k:KITS.builtPage(k.id,colorChoice);
    const title=pro?k.company:k.ko,subtitle=pro?(k.id==='FIN-16'&&colorChoice==='original'?'2025 원본 도형 기반 · 6장 · SVG 그래픽 실측':`${PRO.FAMILY_KO[k.family]} · ${k.design} · 6페이지`):k.name+' · '+k.category;
-   return `<button type="button" class="kit-choice ${pro?'pro-pack-choice':''} ${k.id===state.kitSelection?'selected':''}" data-kit-choice="${safe(k.id)}" aria-pressed="${k.id===state.kitSelection?'true':'false'}"><span class="kit-choice-swatch kit-choice-preview" style="background:${safe(pg.background||'#F7F7F4')}">${pro?previewFor(pg):kitMiniPreview(pg)}</span><span><b>${safe(title)}</b><small>${safe(subtitle)}</small></span></button>`;
+   return `<button type="button" class="kit-choice ${pro?'pro-pack-choice':''} ${k.id===state.kitSelection?'selected':''}" data-kit-choice="${safe(k.id)}" aria-pressed="${k.id===state.kitSelection?'true':'false'}"><span class="kit-choice-swatch kit-choice-preview" style="background:${safe(pg.background||'#F7F7F4')}">${pro?previewFor(pg,true):kitMiniPreview(pg)}</span><span><b>${safe(title)}</b><small>${safe(subtitle)}</small></span></button>`;
   }).join(''):'<p class="caption-small">검색에 맞는 레퍼런스가 없습니다.</p>';
   $('kitStorageStatus').textContent=snap.status==='ok'?`개인 템플릿 ${book.templates.length}/${KITS.MAX_KITS}개 · 이 기기에만 저장됩니다.`:'개인 템플릿 저장소 오류: '+snap.error;
   $('kitDamagedExport').hidden=snap.status!=='error'||!snap.raw;$('kitDamagedReset').hidden=snap.status!=='error'||!snap.raw;
@@ -710,7 +710,7 @@ function batchSet(action){
   let pg;
   if(isPro){
    pg=PRO.buildPage(chosen.id,state.kitPreviewIndex,colorChoice);
-   $('kitPackPageStrip').innerHTML=chosen.patterns.map((name,i)=>{const item=PRO.buildPage(chosen.id,i,colorChoice);return `<button type="button" class="kit-pack-page ${i===state.kitPreviewIndex?'active':''}" data-kit-page="${i}" aria-label="${i+1}페이지 ${safe(item.tab)}" aria-pressed="${i===state.kitPreviewIndex}"><span class="kit-pack-mini" style="background:${safe(item.background)}">${previewFor(item)}</span><b>${String(i+1).padStart(2,'0')}</b><span>${safe(item.tab)}</span></button>`;}).join('');
+   $('kitPackPageStrip').innerHTML=chosen.patterns.map((name,i)=>{const item=PRO.buildPage(chosen.id,i,colorChoice);return `<button type="button" class="kit-pack-page ${i===state.kitPreviewIndex?'active':''}" data-kit-page="${i}" aria-label="${i+1}페이지 ${safe(item.tab)}" aria-pressed="${i===state.kitPreviewIndex}"><span class="kit-pack-mini" style="background:${safe(item.background)}">${previewFor(item,true)}</span><b>${String(i+1).padStart(2,'0')}</b><span>${safe(item.tab)}</span></button>`;}).join('');
    $('kitReferenceEvidence').textContent=pg.referenceFidelity?'UBS 2025 원본 비율 벡터 뼈대 / PDF SVG 그래픽 점수 99% 이상 / 브라우저 출력 별도 검증':chosen.evidence==='official_index_only'?'공식 IR 자료 색인 확인 · 상세 페이지 검증 필요':'공개 원문을 참고한 독립 구성';
    const link=$('kitReferenceSource'),src=pg.referenceFidelity?.sourceUrl||chosen.source;link.href=/^https:\/\/[^\s"'<>]+$/i.test(src)?src:'#';link.textContent=pg.referenceFidelity?'UBS 2025 원본 PDF ↗':'공식 원본 보기 ↗';
    $('kitPreviewTitle').textContent=chosen.company+' · '+pg.tab;
