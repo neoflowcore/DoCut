@@ -4,7 +4,7 @@ const C=root.DocutCore;
 if(!root.DocutStoryPlayer&&typeof module!=='undefined'&&module.exports)require('./story_player.js');
 if(!C)throw Error('Base project module missing');
 const original={makeBlock:C.makeBlock,makeEffect:C.makeEffect,createPage:C.createPage,createProject:C.createProject,normalizeBlock:C.normalizeBlock};
-C.VERSION='0.42.0-development';
+C.VERSION='0.43.0-development';
 C.THEMES.push({id:'slate',name:'Slate Neutral',hint:'Low-saturation dark reports',color:'#68798d'}, {id:'mint',name:'Mint Soft',hint:'Accessible green emphasis',color:'#6f9f88'});
 C.STORY_MODES={
  strategy:['핵심 요약','추진 배경','현황 및 진단','근거와 사례','대안 비교','권고 및 실행','추진 일정','의사결정'],
@@ -113,7 +113,7 @@ C.normalizeBlock=raw=>{
  seed.exitOnNext=(Array.isArray(raw.exitOnNext)?raw.exitOnNext:[]).slice(0,3).map(C.normalizeEffect);
  if(type==='stat'){seed.data=root.DocutStatCharts.normalize(raw.data||{kind:'cohort',rows:[]});if(!seed.source.trim()||!seed.data.rows.length||(seed.data.kind==='control'&&!['lower','center','upper'].every(name=>Number.isFinite(seed.data.limits?.[name]))))seed.verified=false;}
  else if(['bar','line','donut'].includes(type)){
-  const d=raw.data||{},limit=raw.dataBinding&&['bar','line'].includes(type)?120:12;const labels=(Array.isArray(d.labels)?d.labels:['A','B']).slice(0,limit).map(v=>text(v,50));const values=(Array.isArray(d.values)?d.values:[0,0]).slice(0,limit).map(v=>finite(v,type==='donut'?0:-1e9,1e9,0));
+  const d=raw.data||{},limit=raw.dataBinding&&['bar','line'].includes(type)?360:12;const labels=(Array.isArray(d.labels)?d.labels:['A','B']).slice(0,limit).map(v=>text(v,50));const values=(Array.isArray(d.values)?d.values:[0,0]).slice(0,limit).map(v=>finite(v,type==='donut'?0:-1e9,1e9,0));
   seed.data={labels,values,palette:Object.prototype.hasOwnProperty.call(C.CHART_PALETTES||{},d.palette)?d.palette:'default',unit:text(d.unit,20)};
  }else if(type==='table'){
   const d=raw.data||{};seed.data={rows:(Array.isArray(d.rows)?d.rows:[]).slice(0,24).map(row=>(Array.isArray(row)?row:[]).slice(0,10).map(v=>text(v,400))),cells:(Array.isArray(d.cells)?d.cells:[]).slice(0,24).map(row=>(Array.isArray(row)?row:[]).slice(0,10).map(v=>({color:cleanColor(v?.color)||null,background:cleanColor(v?.background)||null,bold:!!v?.bold,align:['left','center','right'].includes(v?.align)?v.align:'left'})))};
@@ -168,7 +168,8 @@ C.normalizeProject=raw=>{
     }
   }
   const referenceFidelity=isUBS?{mode:'source-ratio',sourceEdition:'2025',sourcePage:f.sourcePage,sourceUrl:'https://www.ubs.com/content/dam/assets/wm/static/noindex/gwr-2025-digital.pdf',measuredScore:null,graphicsAuditScore:verifiedGraphics[f.sourcePage],status:'editor_browser_unverified',vectorOnly:true,designVersion:'ubs-source-svg-2025-pilot-3',...(Object.keys(vectorEdits).length?{vectorEdits}:{})}:undefined;
-  return {id,tab:text(pg.tab||'Page '+(i+1),80),customTab:!!pg.customTab,headline:text(pg.headline||pg.tab,150),subtitle:text(pg.subtitle,500),background:cleanColor(pg.background)||'',layout:C.LAYOUTS[pg.layout]?pg.layout:'hero',transition:C.EFFECT_CATALOG?.normalizeTransition(pg.transition)||'fade',playbackMs,captions,captionStyle:ST.STYLES.includes(pg.captionStyle)?pg.captionStyle:'cinema',elements:els,...(referenceFidelity?{referenceFidelity}:{})};
+  const designIdentity=typeof pg.designIdentity==='string'&&/^(STR|EARN|CORP|FIN|PUB)-\d{2}$/.test(pg.designIdentity)?pg.designIdentity:null;
+  return {id,tab:text(pg.tab||'Page '+(i+1),80),customTab:!!pg.customTab,headline:text(pg.headline||pg.tab,150),subtitle:text(pg.subtitle,500),background:cleanColor(pg.background)||'',layout:C.LAYOUTS[pg.layout]?pg.layout:'hero',transition:C.EFFECT_CATALOG?.normalizeTransition(pg.transition)||'fade',playbackMs,captions,captionStyle:ST.STYLES.includes(pg.captionStyle)?pg.captionStyle:'cinema',elements:els,...(designIdentity?{designIdentity}:{}),...(referenceFidelity?{referenceFidelity}:{})};
  });
  if(raw.reviews!=null&&!root.DocutReviewBoard&&(!Array.isArray(raw.reviews)||raw.reviews.length))throw Error('Review board module missing; refusing to drop review comments');
  const reviews=root.DocutReviewBoard?root.DocutReviewBoard.normalize(raw.reviews):[];

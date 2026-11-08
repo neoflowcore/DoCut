@@ -725,7 +725,20 @@ function batchSet(action){
   $('kitPreviewStage').style.background=pg.background||'#F7F7F4';$('kitPreviewCanvas').innerHTML=previewFor(pg);
   $('kitDelete').hidden=!chosen.isLocal;
  }
- root.addEventListener?.('docut-ubs-vector-ready',()=>{if($('kitDialog')?.open)renderKits();if(page()?.referenceFidelity?.mode==='source-ratio')renderSlide();});
+ function restorePendingUBSTextSlots(){
+  const recovery=root.DocutUBSSlotRecovery,vector=root.DocutUBSVectorSource;
+  if(!recovery)return 0;
+  const pending=recovery.collect(project,vector);
+  if(!pending.length)return 0;
+  let repaired=0;mutate(()=>{repaired=recovery.apply(project,pending);},false);
+  return repaired;
+ }
+ root.addEventListener?.('docut-ubs-vector-ready',()=>{
+  const restored=restorePendingUBSTextSlots();
+  if($('kitDialog')?.open)renderKits();
+  if(restored)renderAll();
+  else if(page()?.referenceFidelity?.mode==='source-ratio')renderSlide();
+ });
  function insertKit(){if(!KITS)return;const key=state.kitSelection,snap=state.kitSnapshot||readKits();if(project.pages.length>=50)return toast('50페이지 한도를 초과해 추가를 취소했습니다.');
   const pro=$('kitCategory').value.startsWith('pro')&&PRO?.find(key);
   const template=pro||KITS.BUILTINS.find(k=>k.id===key)||((snap.status==='ok'&&snap.book.templates.find(k=>k.id===key))||null);
@@ -1425,11 +1438,12 @@ function batchSet(action){
  root.addEventListener('beforeunload',()=>{if(state.editingId)finishEditing();});
  root.DocutInteractionFX?.install(document);
  $('projectName').value=project.title;
+ restorePendingUBSTextSlots();
  renderAll();updateSaveUI();
  // Only first-run documents and valid legacy documents need an initial checkpoint.
  // Do not increment a restored revision merely by opening a new browser tab.
  if(['empty','legacy'].includes(initialSaved.status))persist();
  if(['corrupt','corrupt-legacy'].includes(initialSaved.status))toast('기존 자동저장에 이상이 있어 원본을 보호했습니다.');
  if(root.DocutUBSVectorEdit)root.DocutUBSVectorEdit.instance=root.DocutUBSVectorEdit.mount({getPage:()=>page(),commit:mutate,render:renderSlide});
- root.DocutApp={paneLayout,workspaceDock,getProject:()=>C.clone(project),selectPage,addElement,loadProject(p){checkpoint();project=C.normalizeProject(p);state.pageIndex=0;state.selectedId=null;state.selectedIds.clear();persist();renderAll();},getState:()=>({...state,selectedIds:[...state.selectedIds],history:state.history.length,future:state.future.length,story:storyController?.getState()||null}),audit:()=>C.auditProject(project),quality:()=>QUALITY?.analyze(project),review:()=>REV?.summary(project),search:q=>C.searchProject(project,q)};
+ root.DocutApp={paneLayout,workspaceDock,getProject:()=>C.clone(project),selectPage,addElement,loadProject(p){checkpoint();project=C.normalizeProject(p);state.pageIndex=0;state.selectedId=null;state.selectedIds.clear();restorePendingUBSTextSlots();persist();renderAll();},getState:()=>({...state,selectedIds:[...state.selectedIds],history:state.history.length,future:state.future.length,story:storyController?.getState()||null}),audit:()=>C.auditProject(project),quality:()=>QUALITY?.analyze(project),review:()=>REV?.summary(project),search:q=>C.searchProject(project,q)};
 })(typeof globalThis!=='undefined'?globalThis:this);

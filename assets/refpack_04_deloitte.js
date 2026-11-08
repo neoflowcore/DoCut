@@ -1,0 +1,15 @@
+(function(root){'use strict';
+const R=root.DocutRefArt;if(!R)throw Error('Reference art core required');
+R.register('STR-04',{
+ tag:'WORKFORCE / FUTURES',bg:'#FFFFFF',fg:'#23312A',accent:'#B9E73C',soft:'#F2F8DC',paper:'#FFFFFF',dim:'#758079',font:'Arial',
+ chartKey:'lime-human-capital',chartName:'인적자본 / Lime',chartColors:['#2B4334','#8CC641','#B9E73C','#C2D6B7','#67746C'],
+ tabs:['일의 미래 질문','직원 응답','설문 결과와 해석','사람·프로세스','의사결정','전환 로드맵'],
+ pages:[
+ d=>{const c=d.c;d.box(0,0,560,720,'#1C372F');d.box(552,0,14,720,c.accent);d.type(53,55,441,34,'HUMAN CAPITAL / RESEARCH',15,c.accent,800);d.title(49,146,453,230,'일하는 방식은\n왜 바뀌어야\n하는가?',65,'#FFFFFF');d.line(54,503,243,10,c.accent);d.type(54,541,445,74,'기술 변화 × 직원 경험 × 조직 설계',23,'#DFECD9',540);d.box(623,80,539,558,c.soft);d.oval(694,146,318,318,'#D9F294');d.oval(778,230,238,238,'#2E6849');d.type(679,558,430,42,'원칙 → 실험 → 개선',24,c.fg,700);d.foot();},
+ d=>{const c=d.c;d.head('PEOPLE / SURVEY');d.title(67,115,1065,105,'직원 경험의 변화를 수치로 확인',45);d.type(67,229,1013,42,'해석은 응답의 분모·표집 방식과 함께 읽어야 합니다.',19,c.dim);d.chart('bar',67,299,638,306,'직원 응답 분포 / 데이터 연결');d.line(731,304,2,285,c.accent);d.type(768,317,409,34,'응답 기준 점검',24,c.fg,750);['표본의 대표성','조직·직무 구분','측정 기간'].forEach((s,i)=>{d.line(770,389+i*69,376,1,c.soft);d.type(770,402+i*69,343,42,'0'+(i+1)+'   '+s,19,c.dim);});d.foot();},
+ d=>{const c=d.c;d.head('WORKFORCE / EXHIBIT');d.box(64,122,1148,94,'#1C372F');d.title(83,133,1036,68,'핵심 변화와 그 이유를 나란히',37,'#FFFFFF');d.type(68,249,503,72,'주관적 기대와 관찰된 결과를\n동일 지표로 가정하지 마세요.',23,c.fg,700);d.chart('line',602,245,599,316,'조직 변화 추세 / 실측 업로드');d.box(69,455,458,144,c.soft);d.type(91,475,408,87,'가정 / 조사 집단 / 응답자 구성\n검토 사항 입력',19,c.fg);d.foot();},
+ d=>{const c=d.c;d.head('PEOPLE X PROCESS / SYSTEM');d.title(67,116,1080,90,'사람·기술·프로세스의 연결',45);const cols=['구성원','리더십','업무 체계','디지털 자원'];cols.forEach((v,i)=>{const x=69+(i%2)*571,y=260+Math.floor(i/2)*158;d.box(x,y,530,139,i===0||i===3?'#1C372F':c.soft);d.box(x,y,10,139,c.accent);d.type(x+28,y+22,468,48,v,29,i===0||i===3?'#FFFFFF':c.fg,750);d.type(x+28,y+83,465,34,'현황·마찰·책임자 입력',17,i===0||i===3?'#D8EBD6':c.dim);});d.foot();},
+ d=>{const c=d.c;d.head('DECISIONS / OPERATING MODEL');d.title(69,127,1050,96,'새로운 업무 방식의 선택 기준',43);d.table(69,269,1115,287,[['선택 대안','현장 영향','실행 비용','책임'],['업무 구조','검토','미입력','미입력'],['인재 개발','검토','미입력','미입력'],['기술 지원','검토','미입력','미입력']],'사람-프로세스 대안 매트릭스');d.line(70,574,1110,8,c.accent);d.type(75,599,1072,35,'결정은 조직별 영향과 실무 근거를 확인한 뒤 기록하세요.',18,c.dim);d.foot();},
+ d=>{const c=d.c;d.head('TRANSFORMATION / ROADMAP');d.box(64,119,332,466,'#1C372F');d.title(91,151,251,238,'설계와\n실행을\n연결',57,'#FFFFFF');d.line(95,433,180,7,c.accent);const rows=[['01','현재 진단'],['02','현장 공동설계'],['03','실행 실험'],['04','변화 검토']];rows.forEach((v,i)=>{const y=161+i*107;d.line(450,y,738,1,i===0?c.accent:c.soft);d.type(464,y+15,80,42,v[0],27,c.fg,800);d.type(563,y+13,534,44,v[1],29,c.fg,650);d.type(568,y+65,533,32,'담당·기준 시점·평가 지표',16,c.dim);});d.foot();}
+ ]});
+})(typeof globalThis!=='undefined'?globalThis:this);

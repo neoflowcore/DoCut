@@ -1,0 +1,15 @@
+(function(root){'use strict';
+const R=root.DocutRefArt;if(!R)throw Error('Reference art core required');
+R.register('EARN-06',{
+ bg:'#FFFFFF',fg:'#202B38',accent:'#1671D9',soft:'#E6F1FB',paper:'#FFFFFF',dim:'#718395',font:'Arial',
+ chartKey:'meta-earnings-blue',chartName:'실적 공시 / Blue',chartColors:['#1765CE','#64A3E7','#A9CFF0','#2A395A','#7898BB'],
+ tabs:['분기 핵심 성과','GAAP 주요 지표','매출 성장 기여','사업 부문','설비·투자','전망·공시'],
+ pages:[
+ d=>{const c=d.c;d.box(0,0,1280,18,c.accent);d.type(76,62,758,25,'EARNINGS SNAPSHOT  /  QUARTERLY',15,c.accent,800);d.title(73,133,1055,128,'성과와 비교 기준을\n한 장에 제시',54);d.line(75,270,1128,2,c.soft);['매출액','영업 이익','설비 투자'].forEach((n,i)=>{d.box(75+i*379,308,346,214,i===1?c.soft:c.paper);d.type(95+i*379,331,296,34,n,18,c.dim,600);d.metric(92+i*379,385,308,108,n,'—',{background:i===1?c.soft:c.paper,color:c.fg});});d.type(76,568,1080,40,'분기 / 전년동기 / 연결 기준 / 출처를 확인하세요.',19,c.dim);d.foot();},
+ d=>{const c=d.c;d.head('GAAP KPI / CONTEXT');d.title(66,122,1080,83,'핵심 지표는 동일한 회계 기준으로',44);const v=['매출','영업이익','순이익','영업현금흐름','CAPEX','잉여현금'];v.forEach((s,i)=>{const x=67+(i%3)*386,y=246+Math.floor(i/3)*175;d.box(x,y,350,153,i%2?c.soft:c.paper);d.line(x,y,350,3,c.accent);d.metric(x+22,y+27,303,100,s,'—',{background:i%2?c.soft:c.paper,color:c.fg});});d.foot('GAAP·비GAAP 수치는 별도 주석으로 구별 / 측정 단위 검토');},
+ d=>{const c=d.c;d.head('REVENUE GROWTH / BRIDGE');d.title(68,118,1085,91,'전년 동기 대비 변화의 원인을 분해',44);d.chart('bar',69,251,734,328,'매출 성장·감소 요인 / 엑셀 연결');d.line(834,251,2,332,c.accent);d.type(871,274,305,37,'주요 기여 요인',23,c.fg,750);['가격·물량','지역별 성과','기준효과·환율'].forEach((s,i)=>{d.line(873,338+i*76,300,1,c.soft);d.type(872,358+i*76,281,40,s,18,c.dim);});d.foot();},
+ d=>{const c=d.c;d.head('OPERATING SEGMENTS');d.title(68,116,1082,90,'사업 부문별 실적과 비용을 분리',43);d.table(70,244,741,314,[['부문','매출','비용','영업이익'],['부문 A','—','—','—'],['부문 B','—','—','—'],['기타','—','—','—']],'사업부문 실적 / 원본 확인');d.chart('donut',837,262,360,281,'사업부별 구성비 · 엑셀 연결');d.foot();},
+ d=>{const c=d.c;d.head('INVESTMENT / INFRASTRUCTURE');d.title(69,119,1020,96,'미래 지출과 현재 성과를 구분',45);d.box(64,255,430,319,c.soft);d.type(87,283,374,38,'CAPITAL ALLOCATION',17,c.accent,800);d.metric(87,339,360,126,'설비투자 규모','—',{background:c.soft});d.chart('line',520,253,674,318,'투자 추세와 가정 / 엑셀 연결');d.type(522,590,655,36,'계약·시설·운영비 범위에 따라 수치 정의가 달라집니다.',16,c.dim);d.foot();},
+ d=>{const c=d.c;d.head('OUTLOOK / SAFE HARBOR');d.title(68,122,1070,89,'전망치와 확정 실적을 명시적으로 분리',43);d.line(71,239,1123,3,c.accent);d.box(72,263,539,288,c.paper);d.box(636,263,562,288,c.soft);d.type(96,282,481,42,'CURRENT / CONFIRMED',19,c.accent,800);d.type(100,345,460,104,'확정 실적\n기간·기준·단위 입력',25,c.fg,700);d.type(656,282,470,42,'FORWARD / CONDITIONAL',19,c.accent,800);d.type(659,345,483,104,'조건부 전망\n가정·면책문구 입력',25,c.fg,700);d.type(74,587,1056,45,'미래예측 진술의 불확실성을 별도로 작성하세요.',18,c.dim);d.foot();}
+ ]});
+})(typeof globalThis!=='undefined'?globalThis:this);

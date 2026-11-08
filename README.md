@@ -1,3 +1,15 @@
+# DoCut Studio v0.43 — 20 independent professional report families
+
+This **source-only** release extends company-specific 16:9 native-editable report structures from 2 to **19** report identities (114 independently authored pages); the 20th family, UBS, retains its separate six-page source-ratio SVG vector pilot. In this release, 17 newly authored company modules (102 pages) replace previously generic color-swapped gallery layouts. All 20 catalog IDs and six-page insertion behavior remain intact.
+
+Each company uses individually composed title/text/shapes/tables/charts/KPIs; a shared `reference_identity_core.js` implements **drawing and input validation only**, not common slide layout recipes. Excel chart palettes are unique and automatically suggested based on persisted `page.designIdentity`, even when a user adds a new chart to a template cover without an existing chart. Chart normalization no longer silently clips 360 bound points to 120. The v0.41 XLSX capacity remains 50 MiB compressed, 3 million cells and 10,000 formula cells. An additional UBS vector-load race fix restores only missing original text slots when the asynchronous SVG source finishes loading, without overwriting authored data; browser validation remains pending.
+
+**Validation scope:** code and model logic were inspected; actual browser/device editing of 120 pages, precise original-PDF pixel comparison and 50 MiB XLSX performance testing have **not** been performed. Do not interpret source completion as a measured 99% visual similarity or production release. Source report layouts do not contain their publishers' logos, photography, chart figures or real financial data. A chart initialized with 0 is a visibly unverified placeholder, not a financial claim.
+
+Documentation: [v0.43 20-pack technical checkpoint](docs/SEQUENTIAL_REFERENCE_REBUILD_V043.md), [pack status and measured phase gates](docs/REFERENCE_REBUILD_TRACKER_V043.json), [manual QA checklist — NOT RUN](docs/MANUAL_QA_V043.md). Automated Git builds, Actions, installation artifacts and Vercel Git deploys remain disabled. The hosted version may lag behind `main`.
+
+---
+
 # DoCut Studio — v0.42 sequential report identity upgrade (01–02 / 20)
 
 **STR-01 McKinsey** and **STR-02 Boston Consulting Group** now have standalone, **individually authored** native-editable 16:9 six-page designs, replacing the generic composition for their original-theme galleries. The McKinsey-informed pack uses blue editorial hierarchy, a serif research cover, evidence narrative, data exhibit, segment comparison, matrix and roadmap. The BCG-informed pack uses a separate dark-sea/white/green cover grammar, global region bars, chart+table exhibits, driver pillars, risk matrix and priorities. Both keep Excel-linked bar/line objects and preserve negative/zero input values.

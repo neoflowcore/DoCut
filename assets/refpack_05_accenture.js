@@ -1,0 +1,15 @@
+(function(root){'use strict';
+const R=root.DocutRefArt;if(!R)throw Error('Reference art core required');
+R.register('STR-05',{
+ tag:'TECHNOLOGY / FUTURES',bg:'#FEFDFE',fg:'#15141A',accent:'#8F00FF',soft:'#EADDFB',paper:'#FFFFFF',dim:'#6A6475',font:'Arial',
+ chartKey:'tech-violet',chartName:'기술 변화 / Violet',chartColors:['#6400D0','#8F00FF','#D48CFF','#2C0C59','#AE63D9'],
+ tabs:['기술 비전','변화의 신호','핵심 테마','자율적 시나리오','기회와 위험','실행 설계'],
+ pages:[
+ d=>{const c=d.c;d.box(0,0,641,720,'#430087');d.oval(36,67,416,417,'#8400E8');d.oval(247,212,350,350,'#D19AFF',.7);d.oval(63,364,370,296,'#6A00C7',.88);d.line(610,0,25,720,c.accent);d.type(698,82,517,28,'TECH VISION / FUTURE',17,c.accent,800);d.title(692,171,551,200,'기술이 만드는\n자율성의 전환',61,c.fg);d.type(700,422,479,127,'신뢰 · 시스템 · 사람의 접점을\n미래 시나리오로 재구성합니다.',23,c.fg);d.line(703,584,440,4,c.accent);d.type(703,609,486,25,'VISION / 실측 자료와 근거 입력',15,c.dim);},
+ d=>{const c=d.c;d.head('SIGNALS / THE NEW TECH STACK');d.title(65,116,1068,108,'새로운 신호는 연결될 때 의미가 커집니다',44);d.box(65,273,431,323,'#430087');d.oval(133,333,260,221,'#9810EA');d.type(536,283,626,36,'변화의 세 가지 관찰 지점',23,c.accent,700);['기술 성숙도','고객·현장 수요','신뢰·거버넌스'].forEach((s,i)=>{d.line(538,355+i*76,637,2,c.soft);d.type(548,368+i*76,560,49,'0'+(i+1)+'   '+s,23,c.fg,630);});d.foot();},
+ d=>{const c=d.c;d.head('THREE TECHNOLOGY THEMES');d.title(65,116,1081,99,'핵심 기술 테마는 서로 다른 속도로 진화',43);const topics=['자율화','상호작용','확장성'];topics.forEach((v,i)=>{const x=66+i*386;d.box(x,274,350,292,i===1?'#460096':c.soft);d.oval(x+61,307,225,129,i===1?'#9B28FA':'#D6B5FA',.95);d.type(x+23,454,309,53,v,32,i===1?'#FFFFFF':c.fg,750);d.type(x+25,509,305,37,'핵심 지표 / 입력',18,i===1?'#E9DBF7':c.dim);});d.foot();},
+ d=>{const c=d.c;d.head('AUTONOMOUS SYSTEM / SCENARIO');d.title(65,112,1070,102,'가정이 바뀌면 실행 경로도 달라집니다',43);d.oval(81,266,358,291,c.soft);d.oval(159,327,204,175,'#B45DF2');d.type(173,393,174,60,'핵심 기술',23,'#FFFFFF',800,{align:'center'});['확장 가능성','신뢰 조건','운영 통제'].forEach((s,i)=>{d.line(542,294+i*87,620,3,i===0?c.accent:c.soft);d.type(560,317+i*87,529,53,s+'  →  검토 기준 입력',23,c.fg,600);});d.foot();},
+ d=>{const c=d.c;d.head('OPPORTUNITY / RISK');d.title(66,116,1067,94,'기회와 위험을 같은 의사결정 화면에서',44);d.table(65,262,585,294,[['영역','기회','의존 조건','위험·통제'],['시스템','입력 필요','입력 필요','입력 필요'],['인력','입력 필요','입력 필요','입력 필요'],['고객','입력 필요','입력 필요','입력 필요']],'시나리오 영향 비교');d.line(672,266,2,286,c.accent);d.chart('bar',702,266,489,290,'기술 기회·위험 점검 / 엑셀 연결');d.line(66,570,1141,5,c.accent);d.foot();},
+ d=>{const c=d.c;d.head('ROADMAP / EXECUTION');d.box(0,105,1280,182,'#33005D');d.title(65,132,1074,96,'전환을 설계하는 네 단계',54,'#FFFFFF');const s=[['실험','검증 대상'],['확인','신뢰 조건'],['확장','운영 지표'],['재설계','성과 환류']];s.forEach((v,i)=>{const x=65+i*292;d.line(x,322,247,10,i===0?c.accent:c.soft);d.type(x,362,258,47,'0'+(i+1),36,c.accent,800);d.type(x,432,251,48,v[0],29,c.fg,700);d.type(x,510,244,41,v[1]+' 입력',19,c.dim);});d.foot();}
+ ]});
+})(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,0 +1,15 @@
+(function(root){'use strict';
+const R=root.DocutRefArt;if(!R)throw Error('Reference art core required');
+R.register('PUB-18',{
+ bg:'#F9FBFB',fg:'#183A42',accent:'#128A8F',soft:'#E7F6F3',paper:'#FFFFFF',dim:'#6C8287',font:'Arial',
+ chartKey:'global-risks-teal',chartName:'글로벌 위험 / Teal',chartColors:['#126B78','#179DB1','#80C9C9','#E2B16D','#A1AFC0'],
+ tabs:['글로벌 위험 개요','2년·10년 비교','위험 영향도','위험 연계 구조','변화 시나리오','대응 과제'],
+ pages:[
+ d=>{const c=d.c;d.box(0,0,353,720,'#173D43');d.line(353,0,10,720,c.accent);d.type(41,74,289,37,'RISK / OUTLOOK',18,'#B8F3E4',800);d.title(40,179,291,243,'미래의\n위험을\n연결해 보다',56,'#FFFFFF');d.line(46,543,200,7,'#6CD8C8');d.oval(504,136,499,410,c.soft);d.oval(704,234,285,248,'#64BFC0');d.type(541,587,592,38,'단기·장기 / 상호 의존 / 대응력',20,c.fg,700);},
+ d=>{const c=d.c;d.head('SHORT HORIZON VS LONG HORIZON');d.title(67,119,1112,93,'2년과 10년의 위험은 같은 순위가 아닙니다',43);d.box(67,260,533,306,c.soft);d.box(626,260,570,306,c.paper);d.type(92,284,480,42,'SHORT HORIZON / 2Y',20,c.accent,800);d.type(650,284,507,42,'LONG HORIZON / 10Y',20,c.accent,800);['경제','환경','기술','사회'].forEach((v,i)=>{d.type(92,351+i*48,437,37,v+' / 순위 미입력',18,c.fg);});d.chart('bar',646,350,527,209,'장단기 위험 순위·지표 / 엑셀 연결');d.foot();},
+ d=>{const c=d.c;d.head('RISK HEATMAP / EVIDENCE');d.title(66,117,1124,99,'영향도와 가능성을 독립적으로 평가',43);const colors=['#D9EFF1','#8BD4D1','#57B6B6','#218C91'];for(let row=0;row<4;row++)for(let col=0;col<5;col++){const x=68+col*147,y=277+row*72;d.box(x,y,131,61,colors[(row+2*col)%4]);}d.line(832,277,2,278,c.accent);d.type(875,301,304,42,'해석 유의',23,c.fg,750);d.type(876,374,289,145,'이 색상은 시각적 칸 구성 예시이며\n실제 위험 점수나 국가 순위를 뜻하지 않습니다.',17,c.dim,480,{lineHeight:1.5});d.foot();},
+ d=>{const c=d.c;d.head('INTERCONNECTED RISKS');d.title(67,120,1067,90,'위험은 서로 영향을 주고받습니다',45);d.oval(500,297,256,213,'#48A9B3');d.type(536,369,195,56,'중심 위험',24,'#FFFFFF',750,{align:'center'});const s=[['경제',102,287],['환경',918,277],['기술',100,498],['사회',919,483]];s.forEach((v,i)=>{d.box(v[1],v[2],220,98,i%2?c.soft:c.paper);d.type(v[1]+30,v[2]+27,174,42,v[0],25,c.fg,730);});d.line(330,368,173,3,c.accent);d.line(755,370,159,3,c.accent);d.line(331,560,170,3,c.accent);d.line(760,561,153,3,c.accent);d.foot();},
+ d=>{const c=d.c;d.head('SCENARIO / RESILIENCE');d.title(68,120,1055,91,'조건 변화에 따라 위험이 확대됩니다',43);const a=[['기준','현재 추세'],['충격','돌발 사건'],['완화','선제 대응']];a.forEach((v,i)=>{const x=67+i*382;d.line(x,270,346,9,i===0?c.accent:c.soft);d.type(x,306,333,47,v[0],31,c.fg,700);d.box(x,386,345,137,i===1?'#D9F0EC':c.paper);d.type(x+20,406,307,89,v[1]+'\n전제·판단 기준 입력',19,c.dim);});d.foot();},
+ d=>{const c=d.c;d.head('RESPONSES / GOVERNANCE');d.title(67,118,1097,95,'사전 대응은 관찰 지표부터',43);d.table(68,260,1122,305,[['위험 유형','조기 신호','대응 책임','점검 주기'],['경제·시장','—','—','—'],['환경·재난','—','—','—'],['기술·보안','—','—','—'],['사회·정치','—','—','—']],'위험별 대응 체계 / 자료 검토');d.foot();}
+ ]});
+})(typeof globalThis!=='undefined'?globalThis:this);
