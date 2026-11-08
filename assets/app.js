@@ -1436,6 +1436,15 @@ function batchSet(action){
   const next=refresh.apply(project,prepared);
   mutate(()=>{project=next;reconcile();});
   toast('새 원자료를 반영하고 연결된 '+prepared.linkedObjects+'개 차트·표·지표를 함께 갱신했습니다.');
+ },
+ commitPack:prepared=>{
+  const mapper=root.DocutTemplateDataMapper;
+  if(!mapper)throw Error('전문 보고서 차트 자동 매핑 모듈을 불러오지 못했습니다.');
+  // Apply in memory first, then protect the original report before mutating.
+  const next=mapper.apply(project,prepared);
+  if(!preMutationBackup('before inserting Excel values into company report charts'))throw Error('기존 보고서의 안전 백업을 확보하지 못했습니다. JSON으로 저장 후 다시 시도하세요.');
+  mutate(()=>{project=next;reconcile();});
+  toast(prepared.updates.length+'개 전문 템플릿 차트의 실제 엑셀 데이터 연결을 적용했습니다. 사용되지 않은 차트는 그대로 남겨두었습니다.');
  }});
  const projectPanel=root.DocutProjectPanel.mount({getProject:()=>C.clone(project),pageIndex:()=>state.pageIndex,commit:next=>{mutate(()=>{project=next;state.selectedId=null;state.selectedIds.clear();});writePageHash();toast('프레임·탭 설정을 적용했습니다.');}});
  root.addEventListener('hashchange',()=>{const index=F.indexForHash(project,root.location.hash);if(index!==null&&index!==state.pageIndex){if(state.preview)previewJump(index);else selectPage(index);}});

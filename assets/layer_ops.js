@@ -8,7 +8,7 @@ function duplicate(elements,ids,uid,bounds={width:1280,height:720},offset=26,lim
  const chosen=pick(elements,ids,!includeLocked);if(!chosen.length)return {elements:[...elements],added:[],ids:[]};
  if(elements.length+chosen.length>limit)throw Error('이 페이지에서 120개 이상의 요소를 만들 수 없습니다. 복제 작업을 취소했습니다.');
  const groups=new Map();const added=chosen.map(el=>{
-  const clone=deep(el);clone.id=uid('el');
+  const clone=deep(el);clone.id=uid('el');if(clone.templateSlot)clone.templateSlot=false;
   if(clone.groupId){if(!groups.has(clone.groupId))groups.set(clone.groupId,uid('group'));clone.groupId=groups.get(clone.groupId);}
   clone.x=Math.min(Math.max(0,bounds.width-clone.w),Math.max(0,clone.x+offset));
   clone.y=Math.min(Math.max(0,bounds.height-clone.h),Math.max(0,clone.y+offset));
@@ -70,6 +70,6 @@ function folders(elements){
  }
  return output;
 }
-function duplicatePage(page,uid){const next=deep(page),groups=new Map();next.id=uid('page');next.elements.forEach(el=>{el.id=uid('el');if(el.groupId){if(!groups.has(el.groupId))groups.set(el.groupId,uid('group'));el.groupId=groups.get(el.groupId);}});next.customTab=true;next.tab+=' (복사)';return next;}
+function duplicatePage(page,uid){const next=deep(page),groups=new Map();next.id=uid('page');if(next.designPackId)next.designPackId=uid('design-pack');next.elements.forEach(el=>{el.id=uid('el');if(el.groupId){if(!groups.has(el.groupId))groups.set(el.groupId,uid('group'));el.groupId=groups.get(el.groupId);}});next.customTab=true;next.tab+=' (복사)';return next;}
 const api={pick,duplicate,remove,nudge,alignGroup,distribute,folders,duplicatePage};root.DocutLayerOps=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

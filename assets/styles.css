@@ -635,3 +635,12 @@
 .kit-map{container-type:inline-size}
 .kit-map-block{padding:clamp(1px,.35cqw,4px);box-shadow:none;align-items:center}
 .kit-map-block[data-kind="title"]{font-weight:750}
+
+/* v0.46: Excel to report chart matching review; never hides ambiguous mappings. */
+.data-batch-review{margin:12px 0;padding:9px 12px;max-height:270px;overflow:auto;border:1px solid rgba(111,139,157,.37);border-radius:10px;background:rgba(232,240,244,.30)}
+.data-batch-review h3{font-size:14px;margin:0 0 8px;font-weight:750}
+.data-batch-review table{border-collapse:collapse;width:100%;font-size:12px;table-layout:auto;min-width:440px}
+.data-batch-review th,.data-batch-review td{padding:7px 9px;text-align:left;border-bottom:1px solid rgba(115,129,141,.25);overflow-wrap:anywhere;max-width:220px}
+.data-batch-review th{position:sticky;top:0;background:var(--panel,#edf2f4);z-index:1}
+.data-batch-review tr:last-child td{border-bottom:0}
+@media(max-width:640px){.data-batch-review{max-height:180px}.data-batch-review table{min-width:420px}}

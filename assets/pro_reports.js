@@ -53,7 +53,11 @@ const ART_DIRECTIONS=[
 function buildPage(packId,pageIndex=0,choice='original'){
  const p=find(packId),i=Number(pageIndex);
  if(!p||!Number.isInteger(i)||i<0||i>5)throw Error('존재하지 않는 전문 레퍼런스 페이지');
- const annotate=page=>{page.designIdentity=p.id;return page;};
+ const annotate=page=>{page.designIdentity=p.id;page.designPackId=C.uid('design-pack');
+  // Only newly authored, unfilled source charts are marked as template slots.
+  // Do not infer user-created chart placeholders from arbitrary zeros.
+  for(const el of page.elements||[])if(['bar','line','donut'].includes(el.type)&&!el.dataBinding&&!el.verified&&!el.source&&Array.isArray(el.data?.values)&&el.data.values.length&&el.data.values.every(n=>n===0))el.templateSlot=true;
+  return page;};
  if(p.id==='STR-01'){
   const editor=root.DocutEditorialMcKinsey||(typeof module!=='undefined'&&module.exports?require('./editorial_mckinsey.js'):null);
   if(!editor)throw Error('전문 리서치 페이지 모듈이 누락되었습니다: STR-01');
@@ -62,7 +66,7 @@ function buildPage(packId,pageIndex=0,choice='original'){
  if(p.id==='STR-02'){
   const editor=root.DocutEditorialBCG||(typeof module!=='undefined'&&module.exports?require('./editorial_bcg.js'):null);
   if(!editor)throw Error('전문 시장 보고서 모듈이 누락되었습니다: STR-02');
-  return editor.buildPage(i,paletteFor(p,choice),choice);
+  return annotate(editor.buildPage(i,paletteFor(p,choice),choice));
  }
  if(root.DocutRefArt?.has(p.id))return annotate(root.DocutRefArt.build(p.id,i,paletteFor(p,choice),choice));
  if(p.id==='FIN-16'&&choice==='original'&&root.DocutUBSVectorSource?.make)return annotate(root.DocutUBSVectorSource.make(i));
@@ -235,7 +239,7 @@ function buildPage(packId,pageIndex=0,choice='original'){
  type(d.scheme==='green-split'?423:76,663,d.scheme==='green-split'?754:1110,23,'SOURCE  ·  발행처 / 기준일 / 실제 수치 미입력     '+(i+1)+' / 6',13,dark?'#9EADBC':aux,480);
  return annotate({id:C.uid('page'),tab:head,customTab:true,headline:head,subtitle:'레이아웃 시안 · 실제 자료와 출처 입력 전',background:bg,layout:'blank',transition:'none',elements});
 }
-function buildPack(packId,choice='original'){const p=find(packId);if(!p)throw Error('Unknown professional report reference');return p.patterns.map((_,i)=>buildPage(packId,i,choice));}
+function buildPack(packId,choice='original'){const p=find(packId);if(!p)throw Error('Unknown professional report reference');const instanceId=C.uid('design-pack');return p.patterns.map((_,i)=>{const pg=buildPage(packId,i,choice);pg.designPackId=instanceId;return pg;});}
 const PACKS=Object.freeze(catalog.map(({id,company,originalTitle,family,source,evidence,patterns,colors,graphic,seed})=>Object.freeze({id,company,originalTitle,family,source,evidence,patterns:patterns.slice(),colors:{...colors},graphic,design:root.DocutRefArt?.get(id)?.tag||ART_DIRECTIONS[seed].name,designSystem:root.DocutRefArt?.has(id)?'independent-native-'+id.toLowerCase():ART_DIRECTIONS[seed].scheme})));
 const api={PACKS,find,buildPage,buildPack,PAGE_KINDS,FAMILY_KO,NAME_KO};
 root.DocutProReports=api;

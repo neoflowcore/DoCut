@@ -59,7 +59,7 @@ function build(id,index,colors={},choice='original'){
   metric:(x,y,w,h,caption,value='—',extra={})=>put('kpi',x,y,w,h,String(value)+'\n'+caption,{size:45,color:state.fg,background:state.paper,weight:800,shadow:0,radius:0,...extra}),
   chart:(kind,x,y,w,h,caption='엑셀 데이터 연결 · 기준일 미입력')=>{
    if(!['bar','line','donut'].includes(kind))throw Error('Chart kind unknown');
-   return put(kind,x,y,w,h,caption,{size:17,weight:600,color:state.fg,background:state.paper,radius:0,shadow:0},{labels:['기간 A','기간 B','기간 C','기간 D'],values:[0,0,0,0],palette:state.chartKey,unit:''});
+   const chart=put(kind,x,y,w,h,caption,{size:17,weight:600,color:state.fg,background:state.paper,radius:0,shadow:0},{labels:['기간 A','기간 B','기간 C','기간 D'],values:[0,0,0,0],palette:state.chartKey,unit:''});chart.templateSlot=true;return chart;
   },
   table:(x,y,w,h,rows,caption='실제 데이터 확인 후 입력')=>{
    if(!Array.isArray(rows)||rows.length>24||rows.some(row=>!Array.isArray(row)||row.length>10))throw Error('Table exceeds native editor limits');

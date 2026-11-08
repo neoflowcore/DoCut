@@ -1,3 +1,19 @@
+# DoCut v0.46 — 20 independent report identities, native Excel chart-slot mapping
+
+This **source-only** checkpoint adds native chart-slot tags to 19 independently authored six-page company designs (114 editable pages); the 20th reference, UBS, remains a six-page source-ratio SVG vector pilot. Existing chart areas can be filled from Excel without replacing their ID, position, size or company-specific color. A conservative, opt-in **current 6-page pack data mapping** suggests Excel column-to-chart assignments only when headers match clearly, displays unresolved mappings for review, and keeps separate instances of the same company report isolated.
+
+A new placement solver warns about possible overlap when inserting a chart on a page with no suitable native slot. Copying a chart does not duplicate its auto-fill eligibility; copying a page produces a new pack identity. For legacy reports without pack IDs, auto-fill is limited to a six-page group around the currently selected page. A single review/apply action updates accepted charts and preserves original content on failure. Histogram chart creation remains available individually rather than quietly replacing report metrics during multi-page mapping.
+
+This does **not** claim original publisher endorsement or a 99% visual match. Official report logos, images and private datasets are not bundled. Current Excel constraints remain 50 MiB compressed XLSX, 3 million cells and 10,000 formula cells, subject to device memory. Source-model and geometry checks have been performed; full Node-suite, real browser/device validation, 120-page screenshot comparison, and 50 MiB import performance remain **NOT RUN**.
+
+- [v0.46 implementation and manual QA plan](docs/TEMPLATE_CHART_MAPPING_V046.md)
+- [v0.46 pack acceptance and phase tracking](docs/REFERENCE_REBUILD_TRACKER_V046.json)
+- [original multi-version manual QA checklist](docs/MANUAL_QA_V043.md)
+
+GitHub Actions/installer artifacts and Vercel Git auto-deploy remain disabled. The existing Vercel URL may point to an earlier commit until manual deployment for hands-on verification is explicitly requested.
+
+---
+
 # DoCut v0.45 — transactional Excel source refresh, 20-template data fidelity
 
 A source-only improvement to the 20 professional HTML report families (19 separately authored native template systems with six pages each, plus the separate six-page UBS vector pilot). Users can now explicitly **select an existing Excel/CSV source, upload its replacement, review all linked charts/tables/KPIs, and apply the update atomically**. When sheet names, linked cell ranges, protected objects, data integrity or source limits fail, the source report is not partially overwritten.
