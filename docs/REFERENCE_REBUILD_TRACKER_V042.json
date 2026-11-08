@@ -1,0 +1,237 @@
+{
+  "project": "DoCut",
+  "phase": "brand-specific-original-layout-rebuild",
+  "version": "v0.42-development",
+  "date": "2026-11-08",
+  "source": "docs/references/DoCut_Global_Professional_Reference20.json",
+  "policy": "code presence is NOT proof of visual fidelity or device usability",
+  "currentScope": "STR-01, STR-02 code enhanced; STR-03 next",
+  "counts": {
+    "totalPacks": 20,
+    "packsEnhancedInThisBatch": 2,
+    "pagesEnhancedInThisBatch": 12,
+    "browserVerifiedThisBatch": 0
+  },
+  "packs": [
+    {
+      "order": 1,
+      "id": "STR-01",
+      "company": "McKinsey",
+      "family": "strategy",
+      "codeStatus": "code_enhanced",
+      "focus": "blue-serif editorial, six independent layouts",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 2,
+      "id": "STR-02",
+      "company": "Boston Consulting Group",
+      "family": "strategy",
+      "codeStatus": "code_enhanced",
+      "focus": "lime/emerald growth research, six independent layouts",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 3,
+      "id": "STR-03",
+      "company": "Bain & Company",
+      "family": "strategy",
+      "codeStatus": "queued",
+      "focus": "red accent, investment evidence and fund matrices",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 4,
+      "id": "STR-04",
+      "company": "Deloitte",
+      "family": "strategy",
+      "codeStatus": "queued",
+      "focus": "asymmetric human capital editorial",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 5,
+      "id": "STR-05",
+      "company": "Accenture",
+      "family": "strategy",
+      "codeStatus": "queued",
+      "focus": "purple technology vision",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 6,
+      "id": "EARN-06",
+      "company": "Meta",
+      "family": "earnings",
+      "codeStatus": "queued",
+      "focus": "quarterly product earnings",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 7,
+      "id": "EARN-07",
+      "company": "Alphabet",
+      "family": "earnings",
+      "codeStatus": "queued",
+      "focus": "business-unit metrics",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 8,
+      "id": "CORP-08",
+      "company": "Microsoft",
+      "family": "corporate",
+      "codeStatus": "queued",
+      "focus": "annual letter and operating segments",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 9,
+      "id": "CORP-09",
+      "company": "Apple",
+      "family": "corporate",
+      "codeStatus": "queued",
+      "focus": "environmental narrative and emissions",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 10,
+      "id": "EARN-10",
+      "company": "NVIDIA",
+      "family": "earnings",
+      "codeStatus": "queued",
+      "focus": "high-contrast computing growth",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 11,
+      "id": "EARN-11",
+      "company": "Tesla",
+      "family": "earnings",
+      "codeStatus": "queued",
+      "focus": "operations and financial comparison",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 12,
+      "id": "EARN-12",
+      "company": "Netflix",
+      "family": "earnings",
+      "codeStatus": "queued",
+      "focus": "streaming revenue and cash flow",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 13,
+      "id": "CORP-13",
+      "company": "Amazon",
+      "family": "corporate",
+      "codeStatus": "queued",
+      "focus": "business lines, shareholder letter",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 14,
+      "id": "FIN-14",
+      "company": "Goldman Sachs",
+      "family": "finance",
+      "codeStatus": "queued",
+      "focus": "capital market and risk dashboard",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 15,
+      "id": "FIN-15",
+      "company": "JPMorganChase",
+      "family": "finance",
+      "codeStatus": "queued",
+      "focus": "long-term operating performance",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 16,
+      "id": "FIN-16",
+      "company": "UBS",
+      "family": "finance",
+      "codeStatus": "existing_vector_pilot",
+      "focus": "separate UBS SVG vector/source-page pilot",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": "Existing pilot; separate work item"
+    },
+    {
+      "order": 17,
+      "id": "FIN-17",
+      "company": "BlackRock",
+      "family": "finance",
+      "codeStatus": "queued",
+      "focus": "asset allocation and investor targets",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 18,
+      "id": "PUB-18",
+      "company": "World Economic Forum",
+      "family": "policy",
+      "codeStatus": "queued",
+      "focus": "risk network and severity",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 19,
+      "id": "PUB-19",
+      "company": "International Monetary Fund",
+      "family": "policy",
+      "codeStatus": "queued",
+      "focus": "economy forecast and scenarios",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    },
+    {
+      "order": 20,
+      "id": "PUB-20",
+      "company": "World Bank",
+      "family": "policy",
+      "codeStatus": "queued",
+      "focus": "geographic development outlook",
+      "browserQA": "NOT_RUN",
+      "visualReferenceScore": null,
+      "notes": null
+    }
+  ]
+}

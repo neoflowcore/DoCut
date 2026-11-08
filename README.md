@@ -1,3 +1,13 @@
+# DoCut Studio — v0.42 sequential report identity upgrade (01–02 / 20)
+
+**STR-01 McKinsey** and **STR-02 Boston Consulting Group** now have standalone, **individually authored** native-editable 16:9 six-page designs, replacing the generic composition for their original-theme galleries. The McKinsey-informed pack uses blue editorial hierarchy, a serif research cover, evidence narrative, data exhibit, segment comparison, matrix and roadmap. The BCG-informed pack uses a separate dark-sea/white/green cover grammar, global region bars, chart+table exhibits, driver pillars, risk matrix and priorities. Both keep Excel-linked bar/line objects and preserve negative/zero input values.
+
+Current result: **12/120 pages newly enhanced**, and the existing 20×6 page generator remains intact. Source-based structure and basic data/export-model checks were performed; **no Chromium/mobile practical verification or measured 99% pixel/design fidelity** is claimed. Other 18 packs, including the separate UBS vector pilot, remain different development/verification stages. Do not redistribute original logos, report photography or third-party chart artwork.
+
+See [v0.42 development notes](docs/SEQUENTIAL_REFERENCE_REBUILD_V042.md), [per-pack 20-step status tracker](docs/REFERENCE_REBUILD_TRACKER_V042.json) and [new static test](tests/editorial_str01_str02_v042.test.cjs). Next sequence item: **STR-03 Bain**. CI and automatic production deployment remain disabled.
+
+---
+
 # DoCut Studio — v0.41 Large Excel source analysis
 
 **XLSX 50 MiB, up to 3,000,000 populated workbook cells, 30,000 rows × 256 columns per sheet, and 10,000 formula cells.** The v0.41 streaming sheet XML parser removes full-worksheet DOM allocation; sparse indexed selection and bounded previews support large-table analysis. When a workbook has over 5,000 cells, only the selected derived chart/table result (plus original filename/sheet/range attribution) is saved in the editable project; the source workbook must be re-uploaded for unrelated raw ranges. Chart outputs are still limited to 360 points and XLSX uncompressed ZIP to 256 MiB.
