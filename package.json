@@ -1,6 +1,6 @@
 {
   "name": "docut-studio",
-  "version": "0.44.0-development",
+  "version": "0.45.0-development",
   "private": true,
   "description": "Zero-build offline-first 16:9 interactive report editor",
   "scripts": {

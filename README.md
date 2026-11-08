@@ -1,3 +1,15 @@
+# DoCut v0.45 — transactional Excel source refresh, 20-template data fidelity
+
+A source-only improvement to the 20 professional HTML report families (19 separately authored native template systems with six pages each, plus the separate six-page UBS vector pilot). Users can now explicitly **select an existing Excel/CSV source, upload its replacement, review all linked charts/tables/KPIs, and apply the update atomically**. When sheet names, linked cell ranges, protected objects, data integrity or source limits fail, the source report is not partially overwritten.
+
+For workbooks above 5,000 source cells, the refresh stores only validated chart/table/KPI-derived snapshots (up to 30 linked objects) while retaining original workbook filename/sheet/range provenance. It does not pretend that all source cells or formulas are preserved; source files must be retained for future analysis. **CSV codes such as 00123 remain strings**, cached Excel display formatting is kept for derived tables, preview statistics use a visibly labeled maximum 256-row sample, and final review processes the full selected range. Standalone HTML now embeds exact copies of the latest data-motion and workbook source to avoid editor-versus-export drift.
+
+The limits remain **50 MiB XLSX compressed / 3,000,000 populated cells / 10,000 formula cells**, subject to memory constraints. Changes are original native HTML/CSS/SVG code; no proprietary report logos, photos or supplied reference PDFs are bundled. 99% design similarity, 120-page real-browser parity and multi-device acceptance **have not been measured or passed**.
+
+See [v0.45 Excel source refresh development notes](docs/EXCEL_SOURCE_REFRESH_V045.md), [20-pack progress with explicit test gates](docs/REFERENCE_REBUILD_TRACKER_V045.json), and [manual browser QA checklist](docs/MANUAL_QA_V043.md). Vercel Git auto-deployment, CI builds and installer artifacts remain off. The hosted URL can still refer to an earlier commit until an explicitly authorized manual deployment.
+
+---
+
 # DoCut v0.44 — reliable Excel-linked templates and complete report previews
 
 This source-only update corrects the project normalization workflow so a connected chart is **recalculated and actually replaced** when the underlying Excel dataset changes. Prior code calculated the replacement but discarded it. It also upgrades professional template detail previews from 60 to **120 native blocks**, with cheaper 22-block gallery thumbnails and responsive relative text sizing. The 20 identity families / 120 pages remain available; 19 are authored as independent native templates, and the UBS source-ratio vector pilot remains separate.
