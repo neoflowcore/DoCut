@@ -66,7 +66,7 @@ C.normalizeBlock=raw=>{
  if(String(raw.text??'').length>12000)throw Error('Element text exceeds 12000 characters; split into separate blocks before importing');
  if(Array.isArray(raw.effects)&&raw.effects.length>3)throw Error('Element has more than 3 motion effects; import cancelled to prevent effect loss');
  if(raw.data&&['bar','line','donut'].includes(type)){
-  const d=raw.data;if((Array.isArray(d.labels)&&d.labels.length>12)||(Array.isArray(d.values)&&d.values.length>12))throw Error('Chart exceeds 12 data points; import cancelled to prevent missing values');
+  const d=raw.data;const limit=raw.dataBinding&&['bar','line'].includes(type)?120:12;if((Array.isArray(d.labels)&&d.labels.length>limit)||(Array.isArray(d.values)&&d.values.length>limit))throw Error('Chart exceeds '+limit+' data points; import cancelled to prevent missing values');
   if(Array.isArray(d.labels)&&d.labels.some(v=>String(v).length>50))throw Error('Chart label exceeds 50 characters');
   if(Array.isArray(d.labels)&&Array.isArray(d.values)&&d.labels.length!==d.values.length)throw Error('Chart label and value counts differ; no data was silently skipped');
   if(Array.isArray(d.values)&&d.values.some(v=>(typeof v!=='number'&&typeof v!=='string')||String(v).trim()===''||!Number.isFinite(Number(v))))throw Error('Chart contains a non-numeric value; review the source');
@@ -113,7 +113,7 @@ C.normalizeBlock=raw=>{
  seed.exitOnNext=(Array.isArray(raw.exitOnNext)?raw.exitOnNext:[]).slice(0,3).map(C.normalizeEffect);
  if(type==='stat'){seed.data=root.DocutStatCharts.normalize(raw.data||{kind:'cohort',rows:[]});if(!seed.source.trim()||!seed.data.rows.length||(seed.data.kind==='control'&&!['lower','center','upper'].every(name=>Number.isFinite(seed.data.limits?.[name]))))seed.verified=false;}
  else if(['bar','line','donut'].includes(type)){
-  const d=raw.data||{};const labels=(Array.isArray(d.labels)?d.labels:['A','B']).slice(0,12).map(v=>text(v,50));const values=(Array.isArray(d.values)?d.values:[0,0]).slice(0,12).map(v=>finite(v,type==='donut'?0:-1e9,1e9,0));
+  const d=raw.data||{},limit=raw.dataBinding&&['bar','line'].includes(type)?120:12;const labels=(Array.isArray(d.labels)?d.labels:['A','B']).slice(0,limit).map(v=>text(v,50));const values=(Array.isArray(d.values)?d.values:[0,0]).slice(0,limit).map(v=>finite(v,type==='donut'?0:-1e9,1e9,0));
   seed.data={labels,values,palette:Object.prototype.hasOwnProperty.call(C.CHART_PALETTES||{},d.palette)?d.palette:'default',unit:text(d.unit,20)};
  }else if(type==='table'){
   const d=raw.data||{};seed.data={rows:(Array.isArray(d.rows)?d.rows:[]).slice(0,24).map(row=>(Array.isArray(row)?row:[]).slice(0,10).map(v=>text(v,400))),cells:(Array.isArray(d.cells)?d.cells:[]).slice(0,24).map(row=>(Array.isArray(row)?row:[]).slice(0,10).map(v=>({color:cleanColor(v?.color)||null,background:cleanColor(v?.background)||null,bold:!!v?.bold,align:['left','center','right'].includes(v?.align)?v.align:'left'})))};

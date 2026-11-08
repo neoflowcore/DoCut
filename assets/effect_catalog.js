@@ -85,6 +85,7 @@ function recommended(type){return {title:'subtitle',text:'word-cascade',quote:'r
 for(const {kind,name} of KINDS)if(!C.EFFECTS.some(([id])=>id===kind))C.EFFECTS.push([kind,name]);
 for(const id of ['bronze','cobalt'])if(!C.THEMES.some(t=>t.id===id))C.THEMES.push({id,name:PALETTES[id].name,hint:'시각 자료의 대비·간결함을 위한 색상',color:PALETTES[id].accent});
 Object.assign(C.LAYOUTS,{metrics:'KPI summary',split:'Split narrative',quadrant:'Four-way comparison',portrait:'Editorial story',spotlight:'Single decision'});
+CHART_PALETTES.ubs=['#94752F','#94752F','#94752F','#94752F'];
 C.CHART_PALETTES=CHART_PALETTES;
 const api={CATEGORIES,KINDS,PRESETS,RECIPES,GALLERY,PALETTES,CHART_PALETTES,TRANSITIONS,SPECIAL,supports,createStack,recommended,normalizeTransition};
 C.EFFECT_CATALOG=api;root.DocutEffectCatalog=api;
