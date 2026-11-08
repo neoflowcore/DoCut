@@ -5,54 +5,118 @@
 // is required, except for the uniquely determined 1-column/1-chart case.
 const C=root.DocutCore,W=root.DocutWorkbook,DM=root.DocutDataMotion,A=root.DocutAnalytics,M=root.DocutLargeDataset,S=root.DocutChartSlotMapper;
 const copy=x=>JSON.parse(JSON.stringify(x));
-const IGNORE=new Set(['실제','실측','엑셀','연결','차트','그래프','데이터','자료','입력','결과','원본','시트','분석','비교','검토','기준','기간','분기','분기별','연도','연도별','연간','월별','추이','시계열','항목별','확인','업로드','단위','주요','보고서','지표','현황','변화','및','조사','비중','금액','값','total','data','value','chart','trend','series','actual','source','review','figure','quarter','quarterly','annual','report','metrics']);
+const IGNORE=new Set(['실제','실측','엑셀','연결','차트','그래프','데이터','자료','입력','결과','원본','시트','분석','비교','검토','기준','기간','분기','분기별','연도','연도별','연간','월별','추이','시계열','항목별','확인','업로드','단위','주요','보고서','지표','현황','변화','및','조사','비중','금액','값','total','data','value','chart','trend','series','actual','source','review','figure','quarter','quarterly','annual','report','metrics','지역','지역별','추세','전망','요인','분포','시각화','업데이트','추천','성장률비교']);
 // Narrow bilingual metric terms. Deliberately omit broad, ambiguous words
 // such as performance, return or value to avoid cross-mapping unrelated KPIs.
 const METRIC_ALIASES=Object.freeze({
  '매출':['revenue','sales'], '이익':['profit','earnings'], '수익':['profit','earnings'],
- '회수':['exit','realization','realisation'], '투자':['investment','capex'],
+ '회수':['exit','realization','realisation'], '투자':['investment','capex'], '거래':['deals','deal','transaction','transactions','investment'],
  '비용':['expense','expenses','cost'], '원가':['cost'],
  '성장':['growth'], '위험':['risk'], '물가':['inflation'],
  '배출':['emissions','emission'], '자원':['resource','resources'],
  '생산':['production'], '인도':['delivery','deliveries'],
  '설비':['capex'], '고객':['customer','customers']
 });
-function terms(text){
- return String(text||'').normalize('NFKC').toLowerCase().split(/[^\p{L}\p{N}]+/u)
-  .map(t=>t.replace(/^(?:전년|사업부별|지역별|기간별|항목별)/,'')).filter(t=>t.length>=2&&!IGNORE.has(t));
+// Report-chart auto binding is intentionally stricter than keyword search.
+// Exact metric words win; inferred matches must explain *every* substantive
+// part of the title (e.g. "투자 거래" cannot match an "투자 회수" column).
+// High-precision compound names whose business meanings are unambiguous.
+// Exact aliases supplement, rather than replace, the token-based confidence gate.
+const COMPOUND_ALIASES=Object.freeze({
+ '매출액':['revenue','sales','net sales'],
+ '영업이익':['operating profit','operating income'],
+ '매출총이익':['gross profit'],
+ '영업비용':['operating expenses','operating costs'],
+ '운영비용':['operating expenses','operating costs'],
+ '영업현금흐름':['operating cash flow'],
+ '영업이익률':['operating margin'],
+ '이익률':['profit margin','margin'],
+ '물가상승률':['inflation','inflation rate'],
+ '성장률':['growth rate','growth'],
+ '배출량':['emissions'],
+ '총자산':['total assets'],
+ '순이익':['net income','net profit'],
+ '현금흐름':['cash flow']
+});
+const SAFE_SUFFIXES=new Set(['액','금액','총액','수','율','률','비율','비중','합계','s','es']);
+const SAFE_PREFIXES=new Set(['영업','총','순','당기','누적','연간','분기','월간','전체','글로벌']);
+const RISKY_METRICS=new Set(['원가','비용','수익','이익','손실','회수','매출','투자','성장','금리','배출','생산','매입','물가','환율','cost','profit','earnings','growth','loss','revenue','sales','investment','capex','exit','risk','inflation','expense']);
+function terms(value){
+ return [...new Set(String(value||'').normalize('NFKC').toLowerCase()
+  .split(/[^\p{L}\p{N}]+/u)
+  .map(t=>t.replace(/^(?:전년|사업부별|지역별|기간별|항목별)/,''))
+  .filter(t=>t.length>=2&&!IGNORE.has(t)))];
 }
-function similarity(slotTitle,header){
- const t=terms(slotTitle),h=terms(header);
- let result=0;
- for(const word of t)for(const term of h){
-  if(word===term)result=Math.max(result,4+Math.min(2,word.length/5));
-  else if(METRIC_ALIASES[word]?.includes(term)||METRIC_ALIASES[term]?.includes(word))result=Math.max(result,3);
-  else if(word.length>=2&&term.length>=2&&(word.includes(term)||term.includes(word)))result=Math.max(result,2);
+function wordMatch(title,header){
+ if(title===header)return {score:6,reason:'exact'};
+ if(METRIC_ALIASES[title]?.includes(header)||METRIC_ALIASES[header]?.includes(title))return {score:5,reason:'alias'};
+ if(title.length<2||header.length<2)return {score:0,reason:'none'};
+ if(header.startsWith(title)&&SAFE_SUFFIXES.has(header.slice(title.length)))return {score:4,reason:'suffix'};
+ if(header.endsWith(title)&&SAFE_PREFIXES.has(header.slice(0,header.length-title.length)))return {score:4,reason:'prefix'};
+ return {score:0,reason:'none'};
+}
+function evidence(slotTitle,header){
+ const a=terms(slotTitle),b=terms(header);
+ const compound=a.length===1?COMPOUND_ALIASES[a[0]]:null;
+ if(compound?.includes(b.join(' ')))return {score:6,coverage:1,reason:'precise bilingual metric'};
+ if(!a.length||!b.length)return {score:0,coverage:0,reason:'no metric words'};
+ const matched=[],unmatched=[];
+ for(const t of a){
+  const hits=b.map(h=>({...wordMatch(t,h),from:t,to:h})).sort((x,y)=>y.score-x.score);
+  if(hits[0]?.score>0)matched.push(hits[0]);
+  else unmatched.push(t);
  }
- return result;
+ const coverage=matched.length/a.length;
+ if(coverage<1)return {score:0,coverage,reason:'title tokens missing: '+unmatched.join(', ')};
+ // A headline "매출" must not bind to a column "매출 원가"; extra
+ // independent financial metrics change the meaning of the value.
+ for(const word of b){
+  if(!RISKY_METRICS.has(word))continue;
+  if(matched.some(m=>word===m.to||word===m.from||wordMatch(m.from,word).score>=4))continue;
+  return {score:0,coverage,reason:'different additional metric: '+word};
+ }
+ return {score:matched.reduce((n,x)=>n+x.score,0),coverage,reason:matched.map(x=>x.reason).join('+')};
 }
-function candidateColumns(source,sheetId,range){
+function similarity(slotTitle,header){return evidence(slotTitle,header).score;}
+function candidateColumns(source,sheetId,range,options={}){
  const stats=A.suggest(source,sheetId,range);
- if(!stats.header)throw Error('자동 매핑은 제목 행이 필요합니다. 첫 행에 범주와 숫자 열 제목을 넣고 재시도하세요.');
- const numeric=stats.columns.filter(c=>c.numeric&&c.index!==stats.labelColumn);
- if(!numeric.length)throw Error('숫자 열이 하나도 없어 자동 연결을 만들지 않았습니다.');
- return {stats,numeric};
+ if(!stats.header&&options.header!==true)throw Error('자동 매핑은 제목 행이 필요합니다. 첫 행에 범주와 숫자 열 제목을 넣고 재시도하세요.');
+ const candidates=stats.columns.filter(c=>c.index!==stats.labelColumn);
+ if(!candidates.length)throw Error('범주 이외의 데이터 열이 없습니다.');
+ const numeric=candidates.filter(c=>c.numeric);
+ // In sparse Excel files a numeric column may start after the first 256 rows.
+ // Do not auto-guess it; offer explicit manual selection, then fully validate.
+ return {stats,numeric,candidates};
 }
-function match(slots,source,sheetId,range){
+function match(slots,source,sheetId,range,options={}){
  if(!Array.isArray(slots)||!slots.length)return {mappings:[],skipped:[]};
- const {stats,numeric}=candidateColumns(source,sheetId,range);
+ const {stats,numeric,candidates}=candidateColumns(source,sheetId,range,options);
  const result=[],skipped=[];
+ const overrides=options.manualOverrides&&typeof options.manualOverrides==='object'&&!Array.isArray(options.manualOverrides)?options.manualOverrides:{};
  for(const slot of slots){
-  const scored=numeric.map(c=>({...c,score:similarity(slot.text,c.name)})).sort((a,b)=>b.score-a.score||a.index-b.index);
-  let winner=scored[0],reason='';
-  if(!winner||winner.score<=0){
-   if(numeric.length===1&&slots.length===1)winner={...numeric[0],score:1};
-   else reason='차트 제목과 일치하는 고유한 숫자 열 제목이 없습니다.';
-  }else if(scored[1]&&Math.abs(scored[0].score-scored[1].score)<.001)reason='동일하게 맞는 숫자 열이 둘 이상입니다.';
-  if(reason){skipped.push({pageId:slot.pageId,blockId:slot.id,reason});continue;}
-  result.push({...slot,labelColumn:stats.labelColumn,valueColumn:winner.index,columnName:winner.name,matchScore:winner.score});
+  const key=slot.pageId+':'+slot.id,manual=overrides[key];
+  if(manual!=null&&manual!==''){
+   const index=Number(manual),found=Number.isInteger(index)?candidates.find(c=>c.index===index):null;
+   if(!found)skipped.push({pageId:slot.pageId,blockId:slot.id,reason:'직접 지정한 열이 변경되었거나 범위에 없습니다. 다시 선택하세요.'});
+   else result.push({...slot,labelColumn:stats.labelColumn,valueColumn:found.index,columnName:found.name,matchScore:0,matchReason:'user-confirmed',confirmed:true});
+   continue;
+  }
+  const scored=numeric.map(c=>({...c,evidence:evidence(slot.text,c.name)}))
+   .sort((a,b)=>b.evidence.score-a.evidence.score||a.index-b.index);
+  const winner=scored[0],runner=scored[1];
+  if(!winner||winner.evidence.score<4){
+   skipped.push({pageId:slot.pageId,blockId:slot.id,reason:'차트 제목에 의미상 일치하는 수치 열이 없습니다. 자동 연결 대신 개별 지정하세요.'});
+   continue;
+  }
+  // Avoid ambiguous columns, including a near-exact second match.
+  if(runner&&runner.evidence.score>0&&winner.evidence.score-runner.evidence.score<2){
+   skipped.push({pageId:slot.pageId,blockId:slot.id,reason:'비슷한 수치 열 둘 이상이 있습니다: '+winner.name+' / '+runner.name+'. 직접 선택하세요.'});
+   continue;
+  }
+  result.push({...slot,labelColumn:stats.labelColumn,valueColumn:winner.index,
+   columnName:winner.name,matchScore:winner.evidence.score,matchReason:winner.evidence.reason});
  }
- return {mappings:result,skipped,detectedHeader:stats.header,previewSampleRows:stats.sampleRows};
+ return {mappings:result,skipped,numericColumns:candidates.map(c=>({index:c.index,name:c.name,numeric:c.numeric})),detectedHeader:stats.header,previewSampleRows:stats.sampleRows};
 }
 function plan(project,source,options={}){
  if(!project||!Array.isArray(project.pages)||!Array.isArray(project.datasets)||!source||!Array.isArray(source.sheets))throw Error('보고서 또는 엑셀 데이터가 잘못되었습니다.');
@@ -88,7 +152,10 @@ function plan(project,source,options={}){
  const targets=scoped.flatMap(page=>
   S.list(page).filter(s=>s.placeholder).map(s=>({...s,pageId:page.id,pageName:page.tab})));
  if(!targets.length)throw Error('해당 보고서에서 연결되지 않은 원본 차트 자리를 찾지 못했습니다.');
- const matched=match(targets,source,sheetId,range);
+ const matched=match(targets,source,sheetId,range,{...options,header:options.header===true});
+ if(options.previewOnly===true)return {family,packInstanceId,sheetId,range,reviewSlots:targets,
+  numericColumns:matched.numericColumns,suggestions:matched.mappings,skipped:matched.skipped,
+  mode:analysisMode,aggregate,previewSampleRows:matched.previewSampleRows};
  if(!matched.mappings.length)throw Error('차트 제목과 명확하게 연결할 열 제목이 없습니다. 각 차트를 선택해 개별 연결하세요.');
  if(source.warnings?.some(w=>/대용량 (?:Excel|엑셀|원본)/.test(w)&&/(?:결과만|선택|보존)/.test(w)))throw Error('저장된 대용량 파생 결과에서는 원본 열을 추정하지 않습니다. 전체 XLSX를 다시 업로드하세요.');
  const existing=project.datasets.find(ds=>ds.id===source.id),cells=source.sheets.reduce((n,sh)=>n+sh.cells.length,0);
@@ -99,12 +166,14 @@ function plan(project,source,options={}){
  for(const entry of matched.mappings){
   const snapshotCount=snapshots.length;
   const pg=project.pages.find(p=>p.id===entry.pageId),block=S.target(pg,entry.id);
+  const provenance=(source.fileName+' / '+selected.name+'!'+range+' / '+entry.columnName+
+   (entry.confirmed?' · 작성자가 열을 직접 지정':' · 헤더 의미 자동 연결')).slice(0,480);
   const binding=DM.binding({datasetId:source.id,sheetId,range,labelColumn:entry.labelColumn,
-   valueColumn:entry.valueColumn,header:true,sort:'source',aggregate,analysisMode});
+   valueColumn:entry.valueColumn,header:true,sort:'source',aggregate,analysisMode,origin:provenance});
   try{
    const values=DM.values(source,binding);
    const materialized=DM.materialize(block,source,binding);
-   if(cells<=M.NATIVE_CELLS)results.push({...entry,block:materialized});
+   if(cells<=M.NATIVE_CELLS)results.push({...entry,block:materialized,originalSnapshot:JSON.stringify(block)});
    else{
     const compact=M.prepare(source,binding,block.type,materialized,values);
     if(compact.mode!=='analysis-only')throw Error('일괄 결과 스냅샷 생성 실패');
@@ -113,7 +182,7 @@ function plan(project,source,options={}){
     snapshots.push(sh);
     const cb=DM.binding({...compact.block.dataBinding,sheetId:derived,
      origin:source.fileName+' / '+selected.name+'!'+range+' / '+entry.columnName+' · 계산 결과'});
-    results.push({...entry,block:DM.materialize(compact.block,{...compact.dataset,sheets:[{...compact.dataset.sheets[0],id:derived}]},cb)});
+    results.push({...entry,block:DM.materialize(compact.block,{...compact.dataset,sheets:[{...compact.dataset.sheets[0],id:derived}]},cb),originalSnapshot:JSON.stringify(block)});
    }
   }catch(error){snapshots.length=snapshotCount;skipped.push({pageId:entry.pageId,blockId:entry.id,reason:String(error.message||error).slice(0,250)});}
  }
@@ -128,10 +197,10 @@ function plan(project,source,options={}){
    ]});
  }
  // Do not overwrite other linked dataset blocks if an old dataset already exists.
- return {family,packInstanceId,sheetId,range,dataset:stored,sourceCells:cells,
+ return {family,packInstanceId,sheetId,range,dataset:stored,sourceCells:cells,reviewSlots:targets,numericColumns:matched.numericColumns,
   storedCells:stored.sheets.reduce((n,s)=>n+s.cells.length,0),
   updates:results.map(r=>({pageId:r.pageId,blockId:r.id,block:r.block,columnName:r.columnName,
-   pageName:r.pageName,kind:r.type,matchScore:r.matchScore})),
+   pageName:r.pageName,kind:r.type,matchScore:r.matchScore,matchReason:r.matchReason,confirmed:r.confirmed===true,originalSnapshot:r.originalSnapshot})),
   skipped,analysisMode,aggregate,mode:cells<=M.NATIVE_CELLS?'original-cells':'derived-results'};
 }
 function apply(project,proposal){
@@ -145,12 +214,12 @@ function apply(project,proposal){
   const page=next.pages.find(p=>p.id===item.pageId);
   if(!page||page.designIdentity!==proposal.family||(proposal.packInstanceId&&page.designPackId!==proposal.packInstanceId))throw Error('페이지 또는 템플릿 묶음이 변경되어 자동 연결을 취소했습니다.');
   const current=S.target(page,item.blockId);
-  if(!S.isPlaceholder(current)||item.block.id!==current.id||item.block.type!==current.type)throw Error('빈 차트의 데이터 또는 타입이 변경돼 적용을 취소했습니다.');
+  if(!S.isPlaceholder(current)||item.block.id!==current.id||item.block.type!==current.type||item.originalSnapshot!==JSON.stringify(current))throw Error('검토 후 차트 내용·스타일·위치가 변경돼 적용을 취소했습니다. 다시 검토하세요.');
   page.elements[page.elements.indexOf(current)]=copy(item.block);
  }
  return C.normalizeProject(next);
 }
-const api=Object.freeze({terms,similarity,candidateColumns,match,plan,apply});
+const api=Object.freeze({terms,similarity,evidence,candidateColumns,match,plan,apply});
 root.DocutTemplateDataMapper=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

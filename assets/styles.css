@@ -644,3 +644,11 @@
 .data-batch-review th{position:sticky;top:0;background:var(--panel,#edf2f4);z-index:1}
 .data-batch-review tr:last-child td{border-bottom:0}
 @media(max-width:640px){.data-batch-review{max-height:180px}.data-batch-review table{min-width:420px}}
+
+/* v0.47 — human-reviewed Excel-to-chart column mapping. */
+.data-batch-review td .inspect-select{min-width:168px;width:100%;max-width:265px;font-size:12px;line-height:1.4}
+.data-batch-review td:nth-child(4){min-width:175px}
+.data-batch-review td:last-child{min-width:160px}
+.data-batch-review p{margin:4px 0 10px;font-size:12px;line-height:1.5;opacity:.85}
+.data-batch-review select:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+@media (max-width:640px){.data-batch-review td .inspect-select{min-width:150px}.data-batch-review td:last-child{min-width:150px}}

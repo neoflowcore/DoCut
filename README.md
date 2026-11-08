@@ -1,3 +1,17 @@
+# DoCut v0.47 — safer Excel header matching and editable chart-by-chart review
+
+**Source-only checkpoint.** The 20-company reference catalog is unchanged (19 independent six-page native families = 114 editable native pages, plus the separate six-page UBS SVG vector pilot). The Excel-to-template mapper no longer fills a chart merely because there is one chart and one numeric column. It checks the meaning of all substantive metric words, rejects near-equal conflicting columns, and supports a restricted set of precise Korean/English financial and policy metric terms.
+
+A **per-chart Excel column selector** is available inside the multi-page review. Previously unmatched charts can be assigned explicitly, but the report is only changed after full-data validation and a second review/apply step. Numeric and sparse/unknown column candidates are distinguished; invalid text, missing numeric caches and negative donut slices are rejected instead of coerced to zero. The source filename, sheet, selected A1 range, numeric column and automatic versus author-confirmed mapping remain attributable in exported HTML. A review snapshot also guards against edits to a chart's text, position, or styling between proposal and application.
+
+Existing capacity settings remain 50 MiB compressed XLSX, up to 3,000,000 cells, and 10,000 formulas (dependent on client memory). **No full Node-suite run, actual browser QA, 50 MiB memory/CPU benchmark, production release, or source-vs-PDF 99% design-fidelity measurement is claimed.** CI, automated Vercel Git deployments and EXE/APK/ZIP artifacts remain disabled.
+
+- [v0.47 mapping and human-review design](docs/EXCEL_TEMPLATE_MATCHING_V047.md)
+- [v0.47 phase completion and verification gates](docs/REFERENCE_REBUILD_TRACKER_V047.json)
+- [v0.46 independent template chart slots](docs/TEMPLATE_CHART_MAPPING_V046.md)
+
+---
+
 # DoCut v0.46 — 20 independent report identities, native Excel chart-slot mapping
 
 This **source-only** checkpoint adds native chart-slot tags to 19 independently authored six-page company designs (114 editable pages); the 20th reference, UBS, remains a six-page source-ratio SVG vector pilot. Existing chart areas can be filled from Excel without replacing their ID, position, size or company-specific color. A conservative, opt-in **current 6-page pack data mapping** suggests Excel column-to-chart assignments only when headers match clearly, displays unresolved mappings for review, and keeps separate instances of the same company report isolated.

@@ -12,9 +12,9 @@ function suggestedPalette(page,selected,ubs){
  const familyStyle=family==='STR-01'?'editorial-blue':family==='STR-02'?'emerald-market':root.DocutRefArt?.get(family)?.chartKey;
  return known.includes(familyStyle)?familyStyle:'default';
 }
-function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baseline=null,selectedBlock=null,uploadedCandidate=false,slotOverride=false,operationOverride=false,slotChoices=[];const get=id=>document.getElementById(id),esc=C.escapeHTML;
+function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baseline=null,selectedBlock=null,uploadedCandidate=false,slotOverride=false,operationOverride=false,slotChoices=[],manualOverrides={};const get=id=>document.getElementById(id),esc=C.escapeHTML;
  const dialog=document.createElement('dialog');dialog.id='dataMotionDialog';dialog.className='recovery-dialog data-dialog';document.body.append(dialog);
- function open(){serial++;candidate=null;proposal=null;baseline=null;uploadedCandidate=false;slotOverride=false;operationOverride=false;selectedBlock=api.getSelected?.()||null;if(!['bar','line','donut','table','kpi'].includes(selectedBlock?.type))selectedBlock=null;
+ function open(){serial++;candidate=null;proposal=null;baseline=null;uploadedCandidate=false;slotOverride=false;operationOverride=false;manualOverrides={};selectedBlock=api.getSelected?.()||null;if(!['bar','line','donut','table','kpi'].includes(selectedBlock?.type))selectedBlock=null;
   const currentPage=api.getPage?.();slotChoices=SLOTS?.list(currentPage,{selectedId:selectedBlock?.id})||[];
   if(selectedBlock&&!slotChoices.some(x=>x.id===selectedBlock.id)&&!selectedBlock.locked&&!selectedBlock.hidden)slotChoices.unshift({id:selectedBlock.id,type:selectedBlock.type,text:String(selectedBlock.text||selectedBlock.type).slice(0,90),selected:true,placeholder:false});
   const slotHtml=slotChoices.map(x=>'<option value="'+esc(x.id)+'"'+(selectedBlock?.id===x.id?' selected':'')+'>'+esc(SLOTS?.label(x)||x.text)+'</option>').join('');
@@ -39,14 +39,14 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
   get('dataClose').onclick=()=>{serial++;dialog.close();};
   get('workbookFile').onchange=async ev=>{const file=ev.target.files?.[0],token=++serial;if(!file)return;candidate=null;proposal=null;get('dataOptions').hidden=true;get('dataStatus').textContent='자료 분석 중…';try{const refreshTarget=get('dataRefreshTarget').value;const meta={id:refreshTarget||C.uid('data'),fileName:file.name,lastModified:file.lastModified};let result;if(/\.xlsx$/i.test(file.name)){if(file.size>W.LIMITS.bytes)throw Error('XLSX 파일은 50MB 이하만 지원합니다.');result=await W.importWorkbook(await file.arrayBuffer(),meta);}else if(/\.(csv|tsv)$/i.test(file.name)){if(file.size>1024*1024)throw Error('CSV·TSV는 1MB 이하만 지원합니다.');result=W.fromRows(root.DocutDataIO.parseDelimited(await file.text()),meta);}else throw Error('XLSX·CSV·TSV 파일만 지원합니다. 구형 XLS는 XLSX로 변환하세요.');if(token!==serial||!dialog.open)return;uploadedCandidate=true;load(result);if(refreshTarget){get('dataOperation').value='refresh';get('dataStatus').textContent='일괄 갱신 대상: '+api.getProject().datasets.find(d=>d.id===refreshTarget)?.fileName+' · 검토를 누르면 기존 연결 전체를 확인합니다.';}}catch(e){if(token===serial)get('dataStatus').textContent=e.message;}};
   get('existingDataset').onchange=ev=>{serial++;uploadedCandidate=false;get('dataRefreshTarget').value='';const ds=api.getProject().datasets.find(d=>d.id===ev.target.value);if(ds)load(ds);};
-  get('workbookSheet').onchange=()=>{resetRange();autoSuggest();preview();invalidate();};
-  for(const id of ['dataOperation','workbookRange','labelColumn','valueColumn','filterColumn','filterValue','dataHeader','dataKind','dataUnit','dataBasisDate','dataAnalysisMode','dataAggregate','dataBins','dataChartStyle','dataUBSPlacement'])get(id).onchange=()=>{if(id==='dataOperation')operationOverride=true;preview();invalidate();};
+  get('workbookSheet').onchange=()=>{manualOverrides={};resetRange();autoSuggest();preview();invalidate();};
+  for(const id of ['dataOperation','workbookRange','labelColumn','valueColumn','filterColumn','filterValue','dataHeader','dataKind','dataUnit','dataBasisDate','dataAnalysisMode','dataAggregate','dataBins','dataChartStyle','dataUBSPlacement'])get(id).onchange=()=>{if(id==='dataOperation')operationOverride=true;if(id==='workbookRange'||id==='dataHeader')manualOverrides={};preview();invalidate();};
   get('dataAutoDetect').onclick=()=>autoSuggest();get('dataReview').onclick=review;get('dataReviewPack').onclick=reviewPack;get('dataApply').onclick=apply;dialog.showModal();if(selectedBlock?.dataBinding){const ds=api.getProject().datasets.find(d=>d.id===selectedBlock.dataBinding.datasetId);if(ds){load(ds);get('existingDataset').value=ds.id;get('workbookSheet').value=selectedBlock.dataBinding.sheetId;get('workbookRange').value=selectedBlock.dataBinding.range;get('labelColumn').value=selectedBlock.dataBinding.labelColumn+1;get('valueColumn').value=selectedBlock.dataBinding.valueColumn+1;get('filterColumn').value=selectedBlock.dataBinding.filterColumn===null?0:selectedBlock.dataBinding.filterColumn+1;get('filterValue').value=selectedBlock.dataBinding.filterValue;get('dataHeader').checked=selectedBlock.dataBinding.header;get('dataKind').value=selectedBlock.type;get('dataUnit').value=selectedBlock.unit||'';get('dataBasisDate').value=selectedBlock.asOfDate||'';preview();}}
  }
  function selectedSlot(){const id=get('dataTargetSlot')?.value;if(!id)return null;const pg=api.getPage?.();const el=pg?.elements?.find(e=>e.id===id);if(!el||el.locked||el.hidden||!slotChoices.some(s=>s.id===id))return null;return el;}
  function invalidate(){proposal=null;get('dataApply').disabled=true;get('dataApply').textContent='검토한 시각화 삽입';get('dataBatchReview').hidden=true;get('dataBatchReview').replaceChildren();}
  function resetRange(){const sheet=candidate.sheets.find(s=>s.id===get('workbookSheet').value);get('workbookRange').value='A1:'+W.columnName(Math.max(0,sheet.columns-1))+Math.max(1,sheet.rows);}
- function load(ds){candidate=ds;get('workbookSheet').innerHTML=ds.sheets.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+s.rows+'행 × '+s.columns+'열</option>').join('');get('dataOptions').hidden=false;get('dataWarnings').textContent=ds.warnings.length?ds.warnings.join('\n'):'저장된 셀 값입니다. 데이터 사실·계산 정확성은 작성자가 확인하세요.';get('dataStatus').textContent=ds.fileName+(ds.warnings?.some(w=>w.includes('대용량 엑셀'))?' · 선택 통계 결과만 저장됨(다른 원본 열은 XLSX 재업로드 필요)':' · 원본 셀 값·서식 보존')+(ds.formulaStats?.total?' · 수식 '+ds.formulaStats.total+'개 (캐시 '+ds.formulaStats.cached+' / 재계산 '+ds.formulaStats.recalculated+' / 검토 '+ds.formulaStats.unresolved+')':'');resetRange();autoSuggest();invalidate();preview();}
+ function load(ds){candidate=ds;manualOverrides={};get('workbookSheet').innerHTML=ds.sheets.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+s.rows+'행 × '+s.columns+'열</option>').join('');get('dataOptions').hidden=false;get('dataWarnings').textContent=ds.warnings.length?ds.warnings.join('\n'):'저장된 셀 값입니다. 데이터 사실·계산 정확성은 작성자가 확인하세요.';get('dataStatus').textContent=ds.fileName+(ds.warnings?.some(w=>w.includes('대용량 엑셀'))?' · 선택 통계 결과만 저장됨(다른 원본 열은 XLSX 재업로드 필요)':' · 원본 셀 값·서식 보존')+(ds.formulaStats?.total?' · 수식 '+ds.formulaStats.total+'개 (캐시 '+ds.formulaStats.cached+' / 재계산 '+ds.formulaStats.recalculated+' / 검토 '+ds.formulaStats.unresolved+')':'');resetRange();autoSuggest();invalidate();preview();}
  function autoSuggest(){if(!candidate||!A)return;try{
    const suggestion=A.suggest(candidate,get('workbookSheet').value,get('workbookRange').value);
    get('labelColumn').value=suggestion.labelColumn+1;get('valueColumn').value=suggestion.valueColumn+1;
@@ -67,25 +67,68 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
  function preview(){if(!candidate)return;try{const selected=W.select(candidate,get('workbookSheet').value,get('workbookRange').value,{maxRows:25,maxColumns:20});get('dataSourceTrail').textContent=candidate.fileName+' → '+selected.sheet.name+' → '+get('workbookRange').value;const table=get('dataPreviewTable');table.replaceChildren();selected.rows.slice(0,25).forEach(row=>{const tr=document.createElement('tr');row.forEach(c=>{const td=document.createElement('td');td.textContent=c.formatted;td.title=c.address+' · '+c.format+(c.formula!==null?' · 수식 캐시':'');tr.append(td);});table.append(tr);});try{if(get('dataKind').value!=='table'&&A){const spec=DM.binding({datasetId:candidate.id,sheetId:get('workbookSheet').value,range:get('workbookRange').value,labelColumn:Number(get('labelColumn').value)-1,valueColumn:Number(get('valueColumn').value)-1,header:get('dataHeader').checked,filterColumn:Number(get('filterColumn').value)?Number(get('filterColumn').value)-1:null,filterValue:get('filterValue').value,analysisMode:get('dataAnalysisMode').value,aggregate:get('dataAggregate').value,bins:Number(get('dataBins').value)});const sampleSize=spec.header?257:256;const result=DM.values(candidate,spec,{maxRows:sampleSize});const sampled=selected.requestedRows>sampleSize;get('dataStatsSummary').textContent=(sampled?'표본 통계 ('+result.rows.length+'행) · 검토 시 전체 '+selected.requestedRows+'행 재계산 · ':'전체 범위 통계 · ')+A.summaryText(result.summary)+' · '+result.series.length+'개 그래프 점';}}catch(e){get('dataStatsSummary').textContent='수치 분석: '+e.message;}}catch(e){get('dataStatus').textContent=e.message;}}
  function renderBatchMapping(plan){
   const panel=get('dataBatchReview');panel.replaceChildren();
-  const heading=document.createElement('h3');heading.textContent='페이지별 엑셀 열 매핑 검토 · '+plan.updates.length+'개 연결 / '+plan.skipped.length+'개 보류';panel.append(heading);
-  const table=document.createElement('table'),head=document.createElement('thead'),row=document.createElement('tr');
-  for(const v of ['페이지','차트','열 제목','판정']){const th=document.createElement('th');th.textContent=v;row.append(th);}head.append(row);table.append(head);
-  const body=document.createElement('tbody');
-  for(const m of plan.updates){const tr=document.createElement('tr');for(const v of [m.pageName,m.kind,m.columnName,'자동 연결 추천']){const td=document.createElement('td');td.textContent=v;tr.append(td);}body.append(tr);}
-  for(const skip of plan.skipped){const tr=document.createElement('tr');for(const v of [String(skip.pageId),String(skip.blockId),'—','보류: '+skip.reason]){const td=document.createElement('td');td.textContent=v;tr.append(td);}body.append(tr);}
-  table.append(body);panel.append(table);panel.hidden=false;
+  const mapped=plan.updates||plan.suggestions||[],skipped=plan.skipped||[],slots=plan.reviewSlots||[];
+  const heading=document.createElement('h3');heading.textContent='6페이지 엑셀 차트 연결 · '+mapped.length+'개 가능 / '+skipped.length+'개 보류';
+  panel.append(heading);
+  const tip=document.createElement('p');tip.textContent='자동 추천이 맞지 않으면 차트마다 숫자 열을 직접 지정하세요. 변경 뒤에는 반드시 다시 검토해야 적용됩니다.';panel.append(tip);
+  const table=document.createElement('table'),thead=document.createElement('thead'),headRow=document.createElement('tr');
+  for(const label of ['페이지','차트','추천 열','수동 열 지정','판정']){const th=document.createElement('th');th.textContent=label;headRow.append(th);}
+  thead.append(headRow);table.append(thead);
+  const tbody=document.createElement('tbody');
+  for(const item of slots){
+   const key=item.pageId+':'+item.id,m=mapped.find(x=>x.pageId===item.pageId&&(x.blockId===item.id||x.id===item.id));
+   const fail=skipped.find(x=>x.pageId===item.pageId&&x.blockId===item.id),tr=document.createElement('tr');
+   for(const value of [item.pageName||item.pageId,item.text||item.type,m?.columnName||'—']){
+    const td=document.createElement('td');td.textContent=value;tr.append(td);
+   }
+   const selectCell=document.createElement('td'),select=document.createElement('select');
+   select.className='inspect-select';select.setAttribute('aria-label',String(item.pageName||'페이지')+' '+String(item.text||'차트')+' 숫자 열 직접 지정');
+   const autoOption=document.createElement('option');autoOption.value='';autoOption.textContent='자동 추천 / 보류 유지';select.append(autoOption);
+   for(const column of plan.numericColumns||[]){
+    const option=document.createElement('option');option.value=String(column.index);option.textContent=column.name+' (열 '+(column.index+1)+(column.numeric?' · 숫자 추정':' · 유형 미확인; 전체 검증')+')';select.append(option);
+   }
+   select.value=manualOverrides[key]??'';
+   select.onchange=()=>{
+    if(select.value)manualOverrides[key]=select.value;else delete manualOverrides[key];
+    proposal=null;get('dataApply').disabled=true;
+    get('dataStatus').textContent='숫자 열 선택이 변경되었습니다. 6페이지 자동 연결 검토를 다시 실행해야 적용할 수 있습니다.';
+   };
+   selectCell.append(select);tr.append(selectCell);
+   const result=document.createElement('td');
+   result.textContent=m?(m.confirmed?'작성자 지정 · 전체 데이터 확인 필요':'자동 추천 · '+(m.matchReason||'명칭 일치')+' · 점수 '+m.matchScore+' (정확도 % 아님)'):'보류: '+(fail?.reason||'지표 일치 미확인');
+   tr.append(result);tbody.append(tr);
+  }
+  table.append(tbody);panel.append(table);panel.hidden=false;
  }
  function reviewPack(){try{
   if(!PACK||!candidate)throw Error('자동 매핑할 엑셀 데이터를 먼저 선택하세요.');
   if(get('dataRefreshTarget').value||get('dataOperation').value==='refresh')throw Error('기존 데이터 전체 교체 중에는 새 팩 자동 매핑을 동시에 실행하지 않습니다. 교체 완료 후 다시 실행하세요.');
-  const p=api.getProject(),family=api.getPage?.()?.designIdentity;
+  const p=api.getProject(),page=api.getPage?.(),family=page?.designIdentity;
   baseline=JSON.stringify(p);
-  const planned=PACK.plan(p,candidate,{designIdentity:family,packInstanceId:api.getPage?.()?.designPackId||'',currentPageId:api.getPage?.()?.id||'',sheetId:get('workbookSheet').value,range:get('workbookRange').value,analysisMode:get('dataAnalysisMode').value,aggregate:get('dataAggregate').value});
+  const opts={designIdentity:family,packInstanceId:page?.designPackId||'',currentPageId:page?.id||'',
+   sheetId:get('workbookSheet').value,range:get('workbookRange').value,header:get('dataHeader').checked,
+   analysisMode:get('dataAnalysisMode').value,aggregate:get('dataAggregate').value,
+   manualOverrides:{...manualOverrides}};
+  const inspect=PACK.plan(p,candidate,{...opts,previewOnly:true});
+  if(!inspect.suggestions.length){
+   proposal=null;renderBatchMapping(inspect);get('dataApply').disabled=true;
+   get('dataStatus').textContent='자동 일치가 확인되지 않았습니다. 표의 수동 열 지정에서 올바른 숫자 열을 선택하고 다시 검토하세요.';
+   return;
+  }
+  let planned;
+  try{planned=PACK.plan(p,candidate,opts);}
+  catch(error){
+   proposal=null;renderBatchMapping(inspect);get('dataApply').disabled=true;
+   get('dataStatus').textContent='자동/수동으로 선택한 열의 전체 데이터 검증에 실패했습니다: '+error.message+' · 수동 열을 고치고 다시 검토하세요.';
+   return;
+  }
   proposal={packBind:planned};
   renderBatchMapping(planned);
   const assignments=planned.updates.map(item=>item.pageName+' ['+item.kind+'] ← '+item.columnName).slice(0,24).join(' / ');
-  const skipped=planned.skipped.length?' · 자동 연결 보류 '+planned.skipped.length+'개: '+planned.skipped.slice(0,3).map(item=>item.reason).join(' / '):'';
-  get('dataStatus').textContent='현재 템플릿 묶음 차트 연결 검토 · 원자료 '+planned.sourceCells.toLocaleString('ko-KR')+'셀 / 결과 '+planned.storedCells.toLocaleString('ko-KR')+'셀 · 분석 방식 '+planned.analysisMode+'/'+planned.aggregate+' · 연결 '+planned.updates.length+'개: '+assignments+skipped+' · 원본 수치·시트·범위 확인 후 적용하세요.';
+  const skipped=planned.skipped.length?' · 보류 '+planned.skipped.length+'개: '+planned.skipped.slice(0,3).map(item=>item.reason).join(' / '):'';
+  get('dataStatus').textContent='현재 템플릿 묶음 · 원자료 '+planned.sourceCells.toLocaleString('ko-KR')+
+   '셀 / 저장 결과 '+planned.storedCells.toLocaleString('ko-KR')+'셀 · 분석 '+planned.analysisMode+'/'+planned.aggregate+
+   ' · 연결 '+planned.updates.length+'개: '+assignments+skipped+' · 열 선택과 원본 수치를 확인하고 적용하세요.';
   get('dataApply').textContent='검토한 '+planned.updates.length+'개 템플릿 차트 연결 적용';
   get('dataApply').disabled=false;
  }catch(e){proposal=null;get('dataBatchReview').hidden=true;get('dataBatchReview').replaceChildren();get('dataApply').disabled=true;get('dataStatus').textContent=e.message;}}

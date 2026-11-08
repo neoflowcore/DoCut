@@ -35,9 +35,9 @@ test('Bain investment vs exit chart slots are populated from different well-matc
  assert.ok(X.exportHTML(result).includes('finance.xlsx'));
 });
 test('ambiguous numeric columns and unrelated titles remain unbound without guessed data',()=>{
- const p=make(),file=W.fromRows([['시점','회수액','회수량','투자 거래액'],['1',3,4,12],['2',2,5,13]],{id:'amb',fileName:'risk.xlsx'});
+ const p=make(),file=W.fromRows([['시점','회수액','회수액','투자 거래액'],['1',3,4,12],['2',2,5,13]],{id:'amb',fileName:'risk.xlsx'});
  const plan=T.plan(p,file,{designIdentity:'STR-03',sheetId:'1',range:'A1:D3'});
- assert.equal(plan.updates.length,1,'only clearly matched investment/exit item may be considered');
+ assert.equal(plan.updates.length,1,'duplicate exit column titles must be rejected; transaction data alone should match');
  assert.ok(plan.skipped.length>0);
 });
 test('no matching financial header yields explicit refusal, not fabricated numbers',()=>{
