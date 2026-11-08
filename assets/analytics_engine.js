@@ -1,9 +1,9 @@
 (function(root){
 'use strict';
-/* Client-side, deterministic, non-executing spreadsheet statistics.
- * Only cached numeric Excel cell values are analysed. No formulas are evaluated.
+/* Client-side, deterministic spreadsheet statistics. Excel caches and supported
+ * safely recalculated uncached formula results are analysed; no code is executed.
  */
-const MAX_POINTS=120;
+const MAX_POINTS=360;
 const METRICS=['sum','mean','count','min','max','median','last'];
 const MODES=['raw','group','histogram','cumulative'];
 function finiteNumber(value, address){
