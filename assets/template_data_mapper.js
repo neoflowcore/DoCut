@@ -137,6 +137,7 @@ function match(slots,source,sheetId,range,options={}){
  return {mappings:result,skipped,numericColumns:candidates.map(c=>({index:c.index,name:c.name,numeric:c.numeric})),detectedHeader:stats.header,previewSampleRows:stats.sampleRows,labelColumn:stats.labelColumn,labelConfidence:stats.labelConfidence};
 }
 function plan(project,source,options={}){
+ if(options.designIdentity==='FIN-16'&&root.DocutUBSPackMapper&&project?.pages?.some(p=>p.designIdentity==='FIN-16'&&p.referenceFidelity?.mode==='source-ratio'))return root.DocutUBSPackMapper.plan(project,source,options);
  if(!project||!Array.isArray(project.pages)||!Array.isArray(project.datasets)||!source||!Array.isArray(source.sheets))throw Error('보고서 또는 엑셀 데이터가 잘못되었습니다.');
  const family=String(options.designIdentity||'');
  const packInstanceId=String(options.packInstanceId||'');
@@ -222,6 +223,10 @@ function plan(project,source,options={}){
   skipped,analysisMode,aggregate,mode:cells<=M.NATIVE_CELLS?'original-cells':'derived-results'};
 }
 function apply(project,proposal){
+ if(proposal?.family==='FIN-16'&&proposal.updates?.some(u=>u.virtual===true)){
+  if(!root.DocutUBSPackMapper)throw Error('UBS 차트 연결 모듈을 불러올 수 없습니다.');
+  return root.DocutUBSPackMapper.apply(project,proposal);
+ }
  if(!proposal||!proposal.updates?.length||!proposal.dataset)throw Error('적용할 자동 차트 연결 결과가 없습니다.');
  const next=copy(project),existing=next.datasets.findIndex(d=>d.id===proposal.dataset.id);
  if(existing>=0){

@@ -1,3 +1,21 @@
+# DoCut v0.49 - UBS 원본 SVG 6페이지 · Excel 수동 차트 연결 및 로딩 복구
+
+**소스 구현 체크포인트 (2026-11-12).** FIN-16 UBS 2025 원본 비율 SVG의 13·16쪽에 두 개의 가상 차트 영역을 추가해, 사용자가 지정한 Excel 수치 열만 **검토 후** 실제 막대 차트로 삽입합니다. 입력 전에는 빈 차트가 원본 벡터를 덮지 않습니다. 원본 6페이지, 텍스트 슬롯, 도형 편집, 다른 19개 회사별 독립 레이아웃은 유지합니다.
+
+UBS SVG 로딩 실패 상태를 명시하고 재시도 버튼을 제공하며, 원본 6페이지 준비 전 삽입을 비활성화합니다. 데이터 적용은 두 개의 동일 회사 팩을 격리하고, 검토 중 변경·차트 영역 충돌·수치 형식 오류에서 원본을 보존합니다. UBS 차트 금색 팔레트와 Excel 파일·시트·범위·열 출처 정보를 함께 유지합니다.
+
+**진행 기준:** D0 레퍼런스 등록 20/20, D1 네이티브 고유 디자인 코드 19/20, D2 템플릿별 Excel 데이터 연결 소스 경로 20/20(19개 제한적 의미 매칭 + UBS 작성자 지정), D3 네이티브 구조 모델 검사 114/114입니다. 전체 제품 완성률과 원본 디자인 일치율은 **미산정**이며, 실제 120페이지 실기 인수는 0/120입니다. UBS PDF 벡터 추출 99.x% 지표를 브라우저 디자인 재현율로 오인하지 않습니다.
+
+**검증:** 이번 응답에서 실제 모듈 결합 검증 20개, 모의 SVG 실패·재시도 상태 점검 7개 항목을 확인했습니다. 전체 Node·Playwright·Windows/Android Brave 실기는 아직 실행하지 않았습니다. 설치 아티팩트·GitHub Actions·Git 자동 배포는 만들지 않습니다.
+
+- [v0.49 UBS Excel 구현·위험·수기검증 안내](docs/EXCEL_UBS_PACK_V049.md)
+- [v0.49 Phase별 개발 트래커](docs/REFERENCE_REBUILD_TRACKER_V049.json)
+- [v0.49 개발 재개 체크포인트](docs/RESUME_CHECKPOINT_V049.md)
+- [UBS 6페이지×Excel Node 회귀 테스트](tests/ubs_excel_recovery_v049.test.cjs)
+- [UBS 로딩 실패/재시도 Node 테스트](tests/ubs_loader_retry_v049.test.cjs)
+- [UBS 6페이지 Excel 수기 Chromium 테스트](tests/browser_ubs_excel_pack_v049.cjs)
+
+---
 # DoCut v0.47 — safer Excel header matching and editable chart-by-chart review
 
 **Source-only checkpoint.** The 20-company reference catalog is unchanged (19 independent six-page native families = 114 editable native pages, plus the separate six-page UBS SVG vector pilot). The Excel-to-template mapper no longer fills a chart merely because there is one chart and one numeric column. It checks the meaning of all substantive metric words, rejects near-equal conflicting columns, and supports a restricted set of precise Korean/English financial and policy metric terms.

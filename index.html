@@ -104,7 +104,7 @@
           <div id="kitGallery" class="kit-gallery" role="group" aria-label="페이지 디자인 목록"></div>
         </div>
         <div class="kit-preview"><strong id="kitPreviewTitle">레이아웃 미리보기</strong><p id="kitPreviewDescription" class="caption-small"></p><div id="kitPackPageStrip" class="kit-pack-pages" aria-label="전문 보고서 6페이지 선택" hidden></div><div id="kitPreviewStage" class="kit-preview-stage"><div id="kitPreviewCanvas" class="import-preview-canvas"></div></div><p id="kitPreviewDetails" class="caption-small" role="status"></p>
-          <div class="kit-ref-note" id="kitReferenceNote" hidden><span id="kitReferenceEvidence"></span><a id="kitReferenceSource" href="#" target="_blank" rel="noopener noreferrer">원본 보고서 보기 ↗</a></div>
+          <div class="kit-ref-note" id="kitReferenceNote" hidden><span id="kitReferenceEvidence"></span><a id="kitReferenceSource" href="#" target="_blank" rel="noopener noreferrer">원본 보고서 보기 ↗</a><button type="button" class="inspect-action" id="kitUBSRetry" data-action="kit-ubs-retry" hidden>UBS 원본 SVG 다시 불러오기</button></div>
 <div class="inspect-inline"><button class="primary-btn" type="button" data-action="kit-insert-pack" id="kitPackAdd" hidden>6페이지 전체 추가</button><button class="inspect-action" type="button" data-action="kit-insert">선택 페이지 추가</button><button class="inspect-action" type="button" data-action="kit-delete" id="kitDelete" hidden>내 템플릿 삭제</button><button class="inspect-action" data-action="kit-close" type="button">닫기</button></div>
         </div>
       </div>
@@ -185,6 +185,7 @@
   <script src="./assets/dataset_refresh.js" defer></script>
   <script src="./assets/chart_slot_mapper.js" defer></script>
   <script src="./assets/template_data_mapper.js" defer></script>
+  <script src="./assets/ubs_pack_mapper.js" defer></script>
   <script src="./assets/data_panel.js" defer></script>
   <script src="./assets/project_panel.js" defer></script>
   <script src="./assets/export.js" defer></script>

@@ -34,7 +34,7 @@ function renderVectorMarkup(svg,overrides){
  return result;
 }
 
-const api={pages:{},regions:{},status:'loading',sourcePages:PDF_PAGES,scores:VERIFIED_GRAPHICS,sourceUrl:URL,
+const api={pages:{},regions:{},status:'loading',error:'',sourcePages:PDF_PAGES,scores:VERIFIED_GRAPHICS,sourceUrl:URL,
 make(index){
  if(!Number.isInteger(index)||index<0||index>=6)throw Error('UBS 원본 비율 페이지 인덱스 범위 오류');
  const C=root.DocutCore;if(!C)throw Error('DoCut Core required');
@@ -49,7 +49,9 @@ layer(page){
  const no=page?.referenceFidelity?.sourcePage;
  if(page?.referenceFidelity?.mode!=='source-ratio'||!PDF_PAGES.includes(no))return '';
  const svg=this.pages[String(no)];
- return svg?'<div class="ubs-source-layer" role="img" aria-label="UBS 2025 공개 PDF의 텍스트 제외 벡터 구조">'+renderVectorMarkup(svg,page?.referenceFidelity?.vectorEdits)+'</div>':'<div class="ubs-source-layer ubs-source-loading" aria-live="polite">벡터 로딩 중</div>';
+ if(svg)return '<div class="ubs-source-layer" role="img" aria-label="UBS 2025 공개 PDF의 텍스트 제외 벡터 구조">'+renderVectorMarkup(svg,page?.referenceFidelity?.vectorEdits)+'</div>';
+ const message=this.status==='unavailable'?'UBS 원본 SVG 로드 실패 · 템플릿 창에서 다시 불러오기':'UBS 원본 SVG 벡터 로딩 중';
+ return '<div class="ubs-source-layer ubs-source-loading" role="status" aria-live="polite">'+message+'</div>';
 },
 preview(page){return this.layer(page);},
 async load(){
@@ -59,9 +61,26 @@ async load(){
  for(const no of PDF_PAGES){let svg=decoded[String(no)];if(typeof svg!=='string'||!/^<(?:ns0:)?svg\b/.test(svg)||/<(?:\w+:)?(?:text|image|script|foreignObject)\b/i.test(svg))throw Error('검증되지 않은 UBS SVG 자료');svg=svg.replace(/(<\/?)ns0:/g,'$1').replace('xmlns:ns0=','xmlns=');if(!/^<svg\b/.test(svg))throw Error('SVG 네임스페이스 복원 실패');decoded[String(no)]=svg;}
  const regions=await unpack(SLOT_B64);for(const no of PDF_PAGES){const rows=regions[String(no)];if(!Array.isArray(rows)||rows.length>120||rows.some(x=>!Array.isArray(x)||x.length!==6||x.some(n=>!Number.isFinite(n))))throw Error('UBS 원본 텍스트 박스 좌표 오류');}
  this.pages=decoded;this.regions=regions;this.status='ready';
- root.dispatchEvent?.(new Event('docut-ubs-vector-ready'));return decoded;
+ try{root.dispatchEvent?.(new root.Event('docut-ubs-vector-ready'));}catch(_){}return decoded;
 }};
+// A bad transient decompression state must not permanently lock the UBS gallery.
+// Repeated requests share one decode; complete successful pages are not re-decoded.
+const decode=api.load.bind(api);
+let inflight=null;
+api.load=function(){
+ if(api.status==='ready')return Promise.resolve(api.pages);
+ if(inflight)return inflight;
+ api.status='loading';api.error='';
+ inflight=decode().catch(error=>{
+  api.status='unavailable';
+  api.error=String(error?.message||error).slice(0,180);
+  try{root.dispatchEvent?.(new root.Event('docut-ubs-vector-error'));}catch(_){}
+  throw error;
+ }).finally(()=>{inflight=null;});
+ return inflight;
+};
+api.retry=function(){api.ready=api.load().catch(()=>null);return api.ready;};
 root.DocutUBSVectorSource=api;
-api.ready=api.load().catch(err=>{api.status='unavailable';api.error=err.message;return null;});
+api.ready=api.load().catch(()=>null);
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

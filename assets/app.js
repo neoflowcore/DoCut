@@ -325,7 +325,17 @@
   case 'validation-element':showElementPanel();break;case 'validation-more':state.validationVisible+=80;renderValidation();break;case 'validation-reset-ignored':state.validationIgnored.clear();renderValidation();break;case 'validation-refresh':renderValidation();break;case 'validation-copy-prompt':copyValidationPrompt();break;case 'validation-compare':compareValidationProposal();break;case 'validation-apply-proposal':applyValidationProposal();break;
   case 'quality':showQuality();break;case 'close-quality':closeDialog('qualityDialog');break;
   case 'quick-transition-apply':applyReference('transition',$('quickTransition').value);break;case 'preview-page-transition':{stopAnimation();const a=TRANS?.play($('slide'),page().transition||'fade');if(a)state.animations.push(a);break;}
-  case 'template-gallery':showKits();break;case 'kit-close':clearKitImport();closeDialog('kitDialog');break;case 'kit-insert':insertKit();break;case 'kit-insert-pack':insertProfessionalPack();break;case 'kit-capture':captureKit();break;case 'kit-delete':deleteKit();break;case 'kit-export':exportKitBook();break;case 'kit-import-open':$('kitFileInput').click();break;case 'kit-import-cancel':clearKitImport();break;case 'kit-import-apply':applyKitImport();break;case 'kit-reload':readKits();clearKitImport();renderKits();break;case 'kit-damaged-export':exportDamagedKitStore();break;case 'kit-damaged-reset':resetDamagedKitStore();break;
+  case 'template-gallery':showKits();break;case 'kit-close':clearKitImport();closeDialog('kitDialog');break;
+  case 'kit-ubs-retry':{
+   const source=root.DocutUBSVectorSource;
+   if(!source?.retry)return toast('UBS SVG 재시도 기능을 불러올 수 없습니다.');
+   source.retry().then(ok=>{
+    if($('kitDialog')?.open)renderKits();
+    toast(ok?'UBS 원본 SVG 6페이지를 다시 불러왔습니다.':'UBS SVG 재시도 실패: '+(source.error||'브라우저 압축 해제 기능 확인 필요'));
+   });
+   if($('kitDialog')?.open)renderKits();
+   break;
+  }case 'kit-insert':insertKit();break;case 'kit-insert-pack':insertProfessionalPack();break;case 'kit-capture':captureKit();break;case 'kit-delete':deleteKit();break;case 'kit-export':exportKitBook();break;case 'kit-import-open':$('kitFileInput').click();break;case 'kit-import-cancel':clearKitImport();break;case 'kit-import-apply':applyKitImport();break;case 'kit-reload':readKits();clearKitImport();renderKits();break;case 'kit-damaged-export':exportDamagedKitStore();break;case 'kit-damaged-reset':resetDamagedKitStore();break;
   case 'effects-studio':if(!FXSTUDIO)return toast('효과 미리보기 모듈을 불러오지 못했습니다.');FXSTUDIO.open({
    getSelected:()=>selected(),
    apply:(stack,name)=>{const el=selected();if(!el||el.locked)throw Error('선택 요소가 바뀌었거나 잠겨 있습니다.');mutate(()=>{selected().effects=stack.map(C.clone);});play($('slide'));toast(name+' 적용');},
@@ -705,24 +715,32 @@ function batchSet(action){
   $('kitDamagedExport').hidden=snap.status!=='error'||!snap.raw;$('kitDamagedReset').hidden=snap.status!=='error'||!snap.raw;
   const chosen=visible.find(k=>k.id===state.kitSelection);const isPro=Boolean(chosen&&proMode);
   $('kitPackAdd').hidden=!isPro;$('kitPackPageStrip').hidden=!isPro;$('kitReferenceNote').hidden=!isPro;
-  $('kitDialog').querySelector('[data-action=kit-insert]').disabled=!chosen;
+  const sourceSelected=Boolean(isPro&&chosen?.id==='FIN-16'&&colorChoice==='original');
+   const sourceStatus=root.DocutUBSVectorSource?.status||'unavailable';
+   $('kitUBSRetry').hidden=!sourceSelected||sourceStatus!=='unavailable';
+   $('kitPackAdd').disabled=sourceSelected&&sourceStatus!=='ready';
+   $('kitDialog').querySelector('[data-action=kit-insert]').disabled=!chosen||(sourceSelected&&sourceStatus!=='ready');
   if(!chosen){$('kitPreviewCanvas').innerHTML='';$('kitPreviewTitle').textContent='레퍼런스를 선택하세요';$('kitDelete').hidden=true;return;}
   let pg;
   if(isPro){
    pg=PRO.buildPage(chosen.id,state.kitPreviewIndex,colorChoice);
    $('kitPackPageStrip').innerHTML=chosen.patterns.map((name,i)=>{const item=PRO.buildPage(chosen.id,i,colorChoice);return `<button type="button" class="kit-pack-page ${i===state.kitPreviewIndex?'active':''}" data-kit-page="${i}" aria-label="${i+1}페이지 ${safe(item.tab)}" aria-pressed="${i===state.kitPreviewIndex}"><span class="kit-pack-mini" style="background:${safe(item.background)}">${previewFor(item,true)}</span><b>${String(i+1).padStart(2,'0')}</b><span>${safe(item.tab)}</span></button>`;}).join('');
-   $('kitReferenceEvidence').textContent=pg.referenceFidelity?'UBS 2025 원본 비율 벡터 뼈대 / PDF SVG 그래픽 점수 99% 이상 / 브라우저 출력 별도 검증':chosen.evidence==='official_index_only'?'공식 IR 자료 색인 확인 · 상세 페이지 검증 필요':'공개 원문을 참고한 독립 구성';
+   $('kitReferenceEvidence').textContent=pg.referenceFidelity?'UBS 2025 텍스트 제외 벡터 추출 참고지표만 존재 · 현재 편집 화면의 원본 디자인 일치율은 아직 미측정':chosen.evidence==='official_index_only'?'공식 IR 자료 색인 확인 · 상세 페이지 검증 필요':'공개 원문을 참고한 독립 구성';
    const link=$('kitReferenceSource'),src=pg.referenceFidelity?.sourceUrl||chosen.source;link.href=/^https:\/\/[^\s"'<>]+$/i.test(src)?src:'#';link.textContent=pg.referenceFidelity?'UBS 2025 원본 PDF ↗':'공식 원본 보기 ↗';
    $('kitPreviewTitle').textContent=chosen.company+' · '+pg.tab;
    $('kitPreviewDescription').textContent=pg.referenceFidelity?'UBS PDF 실제 도형 좌표 기반 · 글자/사진/로고 제외 · 원본 비율 SVG · 텍스트는 편집기로 추가':chosen.design+' · 독립 구성 / 원문 이미지는 미포함';
-   $('kitPreviewDetails').textContent=pg.referenceFidelity?`원본 PDF ${pg.referenceFidelity.sourcePage}쪽 · SVG 벡터 그래픽 실측 ${pg.referenceFidelity.graphicsAuditScore?.toFixed(3)}% · 본문·숫자 별도 입력 · 브라우저 원본 일치율 미검증`:`전문 레이아웃 ${state.kitPreviewIndex+1}/6 · 편집 요소 ${pg.elements.length}개 · 수치/출처 미입력 · 기존 페이지 유지`;
+   $('kitPreviewDetails').textContent=pg.referenceFidelity?`원본 PDF ${pg.referenceFidelity.sourcePage}쪽 · 원본 PDF 그래픽 추출 비교지표 ${pg.referenceFidelity.graphicsAuditScore?.toFixed(3)}% (DoCut 화면 디자인 일치율 아님) · 본문·숫자 별도 입력 · 브라우저 원본 일치율 미측정`:`전문 레이아웃 ${state.kitPreviewIndex+1}/6 · 편집 요소 ${pg.elements.length}개 · 수치/출처 미입력 · 기존 페이지 유지`;
   }else{
    pg=KITS.pageFromKit(chosen.isLocal?chosen:chosen.id,chosen.isLocal?'original':colorChoice);
    $('kitPreviewTitle').textContent=chosen.ko+' · '+chosen.name;
    $('kitPreviewDescription').textContent=chosen.hint+(chosen.isLocal?' · 개인 템플릿 색상 유지':colorChoice!=='original'?' · 컬러 팔레트 변경':'');
    $('kitPreviewDetails').textContent=`편집 요소 ${pg.elements.length}개 · 독립 신규 페이지 추가 · 기존 페이지 ${project.pages.length}장 유지`;
   }
-  $('kitPreviewStage').style.background=pg.background||'#F7F7F4';$('kitPreviewCanvas').innerHTML=previewFor(pg);
+  if(isPro&&chosen.id==='FIN-16'&&colorChoice==='original'){
+    const vector=root.DocutUBSVectorSource;
+    if(vector?.status!=='ready')$('kitPreviewDetails').textContent+=(vector?.status==='unavailable'?' · 원본 SVG 로딩 실패: '+(vector.error||'지원 환경 확인 필요'):' · 원본 SVG 읽는 중');
+   }
+   $('kitPreviewStage').style.background=pg.background||'#F7F7F4';$('kitPreviewCanvas').innerHTML=previewFor(pg);
   $('kitDelete').hidden=!chosen.isLocal;
  }
  function restorePendingUBSTextSlots(){
@@ -738,6 +756,10 @@ function batchSet(action){
   if($('kitDialog')?.open)renderKits();
   if(restored)renderAll();
   else if(page()?.referenceFidelity?.mode==='source-ratio')renderSlide();
+ });
+ root.addEventListener?.('docut-ubs-vector-error',()=>{
+  if($('kitDialog')?.open)renderKits();
+  if(page()?.referenceFidelity?.mode==='source-ratio')renderSlide();
  });
  function insertKit(){if(!KITS)return;const key=state.kitSelection,snap=state.kitSnapshot||readKits();if(project.pages.length>=50)return toast('50페이지 한도를 초과해 추가를 취소했습니다.');
   const pro=$('kitCategory').value.startsWith('pro')&&PRO?.find(key);

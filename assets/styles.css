@@ -652,3 +652,8 @@
 .data-batch-review p{margin:4px 0 10px;font-size:12px;line-height:1.5;opacity:.85}
 .data-batch-review select:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 @media (max-width:640px){.data-batch-review td .inspect-select{min-width:150px}.data-batch-review td:last-child{min-width:150px}}
+
+/* UBS import state never hides a failed vector behind an empty canvas. */
+.kit-ref-note #kitUBSRetry:not([hidden]){display:inline-flex;align-items:center;justify-content:center;margin-top:7px;border-color:#af8a57;min-height:30px}
+.kit-dialog #kitPackAdd:disabled{opacity:.5;cursor:not-allowed}
+.ubs-source-layer.ubs-source-loading{padding:12px 16px;box-sizing:border-box;text-align:center;font:600 13px/1.5 system-ui,Arial,sans-serif;color:#52606b}

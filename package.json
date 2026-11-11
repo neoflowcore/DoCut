@@ -1,6 +1,6 @@
 {
   "name": "docut-studio",
-  "version": "0.48.0-development",
+  "version": "0.49.0-development",
   "private": true,
   "description": "Zero-build offline-first 16:9 interactive report editor",
   "scripts": {
@@ -24,7 +24,8 @@
     "test:browser:v025": "python tests/browser_v025.py",
     "test:browser:v026": "python tests/browser_v026.py",
     "test:browser:v028": "python tests/browser_v028.py",
-    "test:browser:v032": "python tests/browser_v032.py"
+    "test:browser:v032": "python tests/browser_v032.py",
+    "test:browser:ubs:v049": "node tests/browser_ubs_excel_pack_v049.cjs"
   },
   "license": "UNLICENSED"
 }

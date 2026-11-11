@@ -4,7 +4,7 @@ const C=root.DocutCore;
 if(!root.DocutStoryPlayer&&typeof module!=='undefined'&&module.exports)require('./story_player.js');
 if(!C)throw Error('Base project module missing');
 const original={makeBlock:C.makeBlock,makeEffect:C.makeEffect,createPage:C.createPage,createProject:C.createProject,normalizeBlock:C.normalizeBlock};
-C.VERSION='0.47.0-development';
+C.VERSION='0.49.0-development';
 C.THEMES.push({id:'slate',name:'Slate Neutral',hint:'Low-saturation dark reports',color:'#68798d'}, {id:'mint',name:'Mint Soft',hint:'Accessible green emphasis',color:'#6f9f88'});
 C.STORY_MODES={
  strategy:['핵심 요약','추진 배경','현황 및 진단','근거와 사례','대안 비교','권고 및 실행','추진 일정','의사결정'],

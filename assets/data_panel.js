@@ -28,7 +28,8 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
    const el=document.createElement('option');el.value=option.id;el.textContent=option.name||option.id;paletteSelect.append(el);
   }
   const p=api.getProject();if(!p.datasets)p.datasets=[];
-  get('dataReviewPack').disabled=!Boolean(api.getPage?.()?.designIdentity)||api.getPage?.()?.designIdentity==='FIN-16'||!PACK;
+  get('dataReviewPack').disabled=!Boolean(api.getPage?.()?.designIdentity)||!PACK;
+   get('dataReviewPack').textContent=api.getPage?.()?.designIdentity==='FIN-16'?'UBS 원본 6페이지 · 숫자 열 수동 연결 검토':'현재 회사 6페이지 · 제목이 맞는 차트만 자동 연결';
   get('dataTargetSlot').onchange=()=>{slotOverride=true;operationOverride=true;const el=selectedSlot();get('dataOperation').value=el?'replace':'new';if(el){get('dataKind').value=el.type;if(el.data?.palette&&[...get('dataChartStyle').options].some(o=>o.value===el.data.palette))get('dataChartStyle').value=el.data.palette;}preview();invalidate();};
   get('dataRefreshTarget').onchange=()=>{
    serial++;candidate=null;uploadedCandidate=false;proposal=null;baseline=null;
@@ -68,9 +69,9 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
  function renderBatchMapping(plan){
   const panel=get('dataBatchReview');panel.replaceChildren();
   const mapped=plan.updates||plan.suggestions||[],skipped=plan.skipped||[],slots=plan.reviewSlots||[];
-  const heading=document.createElement('h3');heading.textContent='6페이지 엑셀 차트 연결 · '+mapped.length+'개 가능 / '+skipped.length+'개 보류';
+  const heading=document.createElement('h3');heading.textContent=(plan.family==='FIN-16'?'UBS 원본 6페이지 · 13·16쪽 엑셀 삽입':'6페이지 엑셀 차트 연결')+' · '+mapped.length+'개 가능 / '+skipped.length+'개 보류';
   panel.append(heading);
-  const tip=document.createElement('p');tip.textContent=(plan.labelConfidence==='unconfirmed-numeric-dimension'?'범주열이 모두 숫자라 자동 연결을 차단했습니다. 위의 범주 열 번호를 직접 수정하고 검토를 다시 누르세요. ':'')+'자동 추천이 맞지 않으면 차트마다 숫자 열을 직접 지정하세요. 변경 뒤에는 반드시 다시 검토해야 적용됩니다.';panel.append(tip);
+  const tip=document.createElement('p');tip.textContent=(plan.family==='FIN-16'?'UBS 원본 13·16쪽은 의미가 확인된 엑셀 숫자 열을 차트마다 직접 지정한 후에만 삽입합니다. 원본 PDF 도형과 편집 가능한 텍스트는 남습니다. ':'')+(plan.labelConfidence==='unconfirmed-numeric-dimension'?'숫자 범주열은 먼저 범주 열 번호를 직접 확인하세요. ':'')+'열 선택 뒤에는 다시 검토해야 적용됩니다.';panel.append(tip);
   const table=document.createElement('table'),thead=document.createElement('thead'),headRow=document.createElement('tr');
   for(const label of ['페이지','차트','추천 열','수동 열 지정','판정']){const th=document.createElement('th');th.textContent=label;headRow.append(th);}
   thead.append(headRow);table.append(thead);
