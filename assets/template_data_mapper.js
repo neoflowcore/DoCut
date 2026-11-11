@@ -2,7 +2,7 @@
 'use strict';
 // Conservative multi-page Excel-to-authored-chart matching.
 // No arbitrary numeric column guessing: an exact, explainable header match
-// is required, except for the uniquely determined 1-column/1-chart case.
+// is required even when there is only one numeric column.
 const C=root.DocutCore,W=root.DocutWorkbook,DM=root.DocutDataMotion,A=root.DocutAnalytics,M=root.DocutLargeDataset,S=root.DocutChartSlotMapper;
 const copy=x=>JSON.parse(JSON.stringify(x));
 const IGNORE=new Set(['실제','실측','엑셀','연결','차트','그래프','데이터','자료','입력','결과','원본','시트','분석','비교','검토','기준','기간','분기','분기별','연도','연도별','연간','월별','추이','시계열','항목별','확인','업로드','단위','주요','보고서','지표','현황','변화','및','조사','비중','금액','값','total','data','value','chart','trend','series','actual','source','review','figure','quarter','quarterly','annual','report','metrics','지역','지역별','추세','전망','요인','분포','시각화','업데이트','추천','성장률비교']);
@@ -10,7 +10,7 @@ const IGNORE=new Set(['실제','실측','엑셀','연결','차트','그래프','
 // such as performance, return or value to avoid cross-mapping unrelated KPIs.
 const METRIC_ALIASES=Object.freeze({
  '매출':['revenue','sales'], '이익':['profit','earnings'], '수익':['profit','earnings'],
- '회수':['exit','realization','realisation'], '투자':['investment','capex'], '거래':['deals','deal','transaction','transactions','investment'],
+ '회수':['exit','realization','realisation'], '투자':['investment','capex'], '거래':['deals','deal','transaction','transactions'],
  '비용':['expense','expenses','cost'], '원가':['cost'],
  '성장':['growth'], '위험':['risk'], '물가':['inflation'],
  '배출':['emissions','emission'], '자원':['resource','resources'],
@@ -23,6 +23,7 @@ const METRIC_ALIASES=Object.freeze({
 // High-precision compound names whose business meanings are unambiguous.
 // Exact aliases supplement, rather than replace, the token-based confidence gate.
 const COMPOUND_ALIASES=Object.freeze({
+ '투자 거래':['investment','investment deals','investment transactions'],
  '매출액':['revenue','sales','net sales'],
  '영업이익':['operating profit','operating income'],
  '매출총이익':['gross profit'],
@@ -55,21 +56,29 @@ function wordMatch(title,header){
  if(header.endsWith(title)&&SAFE_PREFIXES.has(header.slice(0,header.length-title.length)))return {score:4,reason:'prefix'};
  return {score:0,reason:'none'};
 }
+function metricUnit(value){
+ const s=String(value??'').normalize('NFKC').toLowerCase();
+ if(/[%％]|\b(?:percent|percentage|pct)\b|퍼센트/.test(s))return 'ratio';
+ if(/[$₩€¥]|\b(?:usd|krw|eur|jpy|dollars?|won)\b|(?:억원|만원|천원|원|달러|유로)/.test(s))return 'currency';
+ if(/\b(?:persons?|people|users?|employees?)\b|(?:명|인원|사람)/.test(s))return 'persons';
+ return null;
+}
 function evidence(slotTitle,header){
  const a=terms(slotTitle),b=terms(header);
- const compound=a.length===1?COMPOUND_ALIASES[a[0]]:null;
+ const leftUnit=metricUnit(slotTitle),rightUnit=metricUnit(header);
+ if(leftUnit&&rightUnit&&leftUnit!==rightUnit)return {score:0,coverage:0,reason:'conflicting units: '+leftUnit+' / '+rightUnit};
+ const compound=COMPOUND_ALIASES[a.join(' ')]||(a.length===1?COMPOUND_ALIASES[a[0]]:null);
  if(compound?.includes(b.join(' ')))return {score:6,coverage:1,reason:'precise bilingual metric'};
  if(!a.length||!b.length)return {score:0,coverage:0,reason:'no metric words'};
- const matched=[],unmatched=[];
+ const matched=[],unmatched=[],used=new Set();
  for(const t of a){
-  const hits=b.map(h=>({...wordMatch(t,h),from:t,to:h})).sort((x,y)=>y.score-x.score);
-  if(hits[0]?.score>0)matched.push(hits[0]);
+  const hits=b.map((h,i)=>({...wordMatch(t,h),from:t,to:h,index:i}))
+   .filter(x=>!used.has(x.index)).sort((x,y)=>y.score-x.score);
+  if(hits[0]?.score>0){matched.push(hits[0]);used.add(hits[0].index);}
   else unmatched.push(t);
  }
  const coverage=matched.length/a.length;
  if(coverage<1)return {score:0,coverage,reason:'title tokens missing: '+unmatched.join(', ')};
- // A headline "매출" must not bind to a column "매출 원가"; extra
- // independent financial metrics change the meaning of the value.
  for(const word of b){
   if(!RISKY_METRICS.has(word))continue;
   if(matched.some(m=>word===m.to||word===m.from||wordMatch(m.from,word).score>=4))continue;
@@ -81,11 +90,15 @@ function similarity(slotTitle,header){return evidence(slotTitle,header).score;}
 function candidateColumns(source,sheetId,range,options={}){
  const stats=A.suggest(source,sheetId,range);
  if(!stats.header&&options.header!==true)throw Error('자동 매핑은 제목 행이 필요합니다. 첫 행에 범주와 숫자 열 제목을 넣고 재시도하세요.');
+ if(Object.prototype.hasOwnProperty.call(options,'labelColumn')){
+  const explicit=Number(options.labelColumn);
+  if(!Number.isInteger(explicit)||!stats.columns.some(c=>c.index===explicit))throw Error('작성자가 선택한 범주 열이 유효하지 않습니다. 범위 내 열 번호를 다시 확인하세요.');
+  stats.labelColumn=explicit;
+  stats.labelConfidence='writer-selected';
+ }
  const candidates=stats.columns.filter(c=>c.index!==stats.labelColumn);
  if(!candidates.length)throw Error('범주 이외의 데이터 열이 없습니다.');
  const numeric=candidates.filter(c=>c.numeric);
- // In sparse Excel files a numeric column may start after the first 256 rows.
- // Do not auto-guess it; offer explicit manual selection, then fully validate.
  return {stats,numeric,candidates};
 }
 function match(slots,source,sheetId,range,options={}){
@@ -93,6 +106,11 @@ function match(slots,source,sheetId,range,options={}){
  const {stats,numeric,candidates}=candidateColumns(source,sheetId,range,options);
  const result=[],skipped=[];
  const overrides=options.manualOverrides&&typeof options.manualOverrides==='object'&&!Array.isArray(options.manualOverrides)?options.manualOverrides:{};
+ if(stats.labelConfidence==='unconfirmed-numeric-dimension'){
+  return {mappings:[],skipped:slots.map(slot=>({pageId:slot.pageId,blockId:slot.id,reason:'범주 열이 모두 숫자인 표에서 확인되지 않았습니다. 범주 열 번호를 직접 선택하고 다시 검토하세요.'})),
+   numericColumns:candidates.map(c=>({index:c.index,name:c.name,numeric:c.numeric})),
+   detectedHeader:stats.header,previewSampleRows:stats.sampleRows,labelColumn:stats.labelColumn,labelConfidence:stats.labelConfidence};
+ }
  for(const slot of slots){
   const key=slot.pageId+':'+slot.id,manual=overrides[key];
   if(manual!=null&&manual!==''){
@@ -116,7 +134,7 @@ function match(slots,source,sheetId,range,options={}){
   result.push({...slot,labelColumn:stats.labelColumn,valueColumn:winner.index,
    columnName:winner.name,matchScore:winner.evidence.score,matchReason:winner.evidence.reason});
  }
- return {mappings:result,skipped,numericColumns:candidates.map(c=>({index:c.index,name:c.name,numeric:c.numeric})),detectedHeader:stats.header,previewSampleRows:stats.sampleRows};
+ return {mappings:result,skipped,numericColumns:candidates.map(c=>({index:c.index,name:c.name,numeric:c.numeric})),detectedHeader:stats.header,previewSampleRows:stats.sampleRows,labelColumn:stats.labelColumn,labelConfidence:stats.labelConfidence};
 }
 function plan(project,source,options={}){
  if(!project||!Array.isArray(project.pages)||!Array.isArray(project.datasets)||!source||!Array.isArray(source.sheets))throw Error('보고서 또는 엑셀 데이터가 잘못되었습니다.');
@@ -155,7 +173,7 @@ function plan(project,source,options={}){
  const matched=match(targets,source,sheetId,range,{...options,header:options.header===true});
  if(options.previewOnly===true)return {family,packInstanceId,sheetId,range,reviewSlots:targets,
   numericColumns:matched.numericColumns,suggestions:matched.mappings,skipped:matched.skipped,
-  mode:analysisMode,aggregate,previewSampleRows:matched.previewSampleRows};
+  mode:analysisMode,aggregate,previewSampleRows:matched.previewSampleRows,labelColumn:matched.labelColumn,labelConfidence:matched.labelConfidence};
  if(!matched.mappings.length)throw Error('차트 제목과 명확하게 연결할 열 제목이 없습니다. 각 차트를 선택해 개별 연결하세요.');
  if(source.warnings?.some(w=>/대용량 (?:Excel|엑셀|원본)/.test(w)&&/(?:결과만|선택|보존)/.test(w)))throw Error('저장된 대용량 파생 결과에서는 원본 열을 추정하지 않습니다. 전체 XLSX를 다시 업로드하세요.');
  const existing=project.datasets.find(ds=>ds.id===source.id),cells=source.sheets.reduce((n,sh)=>n+sh.cells.length,0);

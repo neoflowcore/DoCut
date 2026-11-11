@@ -12,9 +12,9 @@ function suggestedPalette(page,selected,ubs){
  const familyStyle=family==='STR-01'?'editorial-blue':family==='STR-02'?'emerald-market':root.DocutRefArt?.get(family)?.chartKey;
  return known.includes(familyStyle)?familyStyle:'default';
 }
-function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baseline=null,selectedBlock=null,uploadedCandidate=false,slotOverride=false,operationOverride=false,slotChoices=[],manualOverrides={};const get=id=>document.getElementById(id),esc=C.escapeHTML;
+function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baseline=null,selectedBlock=null,uploadedCandidate=false,slotOverride=false,operationOverride=false,slotChoices=[],manualOverrides={},manualLabelOverride=false;const get=id=>document.getElementById(id),esc=C.escapeHTML;
  const dialog=document.createElement('dialog');dialog.id='dataMotionDialog';dialog.className='recovery-dialog data-dialog';document.body.append(dialog);
- function open(){serial++;candidate=null;proposal=null;baseline=null;uploadedCandidate=false;slotOverride=false;operationOverride=false;manualOverrides={};selectedBlock=api.getSelected?.()||null;if(!['bar','line','donut','table','kpi'].includes(selectedBlock?.type))selectedBlock=null;
+ function open(){serial++;candidate=null;proposal=null;baseline=null;uploadedCandidate=false;slotOverride=false;operationOverride=false;manualOverrides={};manualLabelOverride=false;selectedBlock=api.getSelected?.()||null;if(!['bar','line','donut','table','kpi'].includes(selectedBlock?.type))selectedBlock=null;
   const currentPage=api.getPage?.();slotChoices=SLOTS?.list(currentPage,{selectedId:selectedBlock?.id})||[];
   if(selectedBlock&&!slotChoices.some(x=>x.id===selectedBlock.id)&&!selectedBlock.locked&&!selectedBlock.hidden)slotChoices.unshift({id:selectedBlock.id,type:selectedBlock.type,text:String(selectedBlock.text||selectedBlock.type).slice(0,90),selected:true,placeholder:false});
   const slotHtml=slotChoices.map(x=>'<option value="'+esc(x.id)+'"'+(selectedBlock?.id===x.id?' selected':'')+'>'+esc(SLOTS?.label(x)||x.text)+'</option>').join('');
@@ -39,14 +39,14 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
   get('dataClose').onclick=()=>{serial++;dialog.close();};
   get('workbookFile').onchange=async ev=>{const file=ev.target.files?.[0],token=++serial;if(!file)return;candidate=null;proposal=null;get('dataOptions').hidden=true;get('dataStatus').textContent='자료 분석 중…';try{const refreshTarget=get('dataRefreshTarget').value;const meta={id:refreshTarget||C.uid('data'),fileName:file.name,lastModified:file.lastModified};let result;if(/\.xlsx$/i.test(file.name)){if(file.size>W.LIMITS.bytes)throw Error('XLSX 파일은 50MB 이하만 지원합니다.');result=await W.importWorkbook(await file.arrayBuffer(),meta);}else if(/\.(csv|tsv)$/i.test(file.name)){if(file.size>1024*1024)throw Error('CSV·TSV는 1MB 이하만 지원합니다.');result=W.fromRows(root.DocutDataIO.parseDelimited(await file.text()),meta);}else throw Error('XLSX·CSV·TSV 파일만 지원합니다. 구형 XLS는 XLSX로 변환하세요.');if(token!==serial||!dialog.open)return;uploadedCandidate=true;load(result);if(refreshTarget){get('dataOperation').value='refresh';get('dataStatus').textContent='일괄 갱신 대상: '+api.getProject().datasets.find(d=>d.id===refreshTarget)?.fileName+' · 검토를 누르면 기존 연결 전체를 확인합니다.';}}catch(e){if(token===serial)get('dataStatus').textContent=e.message;}};
   get('existingDataset').onchange=ev=>{serial++;uploadedCandidate=false;get('dataRefreshTarget').value='';const ds=api.getProject().datasets.find(d=>d.id===ev.target.value);if(ds)load(ds);};
-  get('workbookSheet').onchange=()=>{manualOverrides={};resetRange();autoSuggest();preview();invalidate();};
-  for(const id of ['dataOperation','workbookRange','labelColumn','valueColumn','filterColumn','filterValue','dataHeader','dataKind','dataUnit','dataBasisDate','dataAnalysisMode','dataAggregate','dataBins','dataChartStyle','dataUBSPlacement'])get(id).onchange=()=>{if(id==='dataOperation')operationOverride=true;if(id==='workbookRange'||id==='dataHeader')manualOverrides={};preview();invalidate();};
-  get('dataAutoDetect').onclick=()=>autoSuggest();get('dataReview').onclick=review;get('dataReviewPack').onclick=reviewPack;get('dataApply').onclick=apply;dialog.showModal();if(selectedBlock?.dataBinding){const ds=api.getProject().datasets.find(d=>d.id===selectedBlock.dataBinding.datasetId);if(ds){load(ds);get('existingDataset').value=ds.id;get('workbookSheet').value=selectedBlock.dataBinding.sheetId;get('workbookRange').value=selectedBlock.dataBinding.range;get('labelColumn').value=selectedBlock.dataBinding.labelColumn+1;get('valueColumn').value=selectedBlock.dataBinding.valueColumn+1;get('filterColumn').value=selectedBlock.dataBinding.filterColumn===null?0:selectedBlock.dataBinding.filterColumn+1;get('filterValue').value=selectedBlock.dataBinding.filterValue;get('dataHeader').checked=selectedBlock.dataBinding.header;get('dataKind').value=selectedBlock.type;get('dataUnit').value=selectedBlock.unit||'';get('dataBasisDate').value=selectedBlock.asOfDate||'';preview();}}
+  get('workbookSheet').onchange=()=>{manualOverrides={};manualLabelOverride=false;resetRange();autoSuggest();preview();invalidate();};
+  for(const id of ['dataOperation','workbookRange','labelColumn','valueColumn','filterColumn','filterValue','dataHeader','dataKind','dataUnit','dataBasisDate','dataAnalysisMode','dataAggregate','dataBins','dataChartStyle','dataUBSPlacement'])get(id).onchange=()=>{if(id==='dataOperation')operationOverride=true;if(id==='labelColumn'){manualLabelOverride=true;manualOverrides={};}if(id==='workbookRange'||id==='dataHeader'){manualOverrides={};manualLabelOverride=false;}preview();invalidate();};
+  get('dataAutoDetect').onclick=()=>{manualLabelOverride=false;autoSuggest();};get('dataReview').onclick=review;get('dataReviewPack').onclick=reviewPack;get('dataApply').onclick=apply;dialog.showModal();if(selectedBlock?.dataBinding){const ds=api.getProject().datasets.find(d=>d.id===selectedBlock.dataBinding.datasetId);if(ds){load(ds);get('existingDataset').value=ds.id;get('workbookSheet').value=selectedBlock.dataBinding.sheetId;get('workbookRange').value=selectedBlock.dataBinding.range;get('labelColumn').value=selectedBlock.dataBinding.labelColumn+1;get('valueColumn').value=selectedBlock.dataBinding.valueColumn+1;get('filterColumn').value=selectedBlock.dataBinding.filterColumn===null?0:selectedBlock.dataBinding.filterColumn+1;get('filterValue').value=selectedBlock.dataBinding.filterValue;get('dataHeader').checked=selectedBlock.dataBinding.header;get('dataKind').value=selectedBlock.type;get('dataUnit').value=selectedBlock.unit||'';get('dataBasisDate').value=selectedBlock.asOfDate||'';preview();}}
  }
  function selectedSlot(){const id=get('dataTargetSlot')?.value;if(!id)return null;const pg=api.getPage?.();const el=pg?.elements?.find(e=>e.id===id);if(!el||el.locked||el.hidden||!slotChoices.some(s=>s.id===id))return null;return el;}
  function invalidate(){proposal=null;get('dataApply').disabled=true;get('dataApply').textContent='검토한 시각화 삽입';get('dataBatchReview').hidden=true;get('dataBatchReview').replaceChildren();}
  function resetRange(){const sheet=candidate.sheets.find(s=>s.id===get('workbookSheet').value);get('workbookRange').value='A1:'+W.columnName(Math.max(0,sheet.columns-1))+Math.max(1,sheet.rows);}
- function load(ds){candidate=ds;manualOverrides={};get('workbookSheet').innerHTML=ds.sheets.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+s.rows+'행 × '+s.columns+'열</option>').join('');get('dataOptions').hidden=false;get('dataWarnings').textContent=ds.warnings.length?ds.warnings.join('\n'):'저장된 셀 값입니다. 데이터 사실·계산 정확성은 작성자가 확인하세요.';get('dataStatus').textContent=ds.fileName+(ds.warnings?.some(w=>w.includes('대용량 엑셀'))?' · 선택 통계 결과만 저장됨(다른 원본 열은 XLSX 재업로드 필요)':' · 원본 셀 값·서식 보존')+(ds.formulaStats?.total?' · 수식 '+ds.formulaStats.total+'개 (캐시 '+ds.formulaStats.cached+' / 재계산 '+ds.formulaStats.recalculated+' / 검토 '+ds.formulaStats.unresolved+')':'');resetRange();autoSuggest();invalidate();preview();}
+ function load(ds){candidate=ds;manualOverrides={};manualLabelOverride=false;get('workbookSheet').innerHTML=ds.sheets.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+s.rows+'행 × '+s.columns+'열</option>').join('');get('dataOptions').hidden=false;get('dataWarnings').textContent=ds.warnings.length?ds.warnings.join('\n'):'저장된 셀 값입니다. 데이터 사실·계산 정확성은 작성자가 확인하세요.';get('dataStatus').textContent=ds.fileName+(ds.warnings?.some(w=>w.includes('대용량 엑셀'))?' · 선택 통계 결과만 저장됨(다른 원본 열은 XLSX 재업로드 필요)':' · 원본 셀 값·서식 보존')+(ds.formulaStats?.total?' · 수식 '+ds.formulaStats.total+'개 (캐시 '+ds.formulaStats.cached+' / 재계산 '+ds.formulaStats.recalculated+' / 검토 '+ds.formulaStats.unresolved+')':'');resetRange();autoSuggest();invalidate();preview();}
  function autoSuggest(){if(!candidate||!A)return;try{
    const suggestion=A.suggest(candidate,get('workbookSheet').value,get('workbookRange').value);
    get('labelColumn').value=suggestion.labelColumn+1;get('valueColumn').value=suggestion.valueColumn+1;
@@ -60,7 +60,7 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
    get('dataUBSPlacementField').hidden=!slot;
    get('dataUBSPlacement').checked=Boolean(slot);
    get('dataChartStyle').value=suggestedPalette(api.getPage?.(),chosen||selectedBlock,Boolean(slot)&&!chosen);
-   get('dataStatsSummary').textContent='자동 감지 · '+suggestion.sampleRows+'행 · '+suggestion.distinctLabels+'개 범주 / '+suggestion.columns.map(c=>c.name+(c.numeric?'(숫자)':'')).join(', ')+(suggestion.warning?' · '+suggestion.warning:'');
+   get('dataStatsSummary').textContent='자동 감지 · '+suggestion.sampleRows+'행 · '+suggestion.distinctLabels+'개 범주 / 범주열 '+(suggestion.labelColumn+1)+' '+(suggestion.labelConfidence==='unconfirmed-numeric-dimension'?'(수동 확인 필수)': '(제목·형식 기반)')+' / '+suggestion.columns.map(c=>c.name+(c.numeric?'(숫자)':'')).join(', ')+(suggestion.warning?' · '+suggestion.warning:'');
    invalidate();
   }catch(e){get('dataStatsSummary').textContent='자동 추천 불가: '+e.message;}
  }
@@ -70,7 +70,7 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
   const mapped=plan.updates||plan.suggestions||[],skipped=plan.skipped||[],slots=plan.reviewSlots||[];
   const heading=document.createElement('h3');heading.textContent='6페이지 엑셀 차트 연결 · '+mapped.length+'개 가능 / '+skipped.length+'개 보류';
   panel.append(heading);
-  const tip=document.createElement('p');tip.textContent='자동 추천이 맞지 않으면 차트마다 숫자 열을 직접 지정하세요. 변경 뒤에는 반드시 다시 검토해야 적용됩니다.';panel.append(tip);
+  const tip=document.createElement('p');tip.textContent=(plan.labelConfidence==='unconfirmed-numeric-dimension'?'범주열이 모두 숫자라 자동 연결을 차단했습니다. 위의 범주 열 번호를 직접 수정하고 검토를 다시 누르세요. ':'')+'자동 추천이 맞지 않으면 차트마다 숫자 열을 직접 지정하세요. 변경 뒤에는 반드시 다시 검토해야 적용됩니다.';panel.append(tip);
   const table=document.createElement('table'),thead=document.createElement('thead'),headRow=document.createElement('tr');
   for(const label of ['페이지','차트','추천 열','수동 열 지정','판정']){const th=document.createElement('th');th.textContent=label;headRow.append(th);}
   thead.append(headRow);table.append(thead);
@@ -108,11 +108,11 @@ function mount(api){let candidate=null,bound=null,serial=0,proposal=null,baselin
   const opts={designIdentity:family,packInstanceId:page?.designPackId||'',currentPageId:page?.id||'',
    sheetId:get('workbookSheet').value,range:get('workbookRange').value,header:get('dataHeader').checked,
    analysisMode:get('dataAnalysisMode').value,aggregate:get('dataAggregate').value,
-   manualOverrides:{...manualOverrides}};
+   manualOverrides:{...manualOverrides},...(manualLabelOverride?{labelColumn:Number(get('labelColumn').value)-1}:{})};
   const inspect=PACK.plan(p,candidate,{...opts,previewOnly:true});
   if(!inspect.suggestions.length){
    proposal=null;renderBatchMapping(inspect);get('dataApply').disabled=true;
-   get('dataStatus').textContent='자동 일치가 확인되지 않았습니다. 표의 수동 열 지정에서 올바른 숫자 열을 선택하고 다시 검토하세요.';
+   get('dataStatus').textContent=inspect.labelConfidence==='unconfirmed-numeric-dimension'?'범주열이 숫자형이라 자동 매칭이 중단되었습니다. 범주 열 번호를 직접 수정한 뒤 6페이지 연결 검토를 다시 누르세요.':'자동 일치가 확인되지 않았습니다. 표의 수동 열 지정에서 올바른 숫자 열을 선택하고 다시 검토하세요.';
    return;
   }
   let planned;
