@@ -127,6 +127,18 @@ test('large workbook exports only the selected derived chart series and source t
  assert.equal(done.pages[3].elements.at(-1).data.values[0],-40);
  assert.match(done.pages[3].elements.at(-1).source,/large-ubs\.xlsx/);
 });
+test('FIN-16 chart target protects authored text and small KPI without blocking blank native regions',async()=>{
+ const p=await prepared(),slots=U.targets(p.pages,p.frame);
+ assert.equal(slots.length,2);
+ const slot=slots[0],page=p.pages.find(pg=>pg.id===slot.pageId);
+ page.elements.push(C.makeBlock('text',slot.x+10,slot.y+10,{w:160,h:40,text:'작성된 본문'}));
+ assert.equal(U.targets(p.pages,p.frame).length,1,'authored text must remain visible');
+ page.elements.pop();
+ page.elements.push(C.makeBlock('kpi',slot.x+20,slot.y+30,{w:80,h:80,text:'검토 KPI'}));
+ assert.equal(U.targets(p.pages,p.frame).length,1,'small KPI cannot be overwritten');
+ page.elements.pop();
+ assert.equal(U.targets(p.pages,p.frame).length,2,'original blank text slots stay eligible');
+});
 test('UI wiring loads UBS mapper after the generic matcher, and has a retry control',()=>{
  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
  const panel=fs.readFileSync(path.join(__dirname,'../assets/data_panel.js'),'utf8');

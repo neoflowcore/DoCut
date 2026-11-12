@@ -611,7 +611,10 @@
 .ubs-edit-grid input{max-width:100%;min-width:0;padding:3px;box-sizing:border-box}.ubs-edit-grid input[type=color]{height:32px;width:100%;padding:1px}.ubs-edit-grid input[type=range]{padding:0}
 .ubs-edit-hidden{display:flex;gap:7px;align-items:center;margin:12px 0}.ubs-edit-actions{display:flex;gap:7px;flex-wrap:wrap}
 .ubs-edit-note{font-size:11px;color:#a8bccd;line-height:1.6;border-top:1px solid #4b5b6b;padding-top:9px;margin-top:12px}
-.slide.ubs-vector-edit-mode .ubs-source-layer{pointer-events:auto;z-index:4;cursor:crosshair}
+.slide.ubs-vector-edit-mode .ubs-source-layer{pointer-events:auto;z-index:4;cursor:grab;touch-action:none;overscroll-behavior:contain}
+.slide.ubs-vector-edit-mode .ubs-source-layer [data-ubs-vector-index]{cursor:grab}
+.slide.ubs-vector-edit-mode.ubs-vector-dragging .ubs-source-layer,
+.slide.ubs-vector-edit-mode.ubs-vector-dragging .ubs-source-layer [data-ubs-vector-index]{cursor:grabbing}
 .slide.ubs-vector-edit-mode .ubs-source-layer svg{pointer-events:visiblePainted}
 .slide.ubs-vector-edit-mode>.element{pointer-events:none!important}
 .slide.ubs-vector-edit-mode .ubs-vector-selected{filter:drop-shadow(0 0 3px #f23674)}

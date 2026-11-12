@@ -45,12 +45,19 @@ function slotRect(page,frame){
   rect.x<0||rect.y<0||rect.x+rect.w>C.WIDTH||rect.y+rect.h>C.HEIGHT)return null;
  return rect;
 }
+// Don't obscure author-entered text, diagrams, KPIs or existing charts.
+// The original 157 blank text regions remain available for Excel chart insets.
 function occupied(page,rect){
  return (page.elements||[]).some(e=>{
-  if(!e||!['bar','line','donut','table','stat'].includes(e.type))return false;
+  if(!e||e.hidden===true)return false;
+  const authored=['text','title','bullet','quote','source'].includes(e.type)&&String(e.text||'').trim();
+  const material=['bar','line','donut','table','stat','kpi','image','card','note','shape'].includes(e.type);
+  if((!authored&&!material)||!['x','y','w','h'].every(k=>Number.isFinite(e[k])))return false;
+  if(!(e.w>0&&e.h>0))return false;
   const w=Math.max(0,Math.min(rect.x+rect.w,e.x+e.w)-Math.max(rect.x,e.x));
   const h=Math.max(0,Math.min(rect.y+rect.h,e.y+e.h)-Math.max(rect.y,e.y));
-  return w*h/(rect.w*rect.h)>.35;
+  if(!w||!h)return false;
+  return w*h>=Math.min(rect.w*rect.h*.08,e.w*e.h*.30);
  });
 }
 function targets(pages,frame){
